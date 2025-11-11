@@ -14,6 +14,7 @@ This is a **web application** that will be used to manage farm activities which 
 - On the admin side, a report to show employee performance
 
 ## Technologies Used
-FrontEnd: Html, CSS, JavaScript<br>
-Backend: PHP<br>
-Database: MySQL
+- FrontEnd: Html, CSS, JavaScript<br>
+- Backend: PHP<br>
+- Database: MySQL
+
