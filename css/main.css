@@ -1,0 +1,14 @@
+:root{
+    font-size: 62.5%;
+    --basecolor:#0F1E0F;
+    --supportcolor:#AB7843;
+    --support2:#ffffff;
+    --lighterbrown:antiquewhite;
+}
+
+body{
+    font-size: 1.6rem;
+    color: var(--basecolor);
+    background-color: var(--support2);
+    display:flex;
+}
