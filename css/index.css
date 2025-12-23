@@ -1,0 +1,106 @@
+:root{
+    font-size: 62.5%;
+    --basecolor:#0F1E0F;
+    --supportcolor:#AB7843;
+    --support2:#ffffff;
+    --lighterbrown:antiquewhite;
+    --lightestgrey:#F0F0F0;
+}
+
+body{
+    font-size: 1.6rem;
+    color: var(--basecolor);
+    background-color: var(--support2);
+    display:flex;
+}
+
+.main-content{
+    padding: 1rem 2rem;
+}
+
+.main-content h1{
+    font-size: 5rem;
+}
+
+.main-content h2{
+    font-size: 3rem;
+}
+
+.content{
+    display: flex;
+    gap:2rem;
+}
+
+.left{
+   display: flex;
+   flex-direction:column;
+   gap:2rem; 
+}
+
+.right{
+   display: flex;
+   flex-direction:column;
+   gap:2rem; 
+}
+
+/*FEEDINGS SECTION*/
+.feedings{
+    border: solid 0.2rem black;
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+
+.feedings table th, .feedings table td{
+    /*border: solid 0.1rem black;*/
+    text-align: center;
+    padding: 0.4rem 1rem;
+}
+
+.feedings table #animal{
+    text-align: left;
+}
+
+.feedings a{
+    border: solid 0.1rem black;
+    border-radius: 0.2rem;
+    width:fit-content;
+    padding:0.1rem 1rem;
+    display: inline-block;
+    margin-left: auto;
+    margin-top: 1rem;
+}
+
+/*WEEKLY SALES SECTION*/
+.weekly-sales{
+    border: solid 0.2rem black;
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+
+
+/*ALERTS SECTION*/
+.alerts{
+    border: solid 0.2rem black;
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+
+
+/*TODAY'S SALES SECTION*/
+.todays-sales{
+    border: solid 0.2rem black;
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}

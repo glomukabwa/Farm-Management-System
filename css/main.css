@@ -4,6 +4,7 @@
     --supportcolor:#AB7843;
     --support2:#ffffff;
     --lighterbrown:antiquewhite;
+    --lightestgrey:#F0F0F0;
 }
 
 body{
@@ -11,4 +12,38 @@ body{
     color: var(--basecolor);
     background-color: var(--support2);
     display:flex;
+}
+
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position:fixed;/*This ensures it doesn't scroll if the main-content scrolls. It removes the
+    sidebar from the normal flow of the page so you have to give it a width like I have below
+    then make sure that the left padding of the main-content is similar to the width(or slightly 
+    more so the main-content doesn't start directly at the edge) or else they will overlap (the 
+    main-content will appear on top of the sidebar cz it's treating it like it's not there.*/
+    width:15rem;
+    padding:1rem;
+    gap:2rem;
+}
+
+.links{
+    display: flex;
+    flex-direction: column;
+}
+
+.top-links, .bottom-links{
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-links{
+}
+
+.main-content{
+    margin-left: 15rem;/*This is to make sure it doesn't appear at the top of the sidebar*/
+    height:100vh;
+    background-color: var(--lightestgrey);
+    width:100%;
 }
