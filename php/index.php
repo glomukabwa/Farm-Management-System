@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/index.js" defer></script><!--defer here means:wait until the HTML is parsed before running your JS, so you don’t 
+    need DOMContentLoaded(an event that can be added to an action listener) if you use defer.-->
 </head>
 <body>
     <section class="sidebar">
@@ -16,24 +18,30 @@
 
         <div class="links">
             <div class="top-links">
-                <a href="http://localhost/Farm%20Website/php/index.php">OVERVIEW</a>
-                <a href="#">ENTER FEED</a>
-                <a href="#">ENTER SALE</a>
-                <a href="#">PRODUCTS</a>
-                <a href="#">Milk</a>
-                <a href="#">Bulls</a>
-                <a href="#">Chicken</a>
-                <a href="#">Eggs</a>
-                <a href="#">Pigs</a>
-                <a href="#">Kales</a>
-                <a href="#">Maize</a>
-                <a href="#">CALENDAR</a>
+                <a href="http://localhost/Farm%20Website/php/index.php"><img src="../icons/category.png" alt="overview">OVERVIEW</a>
+                <a href="#"><img src="../icons/feeds.png" alt="feeds">ENTER FEED</a>
+                <a href="#"><img src="../icons/sales.png" alt="sales">ENTER SALE</a>
+                <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
+
+                <a href="#" class="products-menu">
+                    <img src="../icons/product.png" alt="products">
+                    PRODUCTS <span class="arrow"> > </span>
+                </a>
+                <div class="products-submenu">
+                    <a href="#"><img src="../icons/milk.png" alt="">Milk</a>
+                    <a href="#"><img src="../icons/bull.png" alt="">Bulls</a>
+                    <a href="#"><img src="../icons/chicken.png" alt="">Chicken</a>
+                    <a href="#"><img src="../icons/eggs.png" alt="">Eggs</a>
+                    <a href="#"><img src="../icons/pig.png" alt="">Pigs</a>
+                    <a href="#"><img src="../icons/greens.png" alt="">Kales</a>
+                    <a href="#"><img src="../icons/maize.png" alt="">Maize</a>
+                </div>
             </div>
 
             <div class="bottom-links">
-                <a href="#">PROFILE</a>
-                <a href="#">SETTINGS</a>
-                <a href="#">LOG OUT</a>
+                <a href="#"><img src="../icons/profile.png" alt="profile">PROFILE</a>
+                <a href="#"><img src="../icons/settings.png" alt="settings">SETTINGS</a>
+                <a href="#"><img src="../icons/logout.png" alt="log out">LOG OUT</a>
             </div>
         </div>
     </section>

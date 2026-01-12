@@ -14,6 +14,11 @@ body{
     display:flex;
 }
 
+a{
+    cursor:pointer;
+}
+
+/*SIDEBAR SECTION*/
 .sidebar{
     display: flex;
     flex-direction: column;
@@ -23,14 +28,30 @@ body{
     then make sure that the left padding of the main-content is similar to the width(or slightly 
     more so the main-content doesn't start directly at the edge) or else they will overlap (the 
     main-content will appear on top of the sidebar cz it's treating it like it's not there.*/
-    width:15rem;
-    padding:1rem;
-    gap:2rem;
+    width:20rem;
+    padding: 1rem;
+    gap:1rem;
+}
+
+.logo{
+    height:5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .links{
     display: flex;
     flex-direction: column;
+    flex-grow: 1;/*Take up the remaining space*/
+}
+
+.links a{
+    height:2.5rem;
+}
+
+.links a img{
+    height:2rem;
 }
 
 .top-links, .bottom-links{
@@ -39,10 +60,37 @@ body{
 }
 
 .bottom-links{
+    margin-top: auto;/*Pushes these links to the bottom*/
 }
 
+.products-menu{
+    display:flex;
+    justify-content: space-between;/*So that the arrow and PRODUCTS are not directly next to each other*/
+    align-items: center;
+}
+
+.arrow{
+    transition: transform 0.3s ease;/*We are not using all here which animates all properties(color, opacity, transform etc). Instead we are specifying that only the transform property should be animated.
+    Tranform property deals with rotate, scale, translate etc that you see in arrow.open below. Copilot says that it is better to specify what property you want animated cz it makes the animation smooter, 
+    all tries to force all properties like color, opacity to transition which makes the animation slower and weird*/
+}
+
+.arrow.open {
+    transform: rotate(90deg); /*rotate arrow when open*/
+}
+
+.products-submenu a{
+    display:block;
+}
+
+.products-submenu{
+    display:none;
+    margin-left: 1rem;
+}
+
+/*MAIN CONTENT SECTION*/
 .main-content{
-    margin-left: 15rem;/*This is to make sure it doesn't appear at the top of the sidebar*/
+    margin-left: 20rem;/*This is to make sure it doesn't appear at the top of the sidebar*/
     height:100vh;
     background-color: var(--lightestgrey);
     width:100%;
