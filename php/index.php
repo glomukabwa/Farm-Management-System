@@ -24,8 +24,8 @@
                 <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
 
                 <a href="#" class="products-menu">
-                    <img src="../icons/product.png" alt="products">
-                    PRODUCTS <span class="arrow"> > </span>
+                    <div><img src="../icons/product.png" alt="products">PRODUCTS</div>
+                    <span class="arrow"> > </span>
                 </a>
                 <div class="products-submenu">
                     <a href="#"><img src="../icons/milk.png" alt="">Milk</a>

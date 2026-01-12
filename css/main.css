@@ -30,6 +30,7 @@ a{
     main-content will appear on top of the sidebar cz it's treating it like it's not there.*/
     width:20rem;
     padding: 1rem;
+    padding-left: 2rem;
     gap:1rem;
 }
 
@@ -47,11 +48,12 @@ a{
 }
 
 .links a{
-    height:2.5rem;
+    height:3rem;
 }
 
 .links a img{
-    height:2rem;
+    height:1.5rem;
+    padding-right: 1rem;
 }
 
 .top-links, .bottom-links{
