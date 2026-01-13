@@ -104,3 +104,13 @@ body{
     flex-direction: column;
     gap:1rem;
 }
+
+.todays-sales div{
+    display:flex;
+    font-size: 2rem;
+    gap:1rem;
+}
+
+.todays-sales img{
+    height:3rem;
+}

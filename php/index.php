@@ -19,23 +19,25 @@
         <div class="links">
             <div class="top-links">
                 <a href="http://localhost/Farm%20Website/php/index.php"><img src="../icons/category.png" alt="overview">OVERVIEW</a>
-                <a href="#"><img src="../icons/feeds.png" alt="feeds">ENTER FEED</a>
-                <a href="#"><img src="../icons/sales.png" alt="sales">ENTER SALE</a>
-                <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
 
                 <a href="#" class="products-menu">
-                    <div><img src="../icons/product.png" alt="products">PRODUCTS</div>
+                    <div><img src="../icons/product.png" alt="products">FARM RECORDS</div>
                     <span class="arrow"> > </span>
                 </a>
                 <div class="products-submenu">
-                    <a href="#"><img src="../icons/milk.png" alt="">Milk</a>
-                    <a href="#"><img src="../icons/bull.png" alt="">Bulls</a>
-                    <a href="#"><img src="../icons/chicken.png" alt="">Chicken</a>
-                    <a href="#"><img src="../icons/eggs.png" alt="">Eggs</a>
-                    <a href="#"><img src="../icons/pig.png" alt="">Pigs</a>
-                    <a href="#"><img src="../icons/greens.png" alt="">Kales</a>
-                    <a href="#"><img src="../icons/maize.png" alt="">Maize</a>
-                </div>
+                    <a href="#"><img src="../icons/users.png" alt="users">Users</a>
+                    <a href="#"><img src="../icons/animals.png" alt="animals">Animals</a>
+                    <a href="#"><img src="../icons/feeds.png" alt="feeds">Feeds</a>
+                    <a href="#"><img src="../icons/feeding.png" alt="feeding">Feeding</a>
+                    <a href="#"><img src="../icons/suppliers.png" alt="suppliers">Suppliers</a>
+                    <a href="#"><img src="../icons/purchases.png" alt="purchases">Purchases</a>
+                    <a href="#"><img src="../icons/production.png" alt="production">Production</a>
+                    <a href="#"><img src="../icons/product_inventory.png" alt="inventory">Product_Inventory</a>
+                    <a href="#"><img src="../icons/sales.png" alt="sales">Sales</a>
+                </div><br>
+
+                <a href="#"><img src="../icons/enter_record.png" alt="records">ENTER RECORD</a>
+                <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
             </div>
 
             <div class="bottom-links">
@@ -117,7 +119,10 @@
 
                 <div class="todays-sales">
                     <h2>Today's Sales</h2>
-                    <p>Ksh 0</p>
+                    <div>
+                        <img src="../icons/sale.png" alt="sale">
+                        <p>Ksh 0</p>
+                    </div>
                 </div>
             </div>
         </div>
