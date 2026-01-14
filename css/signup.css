@@ -1,0 +1,163 @@
+:root{
+    font-size: 62.5%;
+    --basecolor:#0F1E0F;
+    --supportcolor:#AB7843;
+    --support2:#ffffff;
+    --lighterbrown:antiquewhite;
+    --lightestgrey:#F0F0F0;
+}
+
+body{
+    font-size: 1.6rem;
+    color: var(--basecolor);
+    background-color: var(--support2);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a{
+    cursor:pointer;
+}
+
+form{
+    background-color: var(--lightestgrey);
+    width:60rem;
+    padding:5rem 5rem;
+    margin:4rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap:2rem;
+    border-radius: 2rem;
+}
+
+h1{
+    font-size: 5rem;
+    text-align: center;
+}
+
+.oneinput{
+    position: relative;/*Cz we need to make the label absolute so that it appears like a placeholder*/
+}
+
+.oneinput input{
+    background-color: var(--support2);
+    display: block;
+    height:4rem;
+    width: 50rem;
+    padding:1rem 2rem;
+    border-radius: 2rem;
+}
+
+.oneinput label {
+    position: absolute;
+    left:2rem;/*This is relative to the neareast positioned ancestor which is the oneiput div in this case*/
+    top:1.1rem;
+    background-color: var(--support2);/*I am giving the label a background color similar to the input background so that I can give it a visible padding below so that when the input focuses, I can change the background to the color of the form. I've tried to just use padding but it doesn't reflect when I focus(the border still shows) but with background-color it does what I want*/
+    padding:0 0.3rem;
+}
+
+.oneinput input:focus + label,/*This means that if the condition before the plus which in this case is the input focuses, look for the first label after the particular input in the HTML(we've made sure our label is right after it) and apply the following*/
+.oneinput input:not(:placeholder-shown) + label{/*:not() is used to negate so it means that if a placeholder is not being shown in the input (which usually happens when someone types sth), then do the following to the label after the particular input*/
+    top:-0.9rem;
+    left: 2rem;
+    font-size:1rem;
+    background-color: var(--lightestgrey);
+}
+
+.oneinput input:focus{
+    border: solid 0.15rem black;
+}
+
+.name{
+    display:flex;
+    gap:2rem;
+}
+
+.name input{
+    width:24rem;
+}
+
+input, .select-wrapper{ /*We use a wrapper(.select-wrapper ) instead of just select cz select ignores the ::after which we need to use to put the arrow. Options also does*/
+    background-color: var(--support2);
+    display: block;
+    height:4rem;
+    width: 50rem;
+    padding:1rem 2rem;
+    border-radius: 2rem;
+}
+
+.select-wrapper{
+    position: relative;
+    width:10rem;
+    cursor:pointer;
+}
+
+.select-wrapper::after{
+    position: absolute;
+    content:"▼";
+    font-size: 1.1rem;
+    right:2.5rem;
+    top:50%;
+    transform: translateY(-50%);/*I don't fully understand why but this one and top:50% centralize the arrow well vertically*/
+    pointer-events: none;/*Makes it invisible to the mouse. Without it, the arrow could block clicks on the select box if it overlaps.With pointer-events: none, clicks go through the arrow to the underlying <select> element, so the dropdown still works.*/
+}
+
+/*You'll notice that the options don't work with the styling I've set. The browser uses its own styling and even if you try editting, it'll ignore it. You need JS for this but I'm putting this off for later*/
+
+/*Customized Select Dropdown
+.custom-select {
+  position: relative;
+  width:10rem;
+  background-color: var(--support2);
+  display: block;
+  height:4rem;
+  padding:1rem 2rem;
+  border-radius: 2rem;
+  cursor:pointer;
+}
+
+.options {
+  position: absolute;
+  top: 100%; 
+  left: 0; 
+  right: 0; 
+  background: white; 
+  border: 1px solid #ccc; 
+  display: none; 
+  z-index: 10;
+  border-radius: 2rem;
+}
+
+.options li { 
+    padding:1rem 2rem; 
+    cursor: pointer; 
+} 
+
+.options li:hover { 
+    background-color: var(--lightestgrey); 
+}
+End*/
+
+button{
+   background-color: black;
+   color: var(--lightestgrey);
+   display: block;
+   height:4rem;
+   padding:1rem 2rem;
+   border-radius: 2rem; 
+   text-align: center;
+   cursor: pointer;
+   margin-top: 2rem;
+   width:50rem;
+}
+
+.already{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.already a{
+    text-decoration: underline;
+    color: var(--supportcolor);
+}
