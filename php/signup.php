@@ -18,7 +18,7 @@ include 'config.php';
         <h1>Hello</h1>
         <div class="name">
             <div class="oneinput">
-                <input type="text" id="firstName" placeholder=" " required>
+                <input type="text" id="firstName" placeholder=" " required><!--You put some space in the placeholder quotes so that it can act as a placeholder that isn't visible and its purpose is so that u can use :not(placeholder-shown) in css to check if sth has been typed for the label to move to the corner-->
                 <label for="firstName">First Name</label>
             </div>
             <input type="text" placeholder="Second Name" required>
