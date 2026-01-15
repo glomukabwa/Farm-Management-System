@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 
-if($_SERVER["REQUEST METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST"){
     $fname = trim($_POST['firstName'] ?? '');
     $sname = trim($_POST['secondName'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -50,7 +50,7 @@ if($_SERVER["REQUEST METHOD"] == "POST"){
 
         <div class="select-wrapper">
             <select name="role" id="role" required>
-                <option value="">--Role--</option><!--value being empty here will ensure that an option has been
+                <option value="">Role</option><!--value being empty here will ensure that an option has been
                 picked cz if a user tries to pick this first option, the browser will block submission cz a 
                 non-empty value is required-->
                 <option value="staff">Staff</option>
