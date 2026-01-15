@@ -1,6 +1,17 @@
 <?php
 include 'config.php';
 
+if($_SERVER["REQUEST METHOD"] == "POST"){
+    $fname = trim($_POST['firstName'] ?? '');
+    $sname = trim($_POST['secondName'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $pnumber = trim($_POST['phoneNumber'] ?? '');
+    $role = trim($_POST['role'] ?? '');
+    $newPassword = trim($_POST['newPassword'] ?? '');
+    $confirmPassword = trim($_POST['confirmPassword'] ?? '');
+
+    /*Check for email validity */
+}
 ?>
 
 <!DOCTYPE html>
@@ -18,17 +29,30 @@ include 'config.php';
         <h1>Hello</h1>
         <div class="name">
             <div class="oneinput">
-                <input type="text" id="firstName" placeholder=" " required><!--You put some space in the placeholder quotes so that it can act as a placeholder that isn't visible and its purpose is so that u can use :not(placeholder-shown) in css to check if sth has been typed for the label to move to the corner-->
+                <input type="text" id="firstName" name="firstName" placeholder=" " required><!--You put some space in the placeholder quotes so that it can act as a placeholder that isn't visible and its purpose is so that u can use :not(placeholder-shown) in css to check if sth has been typed for the label to move to the corner-->
                 <label for="firstName">First Name</label>
             </div>
-            <input type="text" placeholder="Second Name" required>
+            <div class="oneinput">
+                <input type="text" id="secondName" name="secondName" placeholder=" " required>
+                <label for="secondName">Second Name</label>
+            </div>
         </div>
-        <input type="text" placeholder="Email" required>
-        <input type="text" placeholder="Phone Number" required>
+
+        <div class="oneinput">
+            <input type="email" id="email" name="email" placeholder=" " required>
+            <label for="email">Email</label>
+            <span id="emailMessage"></span>
+        </div>
+        <div class="oneinput">
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder=" " required>
+            <label for="phoneNumber">Phone Number</label>
+        </div>
 
         <div class="select-wrapper">
-            <select name="role" id="role">
-                <option value="">Role</option>
+            <select name="role" id="role" required>
+                <option value="">--Role--</option><!--value being empty here will ensure that an option has been
+                picked cz if a user tries to pick this first option, the browser will block submission cz a 
+                non-empty value is required-->
                 <option value="staff">Staff</option>
                 <option value="manager">Manager</option>
                 <option value="admin">Admin</option>
@@ -47,8 +71,14 @@ include 'config.php';
         </div>-->
 
 
-        <input type="text" placeholder="Enter Password" required>
-        <input type="text" placeholder="Confirm Password" required>
+        <div class="oneinput">
+            <input type="password" id="newPassword" name="newPassword" placeholder=" " required autocomplete="new-password"><!--autocomplete="new-password" clears both the password field and email which are autofilling-->
+            <label for="newPassword">Enter Password</label>
+        </div>
+        <div class="oneinput">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required >
+            <label for="confirmPassword">Confirm Password</label>
+        </div>
 
         <button>Sign Up</button>
 

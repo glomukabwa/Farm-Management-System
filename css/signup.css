@@ -1,6 +1,6 @@
 :root{
     font-size: 62.5%;
-    --basecolor:#0F1E0F;
+    --basecolor:#000000;
     --supportcolor:#AB7843;
     --support2:#ffffff;
     --lighterbrown:antiquewhite;
@@ -140,7 +140,7 @@ input, .select-wrapper{ /*We use a wrapper(.select-wrapper ) instead of just sel
 End*/
 
 button{
-   background-color: black;
+   background-color: var(--basecolor);
    color: var(--lightestgrey);
    display: block;
    height:4rem;

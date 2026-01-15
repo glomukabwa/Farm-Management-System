@@ -23,7 +23,8 @@ CREATE TABLE product_categories (
 -- Core Tables
 CREATE TABLE users (-- record of all existing animals
     id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    second_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
@@ -102,7 +103,8 @@ CREATE TABLE production_records (-- This tracks the active production of the pro
 
 CREATE TABLE suppliers (-- record of all farm suppliers
     id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    second_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP

@@ -1,3 +1,5 @@
+
+
 /*Customized dropdown
 const selected = document.querySelector(".selected");
 const options = document.querySelector(".options"); 
