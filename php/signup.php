@@ -10,7 +10,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $newPassword = trim($_POST['newPassword'] ?? '');
     $confirmPassword = trim($_POST['confirmPassword'] ?? '');
 
-    /*Check for email validity */
+    /*Check for email validity id done in JS*/
+
+    /*Hashing password*/
+    
 }
 ?>
 
@@ -78,9 +81,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="oneinput">
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required >
             <label for="confirmPassword">Confirm Password</label>
+            <span id="confirmMessage"></span>
         </div>
 
-        <button>Sign Up</button>
+        <button type="submit">Sign Up</button>
 
         <p class="already">Already have an account?<a href="#">Log In</a></p>
 

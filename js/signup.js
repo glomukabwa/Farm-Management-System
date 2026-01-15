@@ -22,6 +22,10 @@ const emailInput = document.getElementById('email');
 const emailMessage = document.getElementById('emailMessage');
 
 emailInput.addEventListener("input", function(){
+    /*In place of function, you can also write () => They will work the same however, this.value doesn't work when
+    u use this. So for the next line where this is used to make a reference to the value of the element the event
+    listener is assigned to, it wouldn't work. You use it when you don't have to use this like u'll see in the 
+    password similarity check below*/
     const email = this.value;/*You have to do this bcz emailInput is the input element itself not the value it 
     holds and the function works with the value of the input not the input element */
 
@@ -33,8 +37,68 @@ emailInput.addEventListener("input", function(){
         emailMessage.style.color = "green";
 
         /*Email Duplication check */
+        fetch('emailDuplication.php?email=' + encodeURIComponent(email))
+            /*The above statement is a string and the plus is concatenation. The encodeURIComponent(email) gets the email we got through
+            getElementById and replaces the special characters in it like @,+,& etc with things that are URL friendly bcz the special 
+            characters can break the URL. So for example if the email entered so far is test@example.com then the statement will be 
+            emailDuplication.php?email=test%40example.com. This statement that we have gotten now is sent as a GET request(since email is 
+            not private info, GET is allowed) to emailDuplication.php. The php file receives the URL and uses it to check for duplication
+            ($_GET is a PHP superglobal that reads query parameters from the URL). There is a way to send requests using POST method for 
+            fetch but its longer and since email is not private info, its safe to use GET to fetch.(Ask chat to help u out with the POST 
+            version when you need it).I put "input" as the event for this eventListener and it is triggered 
+            every time a change is made in the input field. This mean that every time a character is entered, it is sent to 
+            emailDuplication.php and the check happens continuously. AJAX is what is allowing you to interact with the server without 
+            submitting the form.
+
+            Proper definition of AJAX: AJAX = talking to the server without refreshing the page. Think of it like WhatsApp. You send a 
+            message, you get a reply, the app does not restart. fetch() is what indicates that you are using AJAX bz you are interacting 
+            with the server without refreshing the page(without the refreshing that comes after submission)
+            */
+           .then(response => response.text())/*This reads the response from emailDuplication as text. When it arrives, it comes with other info 
+                                               but this reads all that info and extracts the response we want which is either 'exists' or 'valid
+                                               Example of how the response comes:
+                                                    HTTP/1.1 200 OK
+                                                    Content-Type: text/html; charset=UTF-8
+                                                    Content-Length: 6
+
+                                                    exists
+                                                response.text() converts it to just text so here we'd only get exists. Plz note that in place of
+                                                response you can put other words like res, respo etc but follow the structure
+                                                Once the response has been read the value is stored in data which is what we use next */
+           .then(data => {/*data contains the result of php so we use it to determine what message we want to output */
+            if (data === 'exists') {
+                emailMessage.textContent = 'Email is already taken';
+                emailMessage.style.color = 'red';
+            }else{
+                emailMessage.textContent = 'Valid Email';
+                emailMessage.style.color = 'green';
+            }
+           });
+           
     }
+    
 });
+
+/*Checking if the passwords entered are similar*/
+const newPassword = document.getElementById('newPassword');
+const confirmPassword = document.getElementById('confirmPassword');
+const confirmMessage = document.getElementById('confirmMessage');
+
+confirmPassword.addEventListener("input", () => {
+    if(newPassword.value == '' && confirmPassword.value == ''){
+        confirmMessage.textContent = '';
+        return; /*This is almost like exit in php. The function will stop here and we'll just continue with the
+        code outside the function*/
+    }
+    if(newPassword.value === confirmPassword.value){
+        confirmMessage.textContent = 'Password is correct';
+        confirmMessage.style.color = 'green';
+    }else{
+        confirmMessage.textContent = 'Incorrect password';
+        confirmMessage.style.color = 'red';
+    }
+});       
+    
 
 /*Customized dropdown
 const selected = document.querySelector(".selected");

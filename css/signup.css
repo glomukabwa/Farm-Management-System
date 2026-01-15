@@ -78,7 +78,12 @@ h1{
     width:24rem;
 }
 
-input, .select-wrapper{ /*We use a wrapper(.select-wrapper ) instead of just select cz select ignores the ::after which we need to use to put the arrow. Options also does*/
+#emailMessage, #confirmMessage{
+    font-size:1.1rem;
+    padding-left: 2rem;
+}
+
+.select-wrapper{ /*We use a wrapper(.select-wrapper ) instead of just select cz select ignores the ::after which we need to use to put the arrow. Options also does*/
     background-color: var(--support2);
     display: block;
     height:4rem;
