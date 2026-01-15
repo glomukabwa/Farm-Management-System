@@ -10,10 +10,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $newPassword = trim($_POST['newPassword'] ?? '');
     $confirmPassword = trim($_POST['confirmPassword'] ?? '');
 
-    /*Check for email validity id done in JS*/
+    /*I've checked for email duplication in JS*/
 
-    /*Hashing password*/
-    
+    /*I've already checked that new password and confirm password are the same but chat says its not advisable
+    to depend on UI for functionalities so its good measure to have a backup here */
+    if($newPassword != '' && $confirmPassword != ''){
+        if($newPassword === $confirmPassword){
+            /*Hashing password*/
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT); 
+            $stmt = $conn->prepare(
+                "INSERT INTO users (first_name, second_name, email, phone_number, role, password_hash) 
+                values (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $fname, $sname, $email, $pnumber, $role, $hashedPassword);
+            if($stmt->execute()){
+                echo "Successful Insertion";
+            }else{
+                return "Insertion error: " . $stmt->error ;
+            }
+        }
+    }
 }
 ?>
 
@@ -28,7 +43,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <script src="../js/signup.js" defer></script>
 </head>
 <body>
-    <form action="POST">
+    <form method="POST">
         <h1>Hello</h1>
         <div class="name">
             <div class="oneinput">
