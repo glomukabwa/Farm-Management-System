@@ -1,3 +1,28 @@
+/*Customized dropdown
+const selected = document.querySelector(".selected");
+const options = document.querySelector(".options"); 
+const hiddenInput = document.querySelector("#role");
+
+// Toggle dropdown 
+selected.addEventListener("click", () => {
+     options.style.display = options.style.display === "block" ? "none" : "block"; 
+}); 
+
+// Handle selection 
+options.querySelectorAll("li").forEach(option => {
+    option.addEventListener("click", () => { 
+        selected.textContent = option.textContent + " ▼"; 
+        hiddenInput.value = option.dataset.value; 
+        options.style.display = "none"; 
+    }); }); 
+    
+// Close dropdown if clicked outside 
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".custom-select")) { 
+        options.style.display = "none"; 
+    } 
+});*/
+
 /*Email Validation */
 function isEmailValid(email){
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -7,7 +32,7 @@ function isEmailValid(email){
     A-Z -> capital letter alphabets
     0-9 -> numbers
     ._%+- -> these specific characters are also allowed
-    [a-zA-Z0-9._%+-]+ -> what is in the brackets is allowed and then the plus outside means 1 or more
+    [a-zA-Z0-9._%+-]+ -> what is in the brackets is allowed and then the plus outside means one or more
     @ -> Then there must be an @
     [a-zA-Z0-9.-]+ -> Then 1 or more of what is in the brackets
     \. -> Then a literal dot 
@@ -79,8 +104,38 @@ emailInput.addEventListener("input", function(){
     
 });
 
-/*Checking if the passwords entered are similar*/
+
+/*Enforcing password strength*/
+function isPasswordStrong(password){
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_-+=?])[a-zA-Z0-9!@#$%^&*_-+=?]{8,}$/
+    /*regex meaning:
+    ^                           start
+    (?=.*[A-Za-z])              at least one letter
+    (?=.*\d) or (?=.*[0-9])     at least one number
+    (?=.*[!@#$%^&*_])           at least one special char
+    [A-Za-z\d!@#$%^&*_]{8,}     allowed characters, min 8
+    $                           end
+    */
+   return regex.test(password);
+}
+
 const newPassword = document.getElementById('newPassword');
+const strengthMessage = document.getElementById('pStrengthMessage');
+
+newPassword.addEventListener("input", function() {
+    const Pass = this.value;
+
+    if(!isPasswordStrong(Pass)){
+        strengthMessage.textContent = 'Weak Password';
+        strengthMessage.style.color = 'red';
+    }else{
+        strengthMessage.textContent = 'Strong Password';
+        strengthMessage.style.color = 'green';
+    }
+})
+
+
+/*Checking if the passwords entered are similar*/
 const confirmPassword = document.getElementById('confirmPassword');
 const confirmMessage = document.getElementById('confirmMessage');
 
@@ -98,29 +153,15 @@ confirmPassword.addEventListener("input", () => {
         confirmMessage.style.color = 'red';
     }
 });       
-    
 
-/*Customized dropdown
-const selected = document.querySelector(".selected");
-const options = document.querySelector(".options"); 
-const hiddenInput = document.querySelector("#role");
-
-// Toggle dropdown 
-selected.addEventListener("click", () => {
-     options.style.display = options.style.display === "block" ? "none" : "block"; 
-}); 
-
-// Handle selection 
-options.querySelectorAll("li").forEach(option => {
-    option.addEventListener("click", () => { 
-        selected.textContent = option.textContent + " ▼"; 
-        hiddenInput.value = option.dataset.value; 
-        options.style.display = "none"; 
-    }); }); 
-    
-// Close dropdown if clicked outside 
-document.addEventListener("click", (e) => {
-    if (!e.target.closest(".custom-select")) { 
-        options.style.display = "none"; 
-    } 
-});*/
+/*Preventing ruining of the listeners every time the form reloads after submission */
+const signupForm = document.querySelector("form");/*This selects the first form it finds and since there's only 1, its okay*/
+signupForm.addEventListener("submit", function(e){
+    e.preventDefault(); /*When you submit the form, the browser reloads the page (default HTML form behavior). All
+                          JS variables, event listeners, messages, states are destroyed. 
+                          When the page reloads fresh → your JS has not run again yet (or runs before DOM is ready)
+                          So after the first submission, typing again appears to “do nothing” but in reality, the
+                          page was refreshed and JS is no longer attached properly
+                          So we preventDefault befavior witch is reloading to avoid lack of response from the 
+                          listeners*/ 
+});

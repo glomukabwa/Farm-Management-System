@@ -92,6 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="oneinput">
             <input type="password" id="newPassword" name="newPassword" placeholder=" " required autocomplete="new-password"><!--autocomplete="new-password" clears both the password field and email which are autofilling-->
             <label for="newPassword">Enter Password</label>
+            <span id="pStrengthMessage"></span>
         </div>
         <div class="oneinput">
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required >

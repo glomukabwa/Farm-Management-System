@@ -78,7 +78,7 @@ h1{
     width:24rem;
 }
 
-#emailMessage, #confirmMessage{
+#emailMessage, #confirmMessage, #pStrengthMessage{
     font-size:1.1rem;
     padding-left: 2rem;
 }
