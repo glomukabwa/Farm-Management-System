@@ -1,4 +1,13 @@
 <?php
+session_start();
+/*I am starting a session because I want to create a flash message. 
+Sessions are used to store information across multiple pages for a single user. Normally, HTTP is stateless — every request is independent,
+so the server doesn’t “remember” you between page loads. A session fixes that by giving each user a unique session ID (usually stored in 
+the user’s browser as a cookie). Every request the browser makes to your server includes that cookie, so PHP knows “this request belongs 
+to the same user as before.” It uses it to keep track of data (like login status, flash messages, shopping cart contents) across requests.
+The session ID is just a key. You decide what values to attach to it in $_SESSION. 
+For a flash message, we store $_SESSION['flash'] = "Flash message".
+For login, you can store an email, userId etc. Look at login.php to understand how to use it*/
 include 'config.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -23,12 +32,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 values (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("ssssss", $fname, $sname, $email, $pnumber, $role, $hashedPassword);
             if($stmt->execute()){
-                echo "Successful Insertion";
-            }else{
-                return "Insertion error: " . $stmt->error ;
+                $_SESSION['flash'] = "Successful sign up! Welcome $fname.";/*Setting flash message*/
+                header("Location: index.php");/*Redirection to index page so this is where the flash message will appear */
+                exit;
+            } else {
+                $_SESSION['flash'] = "An error occured. Please try again";
+                header("Location: signup.php");
+                exit;
             }
         }
+        $stmt->close();
     }
+    $conn->close();
 }
 ?>
 

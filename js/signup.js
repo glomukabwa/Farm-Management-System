@@ -107,7 +107,7 @@ emailInput.addEventListener("input", function(){
 
 /*Enforcing password strength*/
 function isPasswordStrong(password){
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_-+=?])[a-zA-Z0-9!@#$%^&*_-+=?]{8,}$/
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_\-+=?])[a-zA-Z0-9!@#$%^&*_\-+=?]{8,}$/
     /*regex meaning:
     ^                           start
     (?=.*[A-Za-z])              at least one letter

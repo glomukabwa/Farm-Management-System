@@ -1,6 +1,15 @@
+setTimeout(() => {
+    const flash = document.querySelector('.flash-message');
+    if (flash) {
+        flash.style.transition = "opacity 1s"
+        flash.style.opacity = "0";
+        setTimeout(() => flash.remove(), 1000);
+    }
+}, 3000);
+
 const productsLink = document.querySelector(".products-menu");
 const productsSubmenu = document.querySelector(".products-submenu");
-const arrow = productsLink.querySelector(".arrow");/*The reason I am not just writing document.querySelector(".arrow") is because the later will search for arrows in the document then return the first one so if you have multiple collapsible menus, it'll only work for the first one
+const arrow = productsLink.querySelector(".arrow");/*The reason I am not just writing document.querySelector(".arrow") is because the latter will search for arrows in the document then return the first one so if you have multiple collapsible menus, it'll only work for the first one
 but with productsLink.querySelector(".arrow") it only checks inside this class. If you want another menu, u'll have to do this for the other menu too */
 
 productsLink.addEventListener("click", function(e) {

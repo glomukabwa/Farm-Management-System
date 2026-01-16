@@ -1,3 +1,11 @@
+<?php
+session_start();
+if(isset($_SESSION['flash'])) {
+    echo "<div class='flash-message'>" . $_SESSION['flash'] . "</div>";
+    unset($_SESSION['flash']); /*After setting it, you have to clear it so that it only shows once*/
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

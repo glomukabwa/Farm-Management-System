@@ -94,7 +94,7 @@ h1{
 
 .select-wrapper{
     position: relative;
-    width:10rem;
+    width:12rem;
     cursor:pointer;
 }
 
@@ -102,7 +102,7 @@ h1{
     position: absolute;
     content:"▼";
     font-size: 1.1rem;
-    right:2.5rem;
+    right:2rem;
     top:50%;
     transform: translateY(-50%);/*I don't fully understand why but this one and top:50% centralize the arrow well vertically*/
     pointer-events: none;/*Makes it invisible to the mouse. Without it, the arrow could block clicks on the select box if it overlaps.With pointer-events: none, clicks go through the arrow to the underlying <select> element, so the dropdown still works.*/
