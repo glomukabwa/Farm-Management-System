@@ -146,16 +146,16 @@ confirmPassword.addEventListener("input", () => {
         code outside the function*/
     }
     if(newPassword.value === confirmPassword.value){
-        confirmMessage.textContent = 'Password is correct';
+        confirmMessage.textContent = 'Password matches';
         confirmMessage.style.color = 'green';
     }else{
-        confirmMessage.textContent = 'Incorrect password';
+        confirmMessage.textContent = 'Password does not match';
         confirmMessage.style.color = 'red';
     }
 });       
 
 /*Preventing ruining of the listeners every time the form reloads after submission */
-const signupForm = document.querySelector("form");/*This selects the first form it finds and since there's only 1, its okay*/
+/*const signupForm = document.querySelector("form");/*This selects the first form it finds and since there's only 1, its okay
 signupForm.addEventListener("submit", function(e){
     e.preventDefault(); /*When you submit the form, the browser reloads the page (default HTML form behavior). All
                           JS variables, event listeners, messages, states are destroyed. 
@@ -163,5 +163,5 @@ signupForm.addEventListener("submit", function(e){
                           So after the first submission, typing again appears to “do nothing” but in reality, the
                           page was refreshed and JS is no longer attached properly
                           So we preventDefault befavior witch is reloading to avoid lack of response from the 
-                          listeners*/ 
-});
+                          listeners
+});*/

@@ -52,7 +52,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Page</title>
+    <title>Sign Up</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/signup.css">
     <script src="../js/signup.js" defer></script>
@@ -117,7 +117,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <button type="submit">Sign Up</button>
 
-        <p class="already">Already have an account?<a href="#">Log In</a></p>
+        <p class="already">Already have an account? <a href="http://localhost/Farm%20Website/php/login.php">Log In</a></p>
 
     </form>
 </body>

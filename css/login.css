@@ -1,0 +1,93 @@
+:root{
+    font-size: 62.5%;
+    --basecolor:#000000;
+    --supportcolor:#AB7843;
+    --support2:#ffffff;
+    --lighterbrown:antiquewhite;
+    --lightestgrey:#F0F0F0;
+}
+
+body{
+    font-size: 1.6rem;
+    color: var(--basecolor);
+    background-color: var(--support2);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a{
+    cursor:pointer;
+}
+
+form{
+    background-color: var(--lightestgrey);
+    width:50rem;
+    padding:5rem 5rem;
+    margin:4rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap:2rem;
+    border-radius: 2rem;
+}
+
+h1{
+    font-size: 5rem;
+    text-align: center;
+}
+
+.oneinput{
+    position:relative;
+}
+
+.oneinput input{
+    background-color: var(--support2);
+    display: block;
+    height:4rem;
+    width: 40rem;
+    padding:1rem 2rem;
+    border-radius: 2rem;
+}
+
+.oneinput label{
+    position:absolute;
+    left:2rem;
+    top:1.1rem;
+    background-color: var(--support2);
+    padding: 0 0.3rem;
+}
+
+.oneinput input:focus + label,
+.oneinput input:not(:placeholder-shown) + label{
+    font-size:1rem;
+    left: 2rem;
+    top:-0.9rem;
+    background-color: var(--lightestgrey);
+}
+
+.oneinput input:focus{
+    border: solid 0.15rem black;
+}
+
+button{
+   background-color: var(--basecolor);
+   color: var(--lightestgrey);
+   display: block;
+   height:4rem;
+   padding:1rem 2rem;
+   border-radius: 2rem; 
+   text-align: center;
+   cursor: pointer;
+   margin-top: 2rem;
+   width:40rem;
+}
+
+.noacount{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.noacount a{
+    text-decoration: underline;
+    color: var(--supportcolor);
+}
