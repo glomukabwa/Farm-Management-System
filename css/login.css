@@ -69,6 +69,11 @@ h1{
     border: solid 0.15rem black;
 }
 
+#emailMessage, #passwordMessage{
+    font-size:1.1rem;
+    padding-left: 2rem;
+}
+
 button{
    background-color: var(--basecolor);
    color: var(--lightestgrey);
