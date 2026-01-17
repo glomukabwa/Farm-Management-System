@@ -7,12 +7,12 @@ const allInputs = document.querySelectorAll("input[required]");
 const submitButton = document.getElementById("submitButton");
 const btnMessage = document.getElementById("btnMessage");
 
-/*Disabling the submit button unless all inputs are filled */
+/*Disabling the submit button unless all inputs are filled 
 function checkIfFilled(){
     const allFilled = Array.from(allInputs).every(input => input.value.trim() !== "");
     /* every() is not similar to forEach(). every() tests whether all elements in the array pass a condition (predicate function).
-    It returns a boolean (true or false). forEach() ensures that a condition is applied in every single element*/
-    submitButton.disabled = !allFilled; /*So here we are saying that the button is disabled if allFilled = false */
+    It returns a boolean (true or false). forEach() ensures that a condition is applied in every single element
+    submitButton.disabled = !allFilled; /*So here we are saying that the button is disabled if allFilled = false 
 }
 allInputs.forEach(input => input.addEventListener("input", checkIfFilled));
 /*Above, allInputs is a NodeList (like an array of inputs). You can’t attach one listener to the whole NodeList. You need to loop so son't say
