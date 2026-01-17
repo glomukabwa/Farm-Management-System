@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     <script src="../js/login.js" defer></script>
 </head>
 <body>
-    <form method="POST" id="loginForm" action="login.php" novalidate>
+    <form method="POST" id="loginForm" novalidate>
         <!--novalidate basically tells the browser: don’t run your own validation, let me handle it in JavaScript.
             If you don't put it, the browser will give you its own pop-up message when the required inputs are not 
             entered and ignore the JS messaged you have told it to display-->

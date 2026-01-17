@@ -14,9 +14,14 @@ function checkIfFilled(){
     It returns a boolean (true or false). forEach() ensures that a condition is applied in every single element
     submitButton.disabled = !allFilled; /*So here we are saying that the button is disabled if allFilled = false 
 }
+
 allInputs.forEach(input => input.addEventListener("input", checkIfFilled));
 /*Above, allInputs is a NodeList (like an array of inputs). You can’t attach one listener to the whole NodeList. You need to loop so son't say
 allInputs.addEventListener("input", checkIfFilled); */
+/*Had to comment out the above block of code cz the messages below were only showing when both fields were empty and I hadn't tried to type(the
+  blocking above is only triggered on input). If I had entered one but hadn't entered the other, the Log In button would be blocked so even though
+  one field had not been entered, the message for that field would not show cz the event listener below would not be triggered.
+  It was either this option or displaying the error messages on input and I find that irritating in forms*/
 
 /*Displaying custom message incase field is empty*/
 form.addEventListener("submit", function(event) {
