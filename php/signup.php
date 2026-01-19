@@ -1,13 +1,15 @@
 <?php
-session_start();
-/*I am starting a session because I want to create a flash message. 
-Sessions are used to store information across multiple pages for a single user. Normally, HTTP is stateless — every request is independent,
+/*Sessions are used to store information across multiple pages for a single user. Normally, HTTP is stateless — every request is independent,
 so the server doesn’t “remember” you between page loads. A session fixes that by giving each user a unique session ID (usually stored in 
 the user’s browser as a cookie). Every request the browser makes to your server includes that cookie, so PHP knows “this request belongs 
 to the same user as before.” It uses it to keep track of data (like login status, flash messages, shopping cart contents) across requests.
 The session ID is just a key. You decide what values to attach to it in $_SESSION. 
 For a flash message, we store $_SESSION['flash'] = "Flash message".
-For login, you can store an email, userId etc. Look at login.php to understand how to use it*/
+For login, you can store an email, userId etc. Since I want a more user friendly webiste, I am going to apply auto-log in which is basically 
+alllowing the user to access the index page without redirecting them to log in to confirm their credentials. Once they sign-up, they'll be 
+able to access the website immediately. The auto-logging concept comes in when you store the user details in session variables here instead 
+of in log in for the first time. In log in, you'll notice that I have stored the session variables again there and that is because after some 
+time, the session expires and the variables need to be set again.*/
 include 'config.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -32,17 +34,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 values (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("ssssss", $fname, $sname, $email, $pnumber, $role, $hashedPassword);
             if($stmt->execute()){
-                $_SESSION['flash'] = "Successful sign up! Welcome $fname.";/*Setting flash message*/
-                header("Location: index.php");/*Redirection to index page so this is where the flash message will appear */
+                $newUserId = $conn->insert_id;//gets the auto-generated ID in the DB
+
+                session_start();//Check info on sessions at the top of the page
+                session_regenerate_id(true);
+                /*Give this user a brand‑new session ID and deletes the old session data at the same time.Why this is important:
+                    Prevents session fixation attacks: Without regeneration, an attacker could trick a user into using a known 
+                    session ID, then hijack it after login.
+                    Ensures clean state:When a user logs in or signs up, you don’t want leftover session data from before (like guest
+                    state or error flags).
+                    Professional practice:Most secure apps regenerate the session ID at key points: login, signup, logout, privilege 
+                    changes.Plz note that u only do this when you start a session in the pages mentioned above.
+                */
+
+                $_SESSION['user_id'] = $newUserId;
+                $_SESSION['user_email'] = $email;
+                $_SESSION['user_role'] = $role;
+
+                header("Location: index.php");
                 exit;
             } else {
-                $_SESSION['flash'] = "An error occured. Please try again";
-                header("Location: signup.php");
-                exit;
+                ?>
+                <script>alert("Sign Up failed. Please try again")</script>
+                <?php
             }
+            $stmt->close();/*You have to close the statement in the block it was created cz this is an if statement so there is a chance 
+            the statement might never be created in the first place if the if condition is not met so don't close it outside the second
+            if(that is what I had done)*/
         }
-        $stmt->close();
     }
+
     $conn->close();
 }
 ?>
