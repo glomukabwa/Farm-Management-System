@@ -29,7 +29,6 @@ form.addEventListener("submit", function(event) {
     /*Above, submit events fire on the form, not on the button. If you attach submit to the button, it never runs. */
     if(emailInput.value.trim() === ''){
         emailMessage.textContent = "Please enter your email";
-        emailMessage.style.color = "red";
         valid = false;
     }else{
         emailMessage.textContent = "";
@@ -37,7 +36,6 @@ form.addEventListener("submit", function(event) {
 
     if(passInput.value.trim() === ''){
         passMessage.textContent = "Please enter your password";
-        passMessage.style.color = "red";
         valid = false;
     }else{
         passMessage.textContent = "";

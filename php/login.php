@@ -2,6 +2,9 @@
 session_start();
 include 'config.php';
 
+$emailErrorMessage = '';
+$passErrorMessage = '';
+
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
@@ -28,28 +31,10 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 header("Location: index.php");
                 exit; //The php code ends here if the login is successful
             }else{
-                ?>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function(){
-                        //Above, if you don't put DOMContentLoaded, u'll never see the message cz the script will always execute b4 the html even loads
-                        const passMessage = document.getElementById("passwordMessage");
-                        passMessage.textContent = "Incorrect Password";
-                    });
-                </script>
-                <?php
+                $passErrorMessage = 'Incorrect password';
             }
         }else{
-            ?>
-            <script>
-                document.addEventListener("DOMContentLoaded", function(){
-                    <?php
-                    //$email = '';
-                    ?>
-                    const emailMessage = document.getElementById("emailMessage");
-                    emailMessage.textContent = "Please enter the correct email";
-                })
-            </script>
-            <?php
+            $emailErrorMessage = 'Please enter a valid email';
         }
     }
 }
@@ -78,12 +63,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 if a malicious user enters sth that could break the html. ENT_QUOTES means also convert '' into html
                 special chars cz I am guessing it is not included in htmlspecialchars()-->
             <label for="email">Email</label>
-            <span id="emailMessage"></span>
+            <span id="emailMessage">
+                <?php echo $emailErrorMessage ?>
+            </span>
         </div>
         <div class="oneinput">
             <input id="password" type="password" name="password" placeholder=" " required autocomplete="new-password">
             <label for="password">Password</label>
-            <span id="passwordMessage"></span>
+            <span id="passwordMessage">
+                <?php echo $passErrorMessage ?>
+            </span>
         </div>
         <span id="btnMessage"></span>
         <button type="submit" id="submitButton">Log In</button>
