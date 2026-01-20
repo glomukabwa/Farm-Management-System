@@ -59,6 +59,11 @@ h1{
 
 .oneinput input:focus + label,/*This means that if the condition before the plus which in this case is the input focuses, look for the first label after the particular input in the HTML(we've made sure our label is right after it) and apply the following*/
 .oneinput input:not(:placeholder-shown) + label{/*:not() is used to negate so it means that if a placeholder is not being shown in the input (which usually happens when someone types sth), then do the following to the label after the particular input*/
+    /*The reason you need both above is because if only focus is targetted, after the user types and clicks outside
+    the input, focus will be lost cz no clicking or typing is going on so the label will overlap with what is typed.
+    If you only check that the placeholder is not shown, once you click the input but you haven't typed, the 
+    caret(that line that blinks) will appear and overlap with the label cz it'll be directly next to the label and
+    that looks bad*/
     top:-0.9rem;
     left: 2rem;
     font-size:1rem;

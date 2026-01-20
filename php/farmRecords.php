@@ -36,7 +36,7 @@
                     <a href="#"><img src="../icons/maize.png" alt="maize">Maize</a>
                 </div><br>
 
-                <a href="http://localhost/Farm%20Website/php/farmRecords.php"><img src="../icons/enter_record.png" alt="records">FARM RECORDS</a>
+                <a href="http://localhost/Farm%20Website/php/farmRecords.php"><img src="../icons/farm_records.png" alt="records">FARM RECORDS</a>
 
             </div>
 
@@ -49,7 +49,63 @@
     </section>
 
     <section class="main-content">
-        <input type="text">
+        <form method="GET">
+            <div class="search">
+                <input id="search" type="text" placeholder=" ">
+                <label for="search">
+                    <img src="../icons/search.png" alt="search">
+                    <span>Search</span>
+                </label>
+            </div>
+        </form>
+
+        <div class="link-container">
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Users</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Animals</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Feeds</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Feeding Records</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Suppliers</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Purchases</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Production Records</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Product Inventory</p>
+            </a>
+
+            <a href="#" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Sales</p>
+            </a>
+
+        </div>
     </section>
 </body>
 </html>

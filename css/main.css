@@ -93,7 +93,6 @@ a{
 /*MAIN CONTENT SECTION*/
 .main-content{
     margin-left: 20rem;/*This is to make sure it doesn't appear at the top of the sidebar*/
-    height:100vh;
     background-color: var(--lightestgrey);
     width:100%;
 }

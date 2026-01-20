@@ -45,7 +45,7 @@ if(isset($_SESSION['flash'])) {
                     <a href="#"><img src="../icons/maize.png" alt="maize">Maize</a>
                 </div><br>
 
-                <a href="http://localhost/Farm%20Website/php/farmRecords.php"><img src="../icons/enter_record.png" alt="records">FARM RECORDS</a>
+                <a href="http://localhost/Farm%20Website/php/farmRecords.php"><img src="../icons/farm_records.png" alt="records">FARM RECORDS</a>
 
             </div>
 
