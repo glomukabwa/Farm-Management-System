@@ -15,7 +15,7 @@ if(isset($_SESSION['flash'])) {
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/index.css">
-    <script src="../js/index.js" defer></script><!--defer here means:wait until the HTML is parsed before running your JS, so you don’t 
+    <script src="../js/main.js" defer></script><!--defer here means:wait until the HTML is parsed before running your JS, so you don’t 
     need DOMContentLoaded(an event that can be added to an action listener) if you use defer.-->
 </head>
 <body>
@@ -27,25 +27,26 @@ if(isset($_SESSION['flash'])) {
         <div class="links">
             <div class="top-links">
                 <a href="http://localhost/Farm%20Website/php/index.php"><img src="../icons/category.png" alt="overview">OVERVIEW</a>
+                <a href="http://localhost/Farm%20Website/php/enterRecord.php"><img src="../icons/enter_record.png" alt="records">ENTER RECORD</a>
+                <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
 
                 <a href="#" class="products-menu">
-                    <div><img src="../icons/product.png" alt="products">FARM RECORDS</div>
+                    <div><img src="../icons/product.png" alt="products">PRODUCTS</div>
                     <span class="arrow"> > </span>
                 </a>
+                
                 <div class="products-submenu">
-                    <a href="#"><img src="../icons/users.png" alt="users">Users</a>
-                    <a href="#"><img src="../icons/animals.png" alt="animals">Animals</a>
-                    <a href="#"><img src="../icons/feeds.png" alt="feeds">Feeds</a>
-                    <a href="#"><img src="../icons/feeding.png" alt="feeding">Feeding</a>
-                    <a href="#"><img src="../icons/suppliers.png" alt="suppliers">Suppliers</a>
-                    <a href="#"><img src="../icons/purchases.png" alt="purchases">Purchases</a>
-                    <a href="#"><img src="../icons/production.png" alt="production">Production</a>
-                    <a href="#"><img src="../icons/product_inventory.png" alt="inventory">Product_Inventory</a>
-                    <a href="#"><img src="../icons/sales.png" alt="sales">Sales</a>
+                    <a href="#"><img src="../icons/milk.png" alt="milk">Dairy</a>
+                    <a href="#"><img src="../icons/bull.png" alt="bull">Bulls</a>
+                    <a href="#"><img src="../icons/chicken.png" alt="chicken">Broilers</a>
+                    <a href="#"><img src="../icons/eggs.png" alt="eggs">Eggs</a>
+                    <a href="#"><img src="../icons/pig.png" alt="pig">Pigs</a>
+                    <a href="#"><img src="../icons/greens.png" alt="greens">Kales</a>
+                    <a href="#"><img src="../icons/maize.png" alt="maize">Maize</a>
                 </div><br>
 
-                <a href="#"><img src="../icons/enter_record.png" alt="records">ENTER RECORD</a>
-                <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
+                <a href="http://localhost/Farm%20Website/php/farmRecords.php"><img src="../icons/enter_record.png" alt="records">FARM RECORDS</a>
+
             </div>
 
             <div class="bottom-links">
