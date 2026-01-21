@@ -21,45 +21,6 @@ body{
     gap:2rem;
 }
 
-/*SEARCH INPUT*/
-.search{
-    position:relative;
-    width: 25rem;
-}
-
-.search input{
-    border: solid 0.15rem black;
-    border-radius: 2rem;
-    background-color: var(--support2);
-    height:4rem;
-    width: 100%;
-    padding-left:4.5rem;/*1.5 from left + 1.5 from gap + 1.5 from img size (Look below) This ensures text appears
-                          after search icon*/
-    padding-right: 2rem;
-}
-
-.search label{
-    position:absolute;
-    top:1.1rem;
-    left:1.5rem;
-    display: flex;
-    gap:1.5rem;
-    align-items: center;
-}
-
-.search img{
-    height:1.5rem;
-}
-
-.search span{
-    transition: opacity 0.1s ease;/*transition for below*/
-}
-
-.search input:focus + label span,
-.search input:not(:placeholder-shown) + label span{
-    opacity: 0;/*Chat has dicouraged using display:none here cz transition (above) can't be applied to display*/
-}
-
 /*ENTER-RECORD LINKS SECTION*/
 .link-container{
     display:grid;

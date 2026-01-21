@@ -1,13 +1,21 @@
+<?php
+include 'config.php';
+
+$stmt = $conn->prepare("SELECT * FROM users");
+$stmt->execute();
+$result = $stmt->get_result();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm Records</title>
+    <title>Users</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/farmRecords.css">
-    <script src="../js/main.js" defer></script>
+    <link rel="stylesheet" href="../css/tables.css">
 </head>
 <body>
     <section class="sidebar">
@@ -59,53 +67,45 @@
             </div>
         </form>
 
-        <div class="link-container">
-            <a href="http://localhost/Farm%20Website/php/users.php" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Users</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Animals</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Feeds</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Feeding Records</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Suppliers</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Purchases</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Production Records</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Product Inventory</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Sales</p>
-            </a>
-
-        </div>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Second Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Date Created</th>
+            </tr>
+            <?php
+            if($result->num_rows > 0){/*I am using this to display a message if there are no records*/
+                while($row = $result->fetch_assoc()){/*If you don't put it in a loop, it'll only fetch the 1st row
+                so this basically tells it to continue fetching if there is more data*/
+                    ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['id']) ?></td>
+                        <td><?= htmlspecialchars($row['first_name']) ?></td>
+                        <td><?= htmlspecialchars($row['second_name']) ?></td>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td><?= htmlspecialchars($row['phone_number']) ?></td>
+                        <td><?= htmlspecialchars($row['role']) ?></td>
+                        <td><?= htmlspecialchars($row['status']) ?></td>
+                        <td><?= htmlspecialchars($row['created_at']) ?></td>
+                    </tr>
+                    <?php
+                }
+            }else{
+                ?>
+                <tr>
+                    <td colspan="8">No record found</td><!--colspan means occupy the space of the specified number
+                                                            of columns-->
+                </tr>
+                <?php
+            }
+            ?>
+            
+        </table>
     </section>
 </body>
 </html>
