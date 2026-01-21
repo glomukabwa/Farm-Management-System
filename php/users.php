@@ -1,10 +1,62 @@
 <?php
 include 'config.php';
 
-$stmt = $conn->prepare("SELECT * FROM users");
+/*SET THE DEFAULT PAGE AND LIMIT */
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1 ;
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+/*Above, we need to set the defaults bcz when the user first opens users.php, the form with the limits and the 
+hidden input with the page set as 1 has not been touched. So the values we've put there have not been set to be the 
+default values(I was confused about this before). We need to actually set them here. Once the user changes the limit,
+that is when the values will be sent here through GET and the limit will be altered and the page will be set to 1 by
+default displaying page 1 with the new limit of rows.*/
+
+
+/*SAFETY MEASURES */
+if($page < 1){
+    $page = 1;
+}
+
+if(!in_array($limit, [10,20,30])){/*If the value of $limit is not in the array[10, 20, 30] then $limit is 10*/
+    $limit = 10;
+}
+/*To be honest, I don't think the above conditions will ever be met cz for page, I've ensured the less than arrow is
+never shown when we are in page 1 and the greater than is never put in the last page AND for the limit I've put the
+dropdown menu to ensure the options are restricted but there's a rule that you should never rely on the safety 
+measures in frontEnd, you must always reinforce in backend. That is why I am putting them here */
+
+
+/*CALCULATE THE OFFSET */
+$offset = ($page - 1) * $limit;//This is a fixed formula that you must master
+/*To select only a limited number of rows you need 2 things: an offset and the number of rows displayed which is the
+limit. Here we are calculating the offset which basically describes what row to start from in the datatbase.
+If we are displaying page 1 and the limit of rows is 10, the offset = (1 - 1) * 10 which is 0
+That means that we start to count from row 1 to 10(the limit)
+If we are in page 2 and the limit is 20, offset = (2 - 1) * 20 which is equal to 20
+So we start counting from 21 to 40. We start counting from the value after the offset */
+
+
+/*SELECT FROM THE DB */
+$stmt = $conn->prepare("SELECT * FROM users
+                        ORDER BY id ASC
+                        LIMIT ?, ?");
+$stmt->bind_param("ii", $offset, $limit);
 $stmt->execute();
 $result = $stmt->get_result();
 
+/*CALCULATE THE TOTAL NUMBER OF PAGES*/
+$totalStmt = $conn->prepare("SELECT COUNT(*) AS total FROM users");/*Counts number of rows in users and places it
+                                                                    in a column called total which is defined in the
+                                                                    statement*/
+$totalStmt->execute();
+$totalResult = $totalStmt->get_result();
+$totalArray = $totalResult->fetch_assoc();/*This will return only one value in an associative array which will be
+                                            array[
+                                                'total' => 21 (this is an example)
+                                            ]*/
+$totalRows = $totalArray['total'];/*This will return the value of the column which is 21 */
+
+$totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the brackests so if the limit is 10 the
+                                           answer will be 3 pages*/
 ?>
 
 <!DOCTYPE html>
@@ -104,8 +156,64 @@ $result = $stmt->get_result();
                 <?php
             }
             ?>
-            
         </table>
+
+        <form action="GET">
+            <input type="hidden" name="page" value="1"><!--This resets page to 1 every time the limit has been 
+                                                        changed. Chat says this is good measure and I honestly 
+                                                        don't understand its explanation of why it is so just 
+                                                        always do it. Its sth about the offset not being calculated
+                                                        well if you don't do it-->
+
+            <label for="limit">
+                Show rows per page
+                <select name="limit" id="limit" onchange="this.form.submit()">
+                    <option value="10" <?= $limit == 10 ? 'selected' : '' ?>>10</option>
+                    <!--Normally if we want an option to appear as selected in a dropdown we do this:
+                        <option value="10" selected>10</option> 
+                        Now, why have I put the php in every option? Bcz if I don't specify what is selected,
+                        the first option which is 10 will always look selected even if the user selects 20 and the
+                        number of rows being displayed are 20. The backend will be working but the frontend will
+                        be confusing. So what now? In the above statement for example, it is saying that if the 
+                        limit has been set as 10(the setting is happening in php at the top), then make this option
+                        selected but if not, don't.So it is checking: has this option been selected? If it has, make
+                        it appear as if it has. If it hasn't, don't, so it won't be at the top. The php in the other
+                        options will work to put the right option at the top cz if 2 options are not selected,
+                        they'll be set to '' but the 1 option selected will be set to 'selected'.-->
+                    <option value="20" <?=  $limit == 20 ? 'selected' : '' ?>>20</option>
+                    <option value="30" <?=  $limit == 30 ? 'selected' : '' ?>>30</option>
+                </select>
+            </label>
+        </form>
+
+        <div class="arrows">
+            <?php
+            if($page > 1){//You want the less than sign to only appear for pages that are not 1  cz 1 has no preceding page
+               ?>
+               <!--Below, the final link should look sth like this:
+                    users.php?page=1&limit=20   
+                Which means display page 1 and display 20 rows-->
+               <a href="?page=<?= $page - 1 ?>&limit=<?= $limit ?>">&lt;</a>
+                <!--Don't forget to do the subtraction for the page cz we're moving to the previous page-->
+                <!--Note, the reason we had to create form for the options is cz the form sends needs to send
+                    a GET request for them(which is in form of a link[URL]) but for these 2 links in this div, the
+                    href already has the link needed-->
+               <?php
+            }
+            ?>
+
+            <span>Page <?= $page ?> of <?= $totalPages ?></span>
+
+            <?php
+            if($page < $totalPages){//Cz there are no pages past total number of pages
+                ?>
+                <a href="?page=<?= $page + 1 ?>$limit=<?= $limit ?>">&gt;</a>
+                <!--Don't forget to do the addition for the page cz we're moving to the next page-->
+                <?php
+            }
+            ?>
+        </div>
+
     </section>
 </body>
 </html>
