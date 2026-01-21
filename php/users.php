@@ -109,6 +109,8 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
     </section>
 
     <section class="main-content">
+        <h1>Users</h1>
+        
         <form method="GET">
             <div class="search">
                 <input id="search" type="text" placeholder=" ">
