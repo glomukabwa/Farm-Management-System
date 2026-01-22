@@ -68,6 +68,7 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/tables.css">
+    <script src="../js/users.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -109,7 +110,7 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
     </section>
 
     <section class="main-content">
-        <h1>USers</h1>
+        <h1>Users</h1>
         
         <form method="GET">
             <div class="search">
@@ -137,16 +138,18 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
                 while($row = $result->fetch_assoc()){/*If you don't put it in a loop, it'll only fetch the 1st row
                 so this basically tells it to continue fetching if there is more data*/
                     ?>
-                    <tr>
-                        <td><?= htmlspecialchars($row['id']) ?></td>
-                        <td><?= htmlspecialchars($row['first_name']) ?></td>
-                        <td><?= htmlspecialchars($row['second_name']) ?></td>
-                        <td><?= htmlspecialchars($row['email']) ?></td>
-                        <td><?= htmlspecialchars($row['phone_number']) ?></td>
-                        <td><?= htmlspecialchars($row['role']) ?></td>
-                        <td><?= htmlspecialchars($row['status']) ?></td>
-                        <td><?= htmlspecialchars($row['created_at']) ?></td>
-                    </tr>
+                    <div id="table-body">
+                        <tr>
+                            <td><?= htmlspecialchars($row['id']) ?></td>
+                            <td><?= htmlspecialchars($row['first_name']) ?></td>
+                            <td><?= htmlspecialchars($row['second_name']) ?></td>
+                            <td><?= htmlspecialchars($row['email']) ?></td>
+                            <td><?= htmlspecialchars($row['phone_number']) ?></td>
+                            <td><?= htmlspecialchars($row['role']) ?></td>
+                            <td><?= htmlspecialchars($row['status']) ?></td>
+                            <td><?= htmlspecialchars($row['created_at']) ?></td>
+                        </tr>
+                    </div>
                     <?php
                 }
             }else{
