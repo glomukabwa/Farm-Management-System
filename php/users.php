@@ -123,22 +123,30 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
         </form>
 
         <table>
-            <tr>
-                <th>Id</th>
-                <th>First Name</th>
-                <th>Second Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Date Created</th>
-            </tr>
-            <?php
-            if($result->num_rows > 0){/*I am using this to display a message if there are no records*/
-                while($row = $result->fetch_assoc()){/*If you don't put it in a loop, it'll only fetch the 1st row
-                so this basically tells it to continue fetching if there is more data*/
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Second Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Date Created</th>
+                </tr>
+            </thead>
+
+            <tbody id="table-body"><!--You have to contain the content below in a tbody so that AJAX can replace it
+                                        when someone searches it. You'll notice I've replicated this code in 
+                                        usersSearch.php . Plz note that you can't use a div instead. <tr> cannot
+                                        be inside a div. It is strictly tbody. Notice that I have added thead for 
+                                        the headers. That's the correct structure of a table-->
+                <?php
+                if($result->num_rows > 0){/*I am using this to display a message if there are no records*/
+                    while($row = $result->fetch_assoc()){/*If you don't put it in a loop, it'll only fetch the 1st row
+                    so this basically tells it to continue fetching if there is more data*/
                     ?>
-                    <div id="table-body">
+                
                         <tr>
                             <td><?= htmlspecialchars($row['id']) ?></td>
                             <td><?= htmlspecialchars($row['first_name']) ?></td>
@@ -149,18 +157,18 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
                             <td><?= htmlspecialchars($row['status']) ?></td>
                             <td><?= htmlspecialchars($row['created_at']) ?></td>
                         </tr>
-                    </div>
                     <?php
-                }
-            }else{
+                    }
+                }else{
                 ?>
                 <tr>
                     <td colspan="8">No record found</td><!--colspan means occupy the space of the specified number
                                                             of columns-->
                 </tr>
                 <?php
-            }
-            ?>
+                }
+                ?>
+            </tbody>
         </table>
 
         <form action="GET">
@@ -212,7 +220,7 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
             <?php
             if($page < $totalPages){//Cz there are no pages past total number of pages
                 ?>
-                <a href="?page=<?= $page + 1 ?>$limit=<?= $limit ?>">&gt;</a>
+                <a href="?page=<?= $page + 1 ?>&limit=<?= $limit ?>">&gt;</a>
                 <!--Don't forget to do the addition for the page cz we're moving to the next page-->
                 <?php
             }

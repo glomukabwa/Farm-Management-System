@@ -16,13 +16,10 @@ searchInput.addEventListener("input", function(){
                 it is in page 1. If not set to 1, the offset will be from the beginning of page 3 to the end of 
                 the limit set and that means it will say that no records are found when they do exist*/ 
 
-    fetch(`usersSearch.php?page=${page}&limit={limit}&searchInput=${encodeURIComponent(searchInput.value)}`)
+    fetch(`usersSearch.php?page=${page}&limit=${limit}&searchInput=${encodeURIComponent(searchInput.value)}`)
     /*Notice I've used backticks(`) so that I don't use concatenation and instead used ${...} for variables*/
     .then(response => response.text())
     .then(data => {
         tableBody.innerHTML = data;
     })
 });
-
-/*I'm pausing here cz I am really distracted right now. Start from part 2 of the correction. Ask chat whether you
-can use WHERE first_name = ? OR...  Ask it whether LIKE is necessary for multiple conditions */
