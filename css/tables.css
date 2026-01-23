@@ -70,3 +70,7 @@ th,td{
     pointer-events: none;   /*If you don't put this, when the mouse hovers on the arrow it turns into a text
                               cursor but if you put it, it turns into a pointer even when its on the arrow*/
 }
+
+/*Add color to pending and approved depending on the value.
+  You need to test the change of limits when you have a longer table cz rn its saying there's an error when I
+  try to change limits in users.php*/
