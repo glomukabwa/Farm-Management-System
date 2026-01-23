@@ -15,7 +15,7 @@ $stmt = $conn->prepare("SELECT * FROM users
         OR phone_number LIKE ? 
         OR role LIKE ? 
         OR status LIKE ? 
-        OR DATE_FORMAT(created_at, '%Y-%m-%d') LIKE ?
+        OR created_at LIKE ?
         ORDER BY id ASC
         LIMIT ?, ?");
 
@@ -35,7 +35,7 @@ $stmt = $conn->prepare("SELECT * FROM users
   
   OR DATE_FORMAT(created_at, '%Y-%m-%d') : This statement Converts DATETIME → string (YYYY-MM-DD) and allows 
   partial matching so someone could type 2026 OR 2026-01 or 2026-01-15 and they would all work(it works well with
-  LIKE and %).*/
+  LIKE and %). I've removed it though cz I've removed time in the created_at column so it is no longer necessary*/
 
 $idSearchTerm = is_numeric($searchInput) ? (int)$searchInput : 0;
 /*The above means that if the input entered is a number then make it an int cz what is usually entered by the user

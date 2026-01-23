@@ -171,60 +171,63 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
             </tbody>
         </table>
 
-        <form action="GET">
-            <input type="hidden" name="page" value="1"><!--This resets page to 1 every time the limit has been 
-                                                        changed. Chat says this is good measure and I honestly 
-                                                        don't understand its explanation of why it is so just 
-                                                        always do it. Its sth about the offset not being calculated
-                                                        well if you don't do it-->
+        <div class="controls">
+            <form action="GET">
+                <input type="hidden" name="page" value="1"><!--This resets page to 1 every time the limit has been 
+                                                            changed. Chat says this is good measure and I honestly 
+                                                            don't understand its explanation of why it is so just 
+                                                            always do it. Its sth about the offset not being calculated
+                                                            well if you don't do it-->
 
-            <label for="limit">
-                Show rows per page
-                <select name="limit" id="limit" onchange="this.form.submit()">
-                    <option value="10" <?= $limit == 10 ? 'selected' : '' ?>>10</option>
-                    <!--Normally if we want an option to appear as selected in a dropdown we do this:
-                        <option value="10" selected>10</option> 
-                        Now, why have I put the php in every option? Bcz if I don't specify what is selected,
-                        the first option which is 10 will always look selected even if the user selects 20 and the
-                        number of rows being displayed are 20. The backend will be working but the frontend will
-                        be confusing. So what now? In the above statement for example, it is saying that if the 
-                        limit has been set as 10(the setting is happening in php at the top), then make this option
-                        selected but if not, don't.So it is checking: has this option been selected? If it has, make
-                        it appear as if it has. If it hasn't, don't, so it won't be at the top. The php in the other
-                        options will work to put the right option at the top cz if 2 options are not selected,
-                        they'll be set to '' but the 1 option selected will be set to 'selected'.-->
-                    <option value="20" <?=  $limit == 20 ? 'selected' : '' ?>>20</option>
-                    <option value="30" <?=  $limit == 30 ? 'selected' : '' ?>>30</option>
-                </select>
-            </label>
-        </form>
+                <label for="limit">
+                    Show rows per page
+                    <select name="limit" id="limit" onchange="this.form.submit()">
+                        <option value="10" <?= $limit == 10 ? 'selected' : '' ?>>10</option>
+                        <!--Normally if we want an option to appear as selected in a dropdown we do this:
+                            <option value="10" selected>10</option> 
+                            Now, why have I put the php in every option? Bcz if I don't specify what is selected,
+                            the first option which is 10 will always look selected even if the user selects 20 and the
+                            number of rows being displayed are 20. The backend will be working but the frontend will
+                            be confusing. So what now? In the above statement for example, it is saying that if the 
+                            limit has been set as 10(the setting is happening in php at the top), then make this option
+                            selected but if not, don't.So it is checking: has this option been selected? If it has, make
+                            it appear as if it has. If it hasn't, don't, so it won't be at the top. The php in the other
+                            options will work to put the right option at the top cz if 2 options are not selected,
+                            they'll be set to '' but the 1 option selected will be set to 'selected'.-->
+                        <option value="20" <?=  $limit == 20 ? 'selected' : '' ?>>20</option>
+                        <option value="30" <?=  $limit == 30 ? 'selected' : '' ?>>30</option>
+                    </select>
+                    <span class="arrow">⌄</span>
+                </label>
+            </form>
 
-        <div class="arrows">
+            <div class="arrows">
             <?php
-            if($page > 1){//You want the less than sign to only appear for pages that are not 1  cz 1 has no preceding page
-               ?>
-               <!--Below, the final link should look sth like this:
-                    users.php?page=1&limit=20   
-                Which means display page 1 and display 20 rows-->
-               <a href="?page=<?= $page - 1 ?>&limit=<?= $limit ?>">&lt;</a>
-                <!--Don't forget to do the subtraction for the page cz we're moving to the previous page-->
-                <!--Note, the reason we had to create form for the options is cz the form sends needs to send
-                    a GET request for them(which is in form of a link[URL]) but for these 2 links in this div, the
-                    href already has the link needed-->
-               <?php
-            }
-            ?>
-
-            <span>Page <?= $page ?> of <?= $totalPages ?></span>
-
-            <?php
-            if($page < $totalPages){//Cz there are no pages past total number of pages
+                if($page > 1){//You want the less than sign to only appear for pages that are not 1  cz 1 has no preceding page
                 ?>
-                <a href="?page=<?= $page + 1 ?>&limit=<?= $limit ?>">&gt;</a>
-                <!--Don't forget to do the addition for the page cz we're moving to the next page-->
+                <!--Below, the final link should look sth like this:
+                        users.php?page=1&limit=20   
+                    Which means display page 1 and display 20 rows-->
+                <a href="?page=<?= $page - 1 ?>&limit=<?= $limit ?>">&lt;</a>
+                    <!--Don't forget to do the subtraction for the page cz we're moving to the previous page-->
+                    <!--Note, the reason we had to create form for the options is cz the form sends needs to send
+                        a GET request for them(which is in form of a link[URL]) but for these 2 links in this div, the
+                        href already has the link needed-->
                 <?php
-            }
-            ?>
+                }
+                ?>
+
+                <span>Page <?= $page ?> of <?= $totalPages ?></span>
+
+                <?php
+                if($page < $totalPages){//Cz there are no pages past total number of pages
+                    ?>
+                    <a href="?page=<?= $page + 1 ?>&limit=<?= $limit ?>">&gt;</a>
+                    <!--Don't forget to do the addition for the page cz we're moving to the next page-->
+                    <?php
+                }
+                ?>
+            </div>
         </div>
 
     </section>

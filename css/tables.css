@@ -19,5 +19,54 @@ body{
     display: flex;
     flex-direction: column;
     gap:2rem;
+    height: 100vh;
 }
 
+.main-content h1{
+    font-size: 5rem;
+}
+
+table{
+    border:solid 0.15rem black;
+}
+
+tr{
+    border-bottom: solid 0.15rem black;
+}
+
+th{
+    font-weight: bold;
+}
+
+th,td{
+    padding: 1rem 1rem;
+}
+
+.controls{
+    margin-top:auto;/*This pushes the controls to the complete bottom of the container it is in and since 
+                      main-content(the container) occupies the whole screen, it pushes it to the bottom of the 
+                      screen*/
+    display:flex;
+    justify-content: space-between;
+    margin-bottom:2rem;
+}
+
+.controls select{
+    border:solid 0.1rem black;
+    width:4.5rem;
+    padding:0 0.4rem;
+    border-radius:1rem;
+}
+
+.controls label{
+    position:relative;
+}
+
+.controls .arrow{
+    position:absolute;
+    content:"⌄";
+    right:0.7rem;
+    bottom:25%;
+    pointer-events: none;   /*If you don't put this, when the mouse hovers on the arrow it turns into a text
+                              cursor but if you put it, it turns into a pointer even when its on the arrow*/
+}

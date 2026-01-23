@@ -30,7 +30,7 @@ CREATE TABLE users (-- record of all existing animals
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('admin','manager','staff') NOT NULL,
     status ENUM('pending','approved','suspended') DEFAULT 'pending',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE animals (-- record of all existing animals
@@ -41,7 +41,7 @@ CREATE TABLE animals (-- record of all existing animals
     date_of_birth DATE,
     health_status_id INT,
     status ENUM('active','sold','dead') DEFAULT 'active',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (health_status_id) REFERENCES animal_statuses(id)
 );
 
@@ -52,7 +52,7 @@ CREATE TABLE feeds (-- record of all existing feeds
     unit VARCHAR(20) NOT NULL,-- kgs, bales etc
     expiry_date DATE,
     reorder_level DECIMAL(10,2),-- quantity that triggers alert system
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE daily_animal_care (-- To track whether the morning meal, evening meal & water refill have been done
@@ -96,7 +96,7 @@ CREATE TABLE production_records (-- This tracks the active production of the pro
     product_id INT NOT NULL,
     quantity DECIMAL(10,2) NOT NULL,-- This will just be the number. The unit is in the products table
     recorded_by INT,
-    created_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (recorded_by) REFERENCES users(id)
 );
@@ -107,7 +107,7 @@ CREATE TABLE suppliers (-- record of all farm suppliers
     second_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE purchases (-- Tracks purchases of products from supplier to farm eg bulls are purchased then fattened
