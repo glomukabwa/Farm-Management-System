@@ -14,6 +14,7 @@ $stmt = $conn->prepare("SELECT * FROM users
         OR phone_number LIKE ? 
         OR role LIKE ? 
         OR status LIKE ? 
+        OR DATE_FORMAT(created_at, '%Y-%m-%d') LIKE ?
         ORDER BY id ASC
         LIMIT ?, ?");
 
@@ -24,12 +25,17 @@ $stmt = $conn->prepare("SELECT * FROM users
   still type with small letters with both so even with = if you type ann, it'll return Ann. However, in the DB if
   you've made the columns in your table case sensitive, this won't work. How do you check? Open the table in 
   PHPmyAdmin, go to structure and check if the columns have utf8mb4_general_ci. This means they are case insensitive
-  and this is the default. If they have utf8mb4_general_cs OR utf8mb4_general_bin, they are case sensitive */
+  and this is the default. If they have utf8mb4_general_cs OR utf8mb4_general_bin, they are case sensitive 
+  
+  OR DATE_FORMAT(created_at, '%Y-%m-%d') : This statement Converts DATETIME → string (YYYY-MM-DD) and allows 
+  partial matching so someone could type 2026 OR 2026-01 or 2026-01-15 and they would all work(it works well with
+  LIKE and %).*/
+  
 $searchTerm = "%$searchInput%";/*LIKE works with %..% so you must do this. If you put $searchInput directly, it'll
                                  work like = so it'll need the exact word. LIKE plus % checks patterns */
-$stmt->bind_param("ssssssii",
+$stmt->bind_param("sssssssii",
                    $searchTerm, $searchTerm, $searchTerm, $searchTerm,
-                   $searchTerm, $searchTerm,
+                   $searchTerm, $searchTerm, $searchTerm,
                    $offset, $limit);
 
 $stmt->execute();
