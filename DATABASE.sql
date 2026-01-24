@@ -20,8 +20,29 @@ CREATE TABLE product_categories (
     description TEXT
 );
 
+CREATE TABLE animal_types (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,  -- Cow, Goat, Chicken, Fish
+    description TEXT
+);
+
+CREATE TABLE breeds (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    animal_type_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
+    UNIQUE (animal_type_id, name)
+);
+
+CREATE TABLE animal_lifecycle_statuses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL UNIQUE,   -- active, sold, dead
+    description TEXT
+);
+
 -- Core Tables
-CREATE TABLE users (-- record of all existing animals
+CREATE TABLE users (-- record of users
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     second_name VARCHAR(100) NOT NULL,
@@ -35,14 +56,18 @@ CREATE TABLE users (-- record of all existing animals
 
 CREATE TABLE animals (-- record of all existing animals
     id INT AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR(50) NOT NULL,-- Either cow, bull, chicken etc
-    breed VARCHAR(50),-- This is important especially for cows
+    animal_type_id INT NOT NULL,-- Either cow, bull, chicken etc
+    breed_id INT,-- This is important especially for cows
+    tag_number VARCHAR(50) UNIQUE,-- This is optional just incase the farm uses tags
+    lifecycle_status_id INT NOT NULL DEFAULT 1,
     gender ENUM('male','female'),
-    date_of_birth DATE,
     health_status_id INT,
-    status ENUM('active','sold','dead') DEFAULT 'active',
     created_at DATE NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
+    FOREIGN KEY (breed_id) REFERENCES breeds(id),
+    FOREIGN KEY (lifecycle_status_id) REFERENCES animal_lifecycle_statuses(id),
     FOREIGN KEY (health_status_id) REFERENCES animal_statuses(id)
+    --Later on, plz confirm if age is needed here
 );
 
 CREATE TABLE feeds (-- record of all existing feeds
@@ -55,32 +80,32 @@ CREATE TABLE feeds (-- record of all existing feeds
     created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE daily_animal_care (-- To track whether the morning meal, evening meal & water refill have been done
+CREATE TABLE daily_animal_care (-- To track whether morning meal, evening meal and water refill have been done
     id INT AUTO_INCREMENT PRIMARY KEY,
-    animal_id INT NOT NULL,
-    task_id INT NOT NULL,
-    status ENUM('done','not_done') DEFAULT 'not_done',
-    performed_by INT,
-    performed_at DATETIME,
-    FOREIGN KEY (animal_id) REFERENCES animals(id),
-    FOREIGN KEY (task_id) REFERENCES care_tasks(id),
+    animal_type_id INT NOT NULL,
+    care_task_id INT NOT NULL,
+    performed_by INT NOT NULL,
+    performed_at DATETIME NOT NULL,
+    status BOOLEAN DEFAULT FALSE, -- tick or X
+    FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
+    FOREIGN KEY (care_task_id) REFERENCES care_tasks(id),
     FOREIGN KEY (performed_by) REFERENCES users(id)
 );
 
 CREATE TABLE feeding_records (-- To track amount of feeds to respective animal per day
     id INT AUTO_INCREMENT PRIMARY KEY,
-    animal_id INT NOT NULL,
+    animal_type_id INT NOT NULL,
     feed_id INT NOT NULL,
-    task_id INT NOT NULL,
-    quantity DECIMAL(10,2),
-    unit VARCHAR(20) NOT NULL,
-    recorded_by INT,
-    performed_at DATETIME,
-    FOREIGN KEY (animal_id) REFERENCES animals(id),
+    care_task_id INT NOT NULL, -- Morning meal, Evening meal
+    quantity_used DECIMAL(10,2) NOT NULL,
+    fed_at DATETIME NOT NULL,
+    recorded_by INT NOT NULL,
+    FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     FOREIGN KEY (feed_id) REFERENCES feeds(id),
-    FOREIGN KEY (task_id) REFERENCES care_tasks(id),
+    FOREIGN KEY (care_task_id) REFERENCES care_tasks(id),
     FOREIGN KEY (recorded_by) REFERENCES users(id)
 );
+
 
 CREATE TABLE products (-- record of all products produced by the farm. It's used as a reference for actual production
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -114,7 +139,7 @@ CREATE TABLE purchases (-- Tracks purchases of products from supplier to farm eg
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     quantity DECIMAL(10,2) NOT NULL,
-    unit_cost DECIMAL(10,2),
+    unit_cost DECIMAL(10,2) NOT NULL,
     total_cost DECIMAL(10,2) 
         GENERATED ALWAYS AS (quantity * unit_cost) STORED,
     supplier_id INT,

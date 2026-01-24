@@ -60,10 +60,10 @@
         </form>
 
         <div class="link-container">
-            <a href="#" class="link">
+            <!--<a href="#" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Daily Animal Care</p>
-            </a>
+            </a>-->
 
             <a href="#" class="link">
                 <img src="../images/white_background.jpg" alt="">
