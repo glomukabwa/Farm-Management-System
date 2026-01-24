@@ -57,7 +57,7 @@ CREATE TABLE users (-- record of users
 CREATE TABLE animals (-- record of all existing animals
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_type_id INT NOT NULL,-- Either cow, bull, chicken etc
-    breed_id INT,-- This is important especially for cows
+    breed_id INT,-- This is important especially for cows however it is optional
     tag_number VARCHAR(50) UNIQUE,-- This is optional just incase the farm uses tags
     lifecycle_status_id INT NOT NULL DEFAULT 1,
     gender ENUM('male','female'),
