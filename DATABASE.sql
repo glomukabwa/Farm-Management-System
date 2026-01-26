@@ -137,7 +137,7 @@ CREATE TABLE suppliers (-- record of all farm suppliers
 
 CREATE TABLE purchases (-- Tracks purchases of products from supplier to farm eg bulls are purchased then fattened
     id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT NOT NULL,
+    purchase_name VARCHAR(100) NOT NULL,
     quantity DECIMAL(10,2) NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
     total_cost DECIMAL(10,2) 
@@ -145,7 +145,6 @@ CREATE TABLE purchases (-- Tracks purchases of products from supplier to farm eg
     supplier_id INT,
     purchase_date DATETIME,
     recorded_by INT,
-    FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY(supplier_id) REFERENCES suppliers(id),
     FOREIGN KEY (recorded_by) REFERENCES users(id)
 );
@@ -162,7 +161,9 @@ CREATE TABLE sales (-- Tracks the selling of products to buyers
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     quantity DECIMAL(10,2) NOT NULL,
-    total_price DECIMAL(10,2),
+    unit_cost DECIMAL(10,2) NOT NULL,
+    total_cost DECIMAL(10,2) 
+        GENERATED ALWAYS AS (quantity * unit_cost) STORED,
     sale_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     sold_by INT,
     FOREIGN KEY (product_id) REFERENCES products(id),
