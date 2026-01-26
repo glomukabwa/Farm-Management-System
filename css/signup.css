@@ -89,18 +89,23 @@ h1{
 }
 
 .select-wrapper{ /*We use a wrapper(.select-wrapper ) instead of just select cz select ignores the ::after which we need to use to put the arrow. Options also does*/
+    position: relative;
     background-color: var(--support2);
     display: block;
     height:4rem;
-    width: 50rem;
+    width: 12rem;
     padding:1rem 2rem;
     border-radius: 2rem;
+    cursor:pointer;
 }
 
-.select-wrapper{
-    position: relative;
-    width:12rem;
-    cursor:pointer;
+.select-wrapper select{
+    position: absolute;
+    inset: 0;/* top:0; right:0; bottom:0; left:0.*/
+            /* This makes it follow the measuremants of the select-wrapper.It makes the options thing(when it appears) to stretch and occupy the same width the wrapper
+             does so now it doesn't look small(wrapping the text inside) like it did before. Plus it allows you to click anywhere inside the wrapper for the options to
+             appear, so you don't have to click the just the actual text*/
+    padding: 1rem 2rem;
 }
 
 .select-wrapper::after{

@@ -85,7 +85,7 @@ CREATE TABLE daily_animal_care (-- To track whether morning meal, evening meal a
     animal_type_id INT NOT NULL,
     care_task_id INT NOT NULL,
     performed_by INT NOT NULL,
-    performed_at DATETIME NOT NULL,
+    performed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT FALSE, -- tick or X
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     FOREIGN KEY (care_task_id) REFERENCES care_tasks(id),
@@ -98,7 +98,7 @@ CREATE TABLE feeding_records (-- To track amount of feeds to respective animal p
     feed_id INT NOT NULL,
     care_task_id INT NOT NULL, -- Morning meal, Evening meal
     quantity_used DECIMAL(10,2) NOT NULL,
-    fed_at DATETIME NOT NULL,
+    fed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     recorded_by INT NOT NULL,
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     FOREIGN KEY (feed_id) REFERENCES feeds(id),

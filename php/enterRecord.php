@@ -65,7 +65,7 @@
                 <p>Daily Animal Care</p>
             </a>-->
 
-            <a href="#" class="link">
+            <a href="http://localhost/Farm%20Website/php/recordFeeding.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Record Feeding</p>
             </a>
@@ -80,7 +80,7 @@
                 <p>Enter Sale Made</p>
             </a>
 
-            <a href="#" class="link">
+            <a href="http://localhost/Farm%20Website/php/enterAnimal.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Enter New Animal</p>
             </a>
