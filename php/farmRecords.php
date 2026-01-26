@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/farmRecords.css">
     <script src="../js/main.js" defer></script>
+    <script src="../js/recordOptions.js" defer></script>
 </head>
 <body>
     <section class="sidebar">

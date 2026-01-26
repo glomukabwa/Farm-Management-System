@@ -31,6 +31,7 @@ body{
 .link{
     display: block;
     height:20rem;
+    width:20rem;
     border: solid 0.15rem black;
     border-radius: 2rem;
 }

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/enterRecord.css">
     <script src="../js/main.js" defer></script>
+    <script src="../js/recordOptions.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -51,7 +52,7 @@
     <section class="main-content">
         <form method="GET">
             <div class="search">
-                <input id="search" type="text" placeholder=" ">
+                <input id="search" type="text" placeholder=" " id="search">
                 <label for="search">
                     <img src="../icons/search.png" alt="search">
                     <span>Search</span>
