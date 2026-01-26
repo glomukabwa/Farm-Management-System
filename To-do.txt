@@ -1,0 +1,5 @@
+26th Jan:
+Tomorrow start with adding search functionality in farmRecords.php and enterRecords.php
+Research on content of lookup tables and fill them
+Research on whether you can get options from lookup tables to fill the select options
+Handle the backend for enterAnimal.php and recordFeeding.php.
