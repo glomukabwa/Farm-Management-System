@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Record</title>
+    <title>Enter Supplier</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/enterRecord.css">
-    <script src="../js/main.js" defer></script>
-    <script src="../js/recordOptions.js" defer></script>
+    <link rel="stylesheet" href="../css/enterDataForms.css">
+    <script src="../js/enterDataForms.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -51,62 +50,30 @@
 
     <section class="main-content">
         <form method="GET">
-            <div class="search">
-                <input id="search" type="text" placeholder=" " id="search">
-                <label for="search">
-                    <img src="../icons/search.png" alt="search">
-                    <span>Search</span>
-                </label>
+            <h1>Enter Supplier</h1>
+
+            <div class="oneinput">
+                <input type="text" id="fName" name="fName" placeholder=" " required>
+                <label for="fName">First Name</label>
             </div>
+
+            <div class="oneinput">
+                <input type="text" id="sName" name="sName" placeholder=" " required>
+                <label for="sName">Second Name</label>
+            </div>
+
+            <div class="oneinput">
+                <input type="email" id="email" name="email" placeholder=" " required>
+                <label for="email">Email</label>
+            </div>
+
+            <div class="oneinput">
+                <input type="text" id="pNumber" name="pNumber" placeholder=" " required>
+                <label for="pNumber">Phone Number</label>
+            </div>
+
+            <button type="submit">Enter</button>
         </form>
-
-        <div class="link-container">
-            <!--<a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Daily Animal Care</p>
-            </a>-->
-
-            <a href="http://localhost/Farm%20Website/php/recordFeeding.php" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Record Feeding</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Record Production</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Enter Sale Made</p>
-            </a>
-
-            <a href="http://localhost/Farm%20Website/php/enterAnimal.php" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Enter New Animal</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Update feeds inventory</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Update product Inventory</p>
-            </a>
-
-            <a href="http://localhost/Farm%20Website/php/enterSupplier.php" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Enter New Supplier</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Enter Farm Purchase</p>
-            </a>
-
-        </div>
     </section>
 </body>
 </html>
