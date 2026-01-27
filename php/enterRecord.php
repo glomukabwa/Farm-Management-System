@@ -71,12 +71,12 @@
                 <p>Record Feeding</p>
             </a>
 
-            <a href="#" class="link">
+            <a href="http://localhost/Farm%20Website/php/recordProduction.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Record Production</p>
             </a>
 
-            <a href="#" class="link">
+            <a href="http://localhost/Farm%20Website/php/enterSale.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Enter Sale Made</p>
             </a>
@@ -86,7 +86,7 @@
                 <p>Enter New Animal</p>
             </a>
 
-            <a href="#" class="link">
+            <!--<a href="#" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Update feeds inventory</p>
             </a>
@@ -94,14 +94,14 @@
             <a href="#" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Update product Inventory</p>
-            </a>
+            </a>-->
 
             <a href="http://localhost/Farm%20Website/php/enterSupplier.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Enter New Supplier</p>
             </a>
 
-            <a href="#" class="link">
+            <a href="http://localhost/Farm%20Website/php/enterFarmPurchase.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Enter Farm Purchase</p>
             </a>

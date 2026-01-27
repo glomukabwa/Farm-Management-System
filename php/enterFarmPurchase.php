@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Supplier</title>
+    <title>Enter Farm Purchase</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/enterDataForms.css">
@@ -50,32 +50,47 @@
 
     <section class="main-content">
         <form method="GET">
-            <h1>Enter Supplier</h1>
+            <h1>Enter Farm Purchase</h1>
 
-            <div class="oneinput">
-                <input type="text" id="fName" name="fName" placeholder=" " required>
-                <label for="fName">First Name</label>
-            </div>
-
-            <div class="oneinput">
-                <input type="text" id="sName" name="sName" placeholder=" " required>
-                <label for="sName">Second Name</label>
-            </div>
-
-            <div class="optionalInput">
+            <div class="optionalInput"><!--I am just borrowing the styling of optional but this isn't optional-->
                 <div class="oneinput">
-                    <input type="email" id="email" name="email" placeholder=" " required>
-                    <label for="email">Email</label>
+                    <input type="text" name="purchaseName" id="purchaseName" placeholder=" " required>
+                    <label for="purchaseName">Purchase Name</label>
                 </div>
-                <label for="" id="message">* <span id="text">Optional</span></label>
+                <label for="" id="message">* <span id="text">Enter what was bought by the farm</span></label>
             </div>
 
-            <div class="oneinput">
-                <input type="text" id="pNumber" name="pNumber" placeholder=" " required>
-                <label for="pNumber">Phone Number</label>
+            <div class="oneinput" id="quantity">
+                <input type="int" id="quantity" name="quantity" placeholder=" " required>
+                <label for="quantity">Quantity</label>
             </div>
 
-            <button type="submit">Enter</button>
+            <div class="optionalInput"><!--I am just borrowing the styling of optional but this isn't optional-->
+                <div class="oneinput">
+                    <input type="text" name="unitCost" id="unitCost" placeholder=" " required>
+                    <label for="unitCost">Unit Cost</label>
+                </div>
+                <label for="" id="message">* <span id="text">Enter cost of one good</span></label>
+            </div>
+
+            <div class="totalCost">
+                <label>Total Cost:</label>
+                <label class="labelTwo">Kshs 0</label>
+            </div>
+
+            <div class="supplierDetails">
+                <div class="oneinput" id="supplierName">
+                    <input type="text" id="supplierName" name="supplierName" placeholder=" " required>
+                    <label for="supplierName">Supplier Name</label>
+                </div>
+
+                <div class="oneinput" id="supplierPNumber">
+                    <input type="text" id="supplierPNumber" name="supplierPNumber" placeholder=" " required>
+                    <label for="supplierPNumber">Supplier Phone Number</label>
+                </div>
+            </div>
+
+            <button type="submit" class="purchaseButton">Enter</button>
         </form>
     </section>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Supplier</title>
+    <title>Record Production</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/enterDataForms.css">
@@ -50,29 +50,37 @@
 
     <section class="main-content">
         <form method="GET">
-            <h1>Enter Supplier</h1>
+            <h1>Record Production</h1>
 
-            <div class="oneinput">
-                <input type="text" id="fName" name="fName" placeholder=" " required>
-                <label for="fName">First Name</label>
+            <div class="select-wrapper">
+                <select name="animalType" id="animalType" required>
+                    <option value="">Product Name</option>
+                    <option value="milk">Milk</option>
+                    <option value="eggs">Eggs</option>
+                </select>
             </div>
 
-            <div class="oneinput">
-                <input type="text" id="sName" name="sName" placeholder=" " required>
-                <label for="sName">Second Name</label>
+            <div class="quantityAndUnit">
+                <div class="oneinput" id="quantity">
+                    <input type="int" id="quantity" name="quantity" placeholder=" " required>
+                    <label for="quantity">Quantity</label>
+                </div>
+                <div class="select-wrapper" id="unit">
+                    <select name="unit" id="unit" required>
+                        <option value="">Unit</option>
+                        <option value="Kgs">Kgs</option>
+                        <option value="Bales">Bales</option>
+                        <option value="Sacks">Sacks</option>
+                    </select>
+                </div>
             </div>
 
             <div class="optionalInput">
                 <div class="oneinput">
-                    <input type="email" id="email" name="email" placeholder=" " required>
-                    <label for="email">Email</label>
+                    <textarea name="comment" id="comment" placeholder=" "></textarea>
+                    <label for="comment">Comment</label>
                 </div>
                 <label for="" id="message">* <span id="text">Optional</span></label>
-            </div>
-
-            <div class="oneinput">
-                <input type="text" id="pNumber" name="pNumber" placeholder=" " required>
-                <label for="pNumber">Phone Number</label>
             </div>
 
             <button type="submit">Enter</button>

@@ -90,7 +90,7 @@ form{
     background-color: var(--support2);
     /*display: block;*/
     height:4rem;
-    width: 20rem;
+    width: 25rem;
     padding:1rem 2rem;
     border-radius: 2rem;
     cursor:pointer;
@@ -120,7 +120,7 @@ form{
     background-color: var(--support2);
     display: block;
     height:4rem;
-    width: 20rem;
+    width: 25rem;
     padding:1rem 2rem;
     border-radius: 2rem;
 }
@@ -133,15 +133,28 @@ form{
     padding:0 0.3rem;
 }
 
+.oneinput textarea{
+    background-color: var(--support2);
+    display: block;
+    height:16rem;
+    width: 33rem;
+    padding:1rem 2rem;
+    border-radius: 2rem;
+    word-wrap: wrap;
+}
+
 .oneinput input:focus + label,
-.oneinput input:not(:placeholder-shown) + label{
+.oneinput input:not(:placeholder-shown) + label,
+.oneinput textarea:focus + label,
+.oneinput textarea:not(:placeholder-shown) + label{
     top:-0.9rem;
     left: 2rem;
     font-size:1rem;
     background-color: var(--lightestgrey);
 }
 
-.oneinput input:focus{
+.oneinput input:focus,
+.oneinput textarea:focus{
     border: solid 0.15rem black;
 }
 
@@ -178,4 +191,31 @@ button{
 
 .quantityAndUnit #quantity, .quantityAndUnit #unit{
     width:15rem;
+}
+
+.totalCost{
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    gap:2rem;
+    padding-left: 2rem;
+}
+
+.totalCost .labelTwo{
+    background-color: var(--support2);
+    display: block;
+    height:4rem;
+    width: 20rem;
+    padding:1rem 2rem;
+    border-radius: 2rem;
+    text-align: center;
+}
+
+.supplierDetails{
+    display:flex;
+    gap:2rem
+}
+
+.purchaseButton{
+    width:55rem;
 }
