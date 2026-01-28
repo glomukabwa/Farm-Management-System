@@ -55,16 +55,6 @@ include 'config.php';
         <form method="GET">
             <h1>Record Feeding</h1>
 
-            <!--<div class="selectOption">
-                <div class="topOption">Animal type <span class="downwardArrow">▼</span></div>
-                <ul class="options">
-                    <li data-value="cow" class="first">Cow</li>
-                    <li data-value="chicken">Chicken</li>
-                    <li data-value="pig" class="last">Pig</li>
-                </ul>
-                <input type="hidden" name="animalType" id="animalTypeInput">
-            </div>-->
-
             <div class="select-wrapper">
                 <select name="pickAnimal" id="pickAnimal" required>
                     <option value="">Pick Animal</option>
@@ -106,7 +96,7 @@ include 'config.php';
             
             <div class="quantityAndUnit">
                 <div class="oneinput" id="quantity">
-                    <input type="int" id="quantity" name="quantity" placeholder=" " required>
+                    <input type="number" id="quantity" name="quantity" placeholder=" " required>
                     <label for="quantity">Quantity</label>
                 </div>
                 <div class="select-wrapper" id="unit">
@@ -117,6 +107,13 @@ include 'config.php';
                         <option value="Sacks">Sacks</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="date">
+                <div>
+                    <input type="date" id="date" name="date">
+                </div>
+                <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>
 
             <button type="submit">Enter</button>

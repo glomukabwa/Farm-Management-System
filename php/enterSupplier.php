@@ -64,8 +64,11 @@
 
             <div class="optionalInput">
                 <div class="oneinput">
-                    <input type="email" id="email" name="email" placeholder=" " required>
-                    <label for="email">Email</label>
+                    <div>
+                        <input type="email" id="email" name="email" placeholder=" " required>
+                        <label for="email">Email</label>
+                    </div>
+                    <span id="emailMessage"></span>
                 </div>
                 <label for="" id="message">* <span id="text">Optional</span></label>
             </div>
@@ -73,6 +76,7 @@
             <div class="oneinput">
                 <input type="text" id="pNumber" name="pNumber" placeholder=" " required>
                 <label for="pNumber">Phone Number</label>
+                <span id="pNumberMessage"></span>
             </div>
 
             <button type="submit">Enter</button>

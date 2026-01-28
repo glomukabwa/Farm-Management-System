@@ -123,6 +123,13 @@ include 'config.php';
                 </select>
             </div>
 
+            <div class="date">
+                <div>
+                    <input type="date" id="date" name="date">
+                </div>
+                <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+            </div>
+
             <button type="submit">Enter</button>
         </form>
     </section>

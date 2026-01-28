@@ -1,4 +1,3 @@
 27th Jan:
-Add email verification and phone number verification for enterSupplier.php
-Add verification for inputs that are of type int for all forms in enterRecord.php
+Add verification for inputs that are of type int for all forms in enterRecord.php in backend
 Handle the backend for all enterRecord pages.

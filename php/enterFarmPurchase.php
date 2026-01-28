@@ -61,7 +61,7 @@
             </div>
 
             <div class="oneinput" id="quantity">
-                <input type="int" id="quantity" name="quantity" placeholder=" " required>
+                <input type="number" id="quantity" name="quantity" placeholder=" " required>
                 <label for="quantity">Quantity</label>
             </div>
 
@@ -88,6 +88,13 @@
                     <input type="text" id="supplierPNumber" name="supplierPNumber" placeholder=" " required>
                     <label for="supplierPNumber">Supplier Phone Number</label>
                 </div>
+            </div>
+
+            <div class="date">
+                <div>
+                    <input type="date" id="date" name="date">
+                </div>
+                <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>
 
             <button type="submit" class="purchaseButton">Enter</button>

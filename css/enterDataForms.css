@@ -162,13 +162,33 @@ form{
     gap:1rem;
 }
 
+.optionalInput .oneinput{
+    display:flex;
+    align-items: center;
+}
+
 #message{
     font-size: 1.1rem;
     padding-left: 2rem;
 }
 
 #message #text{
-    color: red;
+    color: var(--basecolor);
+}
+
+.date{
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+}
+
+.date input{
+    background-color: var(--support2);
+    height:4rem;
+    width: 25rem;
+    padding:1rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
 }
 
 button{
@@ -218,4 +238,9 @@ button{
 
 .purchaseButton{
     width:55rem;
+}
+
+#emailMessage{
+    font-size:1.1rem;
+    padding-left: 2rem;
 }

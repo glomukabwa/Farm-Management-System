@@ -21,3 +21,22 @@ document.addEventListener("click", function(e){
         options.style.display = "none";
     }
 });*/
+
+const emailInput = document.getElementById("email");
+const emailMessage = document.getElementById("emailMessage");
+
+function isEmailValid(email){
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return regex.test(email);/*Returns boolean value*/
+}
+
+emailInput.addEventListener("input", function(){
+    if(isEmailValid(emailInput.value)){
+        emailMessage.textContent = "Valid Email";
+        emailMessage.style.color = "green";
+    }else{
+        emailMessage.textContent = "Invalid Email";
+        emailMessage.style.color = "red";
+    }
+});
+

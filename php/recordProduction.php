@@ -70,7 +70,7 @@ include 'config.php';
 
             <div class="quantityAndUnit">
                 <div class="oneinput" id="quantity">
-                    <input type="int" id="quantity" name="quantity" placeholder=" " required>
+                    <input type="number" id="quantity" name="quantity" placeholder=" " required>
                     <label for="quantity">Quantity</label>
                 </div>
                 <div class="select-wrapper" id="unit">
@@ -81,6 +81,13 @@ include 'config.php';
                         <option value="Sacks">Sacks</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="date">
+                <div>
+                    <input type="date" id="date" name="date">
+                </div>
+                <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>
 
             <div class="optionalInput">
