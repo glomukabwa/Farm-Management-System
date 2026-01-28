@@ -1,3 +1,6 @@
+<?php
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,27 +68,39 @@
             <div class="select-wrapper">
                 <select name="pickAnimal" id="pickAnimal" required>
                     <option value="">Pick Animal</option>
-                    <option value="cow">Cow</option>
-                    <option value="chicken">Chicken</option>
-                    <option value="pig">Pig</option>
+                    <?php
+                    $animalTypes = "SELECT * FROM animal_types";
+                    $typeResult = $conn->query($animalTypes);
+                    while($typeRow = $typeResult->fetch_assoc()){
+                        echo '<option value="'.$typeRow['id'].'">'.$typeRow['name'].'</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
             <div class="select-wrapper">
                 <select name="mealCategory" id="mealCategory" required>
                     <option value="">Meal Category</option>
-                    <option value="Morning Meal">Morning Meal</option>
-                    <option value="Water Refill">Water Refill</option>
-                    <option value="Evening Meal">Evening Meal</option>
+                    <?php
+                    $mealCategories = "SELECT * FROM care_tasks";
+                    $categoriesResult = $conn->query($mealCategories);
+                    while($categoriesRow = $categoriesResult->fetch_assoc()){
+                        echo '<option value="'.$categoriesRow['id'].'">'.$categoriesRow['name'].'</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
             <div class="select-wrapper">
                 <select name="feed" id="feed" required>
                     <option value="">Feed</option>
-                    <option value="Napier">Napier</option>
-                    <option value="Silage">Silage</option>
-                    <option value="Hay">Hay</option>
+                    <?php
+                    $feeds = "SELECT * FROM feeds";
+                    $feedsResult = $conn->query($feeds);
+                    while($feedsRow = $feedsResult->fetch_assoc()){
+                        echo '<option value="'.$feedsRow['id'].'">'.$feedsRow['name'].'</option>';
+                    }
+                    ?>
                 </select>
             </div>
             

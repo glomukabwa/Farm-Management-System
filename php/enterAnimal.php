@@ -1,5 +1,5 @@
 <?php
-include 'config.php'
+include 'config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +72,7 @@ include 'config.php'
                     $animalTypes = "SELECT * FROM animal_types";
                     $typeResult = $conn->query($animalTypes);
                     while($typeRow = $typeResult->fetch_assoc()){
-                        echo '<option value="'.$typeRow['name'].'">'.$typeRow['name'].'</option>'; 
+                        echo '<option value="'.$typeRow['id'].'">'.$typeRow['name'].'</option>'; 
                     }
                     ?>
                 </select>
@@ -86,7 +86,7 @@ include 'config.php'
                         $breeds = "SELECT * FROM breeds";
                         $breedResult = $conn->query($breeds);
                         while($breedRow = $breedResult->fetch_assoc()){
-                            echo '<option value="'.$breedRow['name'].'">'.$breedRow['name'].'</option>';
+                            echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
                         }
                         ?>
                     </select>
@@ -117,7 +117,7 @@ include 'config.php'
                     $healthStatuses = "SELECT * FROM animal_statuses";
                     $healthResult = $conn->query($healthStatuses);
                     while($healthRow = $healthResult->fetch_assoc()){
-                        echo '<option value="'.$healthRow['status_name'].'">'.$healthRow['status_name'].'</option>';
+                        echo '<option value="'.$healthRow['id'].'">'.$healthRow['status_name'].'</option>';
                     }
                     ?>
                 </select>
