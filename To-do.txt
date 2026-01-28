@@ -1,5 +1,4 @@
 27th Jan:
-Get the options from lookup tables in the DB instead of hardcoding them. I've learnt that this is possible and 
-that this is what is usually done so that you don't have to keep on editting code to include new options if the 
-farm expands
+Add email verification and phone number verification for enterSupplier.php
+Add verification for inputs that are of type int for all forms in enterRecord.php
 Handle the backend for all enterRecord pages.

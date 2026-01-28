@@ -1,3 +1,6 @@
+<?php
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,10 +56,15 @@
             <h1>Record Production</h1>
 
             <div class="select-wrapper">
-                <select name="animalType" id="animalType" required>
+                <select name="productName" id="productName" required>
                     <option value="">Product Name</option>
-                    <option value="milk">Milk</option>
-                    <option value="eggs">Eggs</option>
+                    <?php
+                    $products = "SELECT * FROM products";
+                    $productsResult = $conn->query($products);
+                    while($productsRow = $productsResult->fetch_assoc()){
+                        echo '<option value="'.$productsRow['id'].'">'.$productsResult['name'].'</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
