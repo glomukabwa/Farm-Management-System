@@ -1,4 +1,5 @@
 <?php
+include 'config.php'
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,13 +64,17 @@
                 </ul>
                 <input type="hidden" name="animalType" id="animalTypeInput">
             </div>-->
-
+            
             <div class="select-wrapper">
                 <select name="animalType" id="animalType" required>
                     <option value="">Animal Type</option>
-                    <option value="cow">Cow</option>
-                    <option value="chicken">Chicken</option>
-                    <option value="pig">Pig</option>
+                    <?php
+                    $animalTypes = "SELECT * FROM animal_types";
+                    $typeResult = $conn->query($animalTypes);
+                    while($typeRow = $typeResult->fetch_assoc()){
+                        echo '<option value="'.$typeRow['name'].'">'.$typeRow['name'].'</option>'; 
+                    }
+                    ?>
                 </select>
             </div>
 
@@ -77,8 +82,13 @@
                 <div class="select-wrapper">
                     <select name="breed" id="breed" required>
                         <option value="">Breed</option>
-                        <option value="freshian">Freshian</option>
-                        <option value="asher">Asher</option>
+                        <?php 
+                        $breeds = "SELECT * FROM breeds";
+                        $breedResult = $conn->query($breeds);
+                        while($breedRow = $breedResult->fetch_assoc()){
+                            echo '<option value="'.$breedRow['name'].'">'.$breedRow['name'].'</option>';
+                        }
+                        ?>
                     </select>
                 </div>
                 <label for="" id="message">* <span id="text">Optional</span></label>
@@ -103,9 +113,13 @@
             <div class="select-wrapper">
                 <select name="healthStatus" id="healthStatus" required>
                     <option value="">Health Status</option>
-                    <option value="Healthy">Healthy</option>
-                    <option value="Sick">Sick</option>
-                    <option value="Quarantined">Quarantined</option>
+                    <?php 
+                    $healthStatuses = "SELECT * FROM animal_statuses";
+                    $healthResult = $conn->query($healthStatuses);
+                    while($healthRow = $healthResult->fetch_assoc()){
+                        echo '<option value="'.$healthRow['status_name'].'">'.$healthRow['status_name'].'</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
