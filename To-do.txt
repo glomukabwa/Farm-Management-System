@@ -1,3 +1,5 @@
 27th Jan:
-Research on whether you can get options from lookup tables to fill the select options
+Get the options from lookup tables in the DB instead of hardcoding them. I've learnt that this is possible and 
+that this is what is usually done so that you don't have to keep on editting code to include new options if the 
+farm expands
 Handle the backend for all enterRecord pages.
