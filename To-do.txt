@@ -1,4 +1,3 @@
 27th Jan:
-Research on content of lookup tables and fill them
 Research on whether you can get options from lookup tables to fill the select options
 Handle the backend for all enterRecord pages.

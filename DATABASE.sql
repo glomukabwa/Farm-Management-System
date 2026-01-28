@@ -4,8 +4,7 @@ USE farm_management;
 -- Lookup Tables
 CREATE TABLE animal_statuses (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    status_name VARCHAR(50) NOT NULL,-- Healthy, Sick, Quarantined
-    description TEXT
+    status_name VARCHAR(50) NOT NULL-- Healthy, Sick, Quarantined
 );
 
 CREATE TABLE care_tasks (
@@ -16,21 +15,19 @@ CREATE TABLE care_tasks (
 
 CREATE TABLE product_categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(50) NOT NULL,-- Dairy, Poultry, Crops, Aquaculture
+    category_name VARCHAR(50) NOT NULL-- Dairy, Poultry, Crops, Aquaculture, Livestock
     description TEXT
 );
 
 CREATE TABLE animal_types (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE,  -- Cow, Goat, Chicken, Fish
-    description TEXT
+    name VARCHAR(50) NOT NULL UNIQUE  -- Cow, Goat, Chicken, Fish
 );
 
 CREATE TABLE breeds (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_type_id INT NOT NULL,
     name VARCHAR(50) NOT NULL,
-    description TEXT,
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     UNIQUE (animal_type_id, name)
 );
