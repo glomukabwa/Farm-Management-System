@@ -1,3 +1,7 @@
+<?php
+require 'admin_auth.php';/*User must have admin priviledges for this page*/
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

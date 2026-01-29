@@ -7,4 +7,5 @@ Handle the backend for all enterRecord pages:
     5. enterSupplier.php
     6. enterFarmPurchase.php
 
-Research on use of sessions in enter record pages
+Retest the sign up, log in, enterRecord and enterAnimal. I've made some changes
+Make sure you start sessions in every page

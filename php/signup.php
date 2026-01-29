@@ -1,4 +1,5 @@
 <?php
+session_start();
 /*Sessions are used to store information across multiple pages for a single user. Normally, HTTP is stateless — every request is independent,
 so the server doesn’t “remember” you between page loads. A session fixes that by giving each user a unique session ID (usually stored in 
 the user’s browser as a cookie). Every request the browser makes to your server includes that cookie, so PHP knows “this request belongs 
@@ -6,13 +7,15 @@ to the same user as before.” It uses it to keep track of data (like login stat
 The session ID is just a key. You decide what values to attach to it in $_SESSION. 
 For a flash message, we store $_SESSION['flash'] = "Flash message".
 For login, you can store an email, userId etc. Since I want a more user friendly webiste, I am going to apply auto-log in which is basically 
-alllowing the user to access the index page without redirecting them to log in to confirm their credentials. Once they sign-up, they'll be 
+allowing the user to access the index page without redirecting them to log in to confirm their credentials. Once they sign-up, they'll be 
 able to access the website immediately. The auto-logging concept comes in when you store the user details in session variables here instead 
 of in log in for the first time. In log in, you'll notice that I have stored the session variables again there and that is because after some 
-time, the session expires and the variables need to be set again.*/
+time, the session expires and the variables need to be set again. Also, for pages that need admin authorization(admin priviledges), I'll need 
+to redirect them to log in for the user_id, user_role etc to be set incase they aren't. Just look at admin_auth.php and the pages that require
+it like farmRecords.php and enterRecord.php to understand*/
 include 'config.php';
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] === "POST"){
     $fname = trim($_POST['firstName'] ?: '');
     $sname = trim($_POST['secondName'] ?: '');
     $email = trim($_POST['email'] ?: '');
@@ -36,7 +39,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             if($stmt->execute()){
                 $newUserId = $conn->insert_id;//gets the auto-generated ID in the DB
 
-                session_start();//Check info on sessions at the top of the page
                 session_regenerate_id(true);
                 /*Give this user a brand‑new session ID and deletes the old session data at the same time.Why this is important:
                     Prevents session fixation attacks: Without regeneration, an attacker could trick a user into using a known 
@@ -48,8 +50,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 */
 
                 $_SESSION['user_id'] = $newUserId;
-                $_SESSION['user_email'] = $email;
-                $_SESSION['user_role'] = $role;
+                $_SESSION['user_role'] = $role;/*I'll use this to confirm that user is an admin in admin_auth.php */
+                $_SESSION['user_name'] = $fname;/*I'll use this in the index page to display the greeting("Hello {user}") */
 
                 header("Location: index.php");
                 exit;

@@ -1,4 +1,5 @@
 <?php
+require 'admin_auth.php';/*User must have admin priviledges for this page*/
 include 'config.php';
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){

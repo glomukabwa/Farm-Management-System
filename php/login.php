@@ -17,7 +17,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
         if($row = $result->fetch_assoc()){//This returns true if an actual row exists. Fetch assoc_returns an array with the db columns as the key
             //Verify the password now that you have the row:
-            if(password_verify($email, $row['password_hash'])){
+            if(password_verify($password, $row['password_hash'])){
                 //Store the values in a session
                 /*When you call session_start(), PHP looks for a session cookie (PHPSESSID) in the browser.
                 If it finds one, it resumes that session; if not, it creates a new one. The data you put in $_SESSION[...] lives only until the 
@@ -26,8 +26,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 If the user comes back tomorrow, their old session is gone. They must log in again, and thats why you set all the session variables
                 below again. Notice that I am setting the exact same sessions I set in sign up.*/
                 $_SESSION['user_id'] = $row['id'];
-                $_SESSION['user_email'] = $row['email'];
                 $_SESSION['user_role'] = $row['role'];
+                $_SESSION['user_name'] = $row['first_name'];
                 header("Location: index.php");
                 exit; //The php code ends here if the login is successful
             }else{
