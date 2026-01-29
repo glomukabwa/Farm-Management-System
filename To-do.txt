@@ -1,3 +1,10 @@
 27th Jan:
-Add verification for inputs that are of type int for all forms in enterRecord.php in backend
-Handle the backend for all enterRecord pages.
+Handle the backend for all enterRecord pages:
+    1. enterAnimal.php          ✔
+    2. recordFeeding.php        
+    3. recordProduction.php
+    4. enterSale.php
+    5. enterSupplier.php
+    6. enterFarmPurchase.php
+
+Research on use of sessions in enter record pages

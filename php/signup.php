@@ -13,13 +13,13 @@ time, the session expires and the variables need to be set again.*/
 include 'config.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $fname = trim($_POST['firstName'] ?? '');
-    $sname = trim($_POST['secondName'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $pnumber = trim($_POST['phoneNumber'] ?? '');
-    $role = trim($_POST['role'] ?? '');
-    $newPassword = trim($_POST['newPassword'] ?? '');
-    $confirmPassword = trim($_POST['confirmPassword'] ?? '');
+    $fname = trim($_POST['firstName'] ?: '');
+    $sname = trim($_POST['secondName'] ?: '');
+    $email = trim($_POST['email'] ?: '');
+    $pnumber = trim($_POST['phoneNumber'] ?: '');
+    $role = trim($_POST['role'] ?: '');
+    $newPassword = trim($_POST['newPassword'] ?: '');
+    $confirmPassword = trim($_POST['confirmPassword'] ?: '');
 
     /*I've checked for email duplication in JS*/
 

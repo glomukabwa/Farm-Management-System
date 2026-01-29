@@ -244,3 +244,16 @@ button{
     font-size:1.1rem;
     padding-left: 2rem;
 }
+
+.submission{
+    display: flex;
+    align-items: center;
+    gap:1rem;
+}
+
+#successMessage{
+    font-size:1.1rem;
+    color: green;
+    opacity: 1;/*I am doing this and the line below so that in JS I can make it disappear*/
+    transition: opacity 0.5s ease;
+}

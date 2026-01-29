@@ -30,7 +30,12 @@ function isEmailValid(email){
     return regex.test(email);/*Returns boolean value*/
 }
 
-emailInput.addEventListener("input", function(){
+if(emailInput && emailMessage){/*This checks that these elements exist. I am using one JS file for many files
+    so that means that some files won't have some of the elements mentioned here. Unlike with CSS, this will
+    an error. Eh enterAnimal has no email so if you are using the page, the browser will throw an error cz it
+    can't attach a listener to sth that doesn't exist in the page so always check if things exist if u are 
+    using a shared JS file */
+    emailInput.addEventListener("input", function(){
     if(isEmailValid(emailInput.value)){
         emailMessage.textContent = "Valid Email";
         emailMessage.style.color = "green";
@@ -39,4 +44,14 @@ emailInput.addEventListener("input", function(){
         emailMessage.style.color = "red";
     }
 });
+}
 
+const successMessage = document.getElementById("successMessage");
+
+if(successMessage){
+    if(successMessage.textContent){/*Returns true if textContent is set*/
+    setTimeout(() => {
+        successMessage.style.opacity = '0';
+        }, 1500);
+    }
+}
