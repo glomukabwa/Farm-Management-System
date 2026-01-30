@@ -1,5 +1,58 @@
 <?php
+require 'admin_auth.php';
 include 'config.php';
+
+$success = false;/*You need to define this flag here(it'll be used to indicate successful insertions) and not inside
+                    the if below cz POST will not always run so when the page loads(GET request) and u've used this variable in the
+                    html(next to the button), u'll get an error that the variable is undefined cz it doesn't exist yet. You
+                    also must always define it first(I know this is sth you don't always see the importance of) cz of the same reasons*/
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $animalId = (int) $_POST['pickAnimal'];
+    $feedId = (int) $_POST['feed'];
+    $careTaskId = (int) $_POST['mealCategory'];
+    $quantity = !empty($_POST['quantity']) ? (float) $_POST['quantity'] : 0.00;/*Note the float cz quantity if of type decimal*/
+    $dateTime = $_POST['date'] ?: date('Y-m-d H:i:s');
+    $userId = (int) $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("INSERT INTO feeding_records(animal_type_id, feed_id, care_task_id, quantity_used, fed_at, recorded_by)
+                            VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("iiidsi", $animalId, $feedId, $careTaskId, $quantity, $dateTime, $userId);
+    $stmt->execute();
+    if($stmt->affected_rows > 0){
+        $success = true;
+    }
+    $stmt->close();
+
+    $editFeedsTable = $conn->prepare("UPDATE feeds 
+                                      SET quantity = quantity - ?
+                                      WHERE id = ? AND quantity >= ?");
+    $editFeedsTable->bind_param("did", $quantity, $feedId, $quantity);
+    $editFeedsTable->execute();
+
+    if($editFeedsTable->affected_rows === 0){
+        $title = "Low stock alert";
+
+        /*Getting the feed name for the description*/
+        $getFeedName = $conn->prepare("SELECT name FROM feeds WHERE id = ?");
+        $getFeedName->bind_param("i", $feedId);
+        $getFeedName->execute();
+        $getResult = $getFeedName->get_result();
+        $getRow = $getResult->fetch_assoc();
+        $feedName = $getRow['name'];
+        $description = $feedName . " is running low on stock. Please restock.";
+        $getFeedName->close();
+
+        $alertDate = date('Y-m-d');
+        $alertStmt = $conn->prepare("INSERT INTO alerts(title, description, alert_date, user_id) VALUES (?, ?, ?, ?)");
+        $alertStmt->bind_param("sssi", $title, $description, $alertDate, $userId);
+        $alertStmt->execute();
+        $alertStmt->close();
+
+    }
+    $editFeedsTable->close();
+    
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +105,7 @@ include 'config.php';
     </section>
 
     <section class="main-content">
-        <form method="GET">
+        <form method="POST">
             <h1>Record Feeding</h1>
 
             <div class="select-wrapper">
@@ -102,22 +155,38 @@ include 'config.php';
                 <div class="select-wrapper" id="unit">
                     <select name="unit" id="unit" required>
                         <option value="">Unit</option>
-                        <option value="Kgs">Kgs</option>
-                        <option value="Bales">Bales</option>
-                        <option value="Sacks">Sacks</option>
+                        <option value="kg">Kgs</option>
+                        <option value="bales">Bales</option>
                     </select>
                 </div>
             </div>
 
             <div class="date">
                 <div>
-                    <input type="date" id="date" name="date">
+                    <input type="datetime-local" id="date" name="date"><!--datetime-local makes it provide the date too-->
                 </div>
                 <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>
 
-            <button type="submit">Enter</button>
+            <div class="submission">
+                <button type="submit">Enter</button>
+                <?php 
+                $message = '';
+                if($success){
+                    $message = 'Record updated successfully!';
+                }
+                ?>
+                <p id="successMessage"><?= htmlspecialchars($message) ?></p>
+            </div>
+
         </form>
     </section>
 </body>
 </html>
+
+<?php
+
+if(isset($conn)){
+    $conn->close();
+}
+?>

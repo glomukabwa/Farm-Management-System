@@ -1,11 +1,9 @@
-29th Jan:
 Handle the backend for all enterRecord pages:
     1. enterAnimal.php          ✔
-    2. recordFeeding.php        
+    2. recordFeeding.php        ✔
     3. recordProduction.php
     4. enterSale.php
     5. enterSupplier.php
     6. enterFarmPurchase.php
 
-Retest the sign up, log in, enterRecord and enterAnimal. I've made some changes
-Make sure you start sessions in every page
+Make sure you start sessions in every page(include auth.php or admin_auth.php)

@@ -1,4 +1,4 @@
-<?
+<?php
 /*Instead of repeating the info below in every admin page, you can just do this and require it*/
 session_start();/*Yes, for every page, a session must be started. Chat says its cz PHP does not auto-resume 
                 sessions. If you don’t call session_start(), PHP pretends the session doesn’t exist. */

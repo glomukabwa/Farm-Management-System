@@ -3,7 +3,7 @@ require 'admin_auth.php';/*User must have admin priviledges for this page*/
 include 'config.php';
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
-    $animalType = (int)($_POST['animalType']);
+    $animalType = (int) $_POST['animalType'];
     $breed = !empty($_POST['breed']) ? (int)($_POST['breed']): null;
     /*With the above and tagNumber below, they are optional so incase they aren't set, the value should be null not zero cz if you put zero,
      u'll be saying that there's a foreign key 0 and there isn't so it'll bring an error during submission.
@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                                         However, my intention was to check if the input is empty and ?: does that. It is short for
                                         $gender = !empty($_POST['gender']) ? $_POST['gender'] : '' ; So I've replaced ?? with ?: where 
                                         I felt was necessary. Also sth you should know is that 0 is also considered empty so it's not just ''*/
-    $healthStatus = (int) ($_POST['healthStatus']);
+    $healthStatus = (int) $_POST['healthStatus'];
     $createdAt = $_POST['date'] ?: date('Y-m-d');/*So apparently, as much as I have put DEFAULT CURRENT_DATE for dates, SQL won't put a default
                                                 date because I have already said in the prepared statement below that I will give it a date. If 
                                                 I give it an empty date('') meaning the user doesn't pick a date, it will not provide a default
@@ -37,9 +37,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $stmt = $conn->prepare($query);
     $stmt->bind_param("iissis", $animalType, $breed, $tagNumber, $gender, $healthStatus, $createdAt);
     $stmt->execute();
-}
 
+    $stmt->close();
+
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -178,10 +181,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             <div class="submission">
                 <button type="submit">Enter</button>
                 <?php
-                $message = ''; /*<p> below displays the message all the time so u wanna ensure that is there's nothing to say, it displays nothing*/
+                $message = ''; /*<p> below displays the message all the time so u wanna ensure that if there's nothing to say, it displays nothing
+                Also you put it before the POST condition below cz even when user hasn't submitted a record, the <p> is still displaying sth*/
                 if($_SERVER["REQUEST_METHOD"] === "POST"){/*Cz we don't want it to display message every time the page reloads */
                     if($stmt->affected_rows > 0){/*This will make sure that this batch of code is only considered when an insertinon is made */
-                        $message = "Successful addition of animal!";
+                        $message = "Animal added sucessfully!";
                     }
                 }  
                 ?> 
@@ -192,3 +196,19 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     </section>
 </body>
 </html>
+
+<?php
+if(isset($conn)){
+    $conn->close();
+    /*This is a safety thing I've learnt. We put it in this if condition cz there's usually a chance that config.php experiences an issue eg because:
+      MySQL is down, Wrong password, Wrong DB name, XAMPP/WAMP not running. The line die() in config will immediately stop the script 
+      and that'll mean that if we write $conn->close without the if, we'll get an error cz there was never a connection in the first place. 
+      There's a chance config might never fail but its better to be safe than sorry
+    
+      Also, the reason I'll start putting $conn->close() at the bottom of the page is cz when I put it at the end of the php which is at the top of
+      this page, it closes the connections before all the form data has been loaded so only some form elements appear. In the form I have select options
+      that get their data from the DB so if I close the connection before they have retrieved their, data, they are not shown. That's why before, half the
+      form data was disappearing. Chat says that just like I put config.php at the top, I should get used to putting $conn->close at the complete bottom
+      */
+}
+?>
