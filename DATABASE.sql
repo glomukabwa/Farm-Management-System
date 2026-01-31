@@ -127,7 +127,7 @@ CREATE TABLE suppliers (-- record of all farm suppliers
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     second_name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );

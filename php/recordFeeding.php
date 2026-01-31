@@ -173,7 +173,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <?php 
                 $message = '';
                 if($success){
-                    $message = 'Record updated successfully!';
+                    $message = 'Record added successfully!';
                 }
                 ?>
                 <p id="successMessage"><?= htmlspecialchars($message) ?></p>

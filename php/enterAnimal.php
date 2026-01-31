@@ -2,6 +2,7 @@
 require 'admin_auth.php';/*User must have admin priviledges for this page*/
 include 'config.php';
 
+$success = false;
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $animalType = (int) $_POST['animalType'];
     $breed = !empty($_POST['breed']) ? (int)($_POST['breed']): null;
@@ -180,16 +181,13 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
             <div class="submission">
                 <button type="submit">Enter</button>
-                <?php
-                $message = ''; /*<p> below displays the message all the time so u wanna ensure that if there's nothing to say, it displays nothing
-                Also you put it before the POST condition below cz even when user hasn't submitted a record, the <p> is still displaying sth*/
-                if($_SERVER["REQUEST_METHOD"] === "POST"){/*Cz we don't want it to display message every time the page reloads */
-                    if($stmt->affected_rows > 0){/*This will make sure that this batch of code is only considered when an insertinon is made */
-                        $message = "Animal added sucessfully!";
-                    }
-                }  
-                ?> 
-                <p id="successMessage"><?= htmlspecialchars($message)?></p>
+                <?php 
+                $message = '';
+                if($success){
+                    $message = 'Animal added successfully!';
+                }
+                ?>
+                <p id="successMessage"><?= htmlspecialchars($message) ?></p>
             </div>
             
         </form>

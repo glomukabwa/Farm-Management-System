@@ -1,3 +1,24 @@
+<?php
+require 'admin_auth.php';
+include 'config.php';
+
+$success = false;
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $fname = trim($_POST['fName'] ?: '');
+    $sname = trim($_POST['sName'] ?: '');
+    $email = trim($_POST['email'] ?: null);
+    $pnumber = trim($_POST['pNumber'] ?: '');
+
+    $stmt = $conn->prepare("INSERT INTO suppliers (first_name, second_name, email, phone_number)
+                            VALUES (?, ?, ?, ?)");
+    $stmt->bind_param('ssss', $fname, $sname, $email, $pnumber);
+    $stmt->execute();
+    if($stmt->affected_rows >  0){
+        $success = true;
+    }
+    $stmt->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +70,7 @@
     </section>
 
     <section class="main-content">
-        <form method="GET">
+        <form method="POST">
             <h1>Enter Supplier</h1>
 
             <div class="oneinput">
@@ -65,7 +86,7 @@
             <div class="optionalInput">
                 <div class="oneinput">
                     <div>
-                        <input type="email" id="email" name="email" placeholder=" " required>
+                        <input type="email" id="email" name="email" placeholder=" ">
                         <label for="email">Email</label>
                     </div>
                     <span id="emailMessage"></span>
@@ -79,8 +100,24 @@
                 <span id="pNumberMessage"></span>
             </div>
 
-            <button type="submit">Enter</button>
+            <div class="submission">
+                <button type="submit">Enter</button>
+                <?php 
+                $message = '';
+                if($success){
+                    $message = 'Supplier added successfully!';
+                }
+                ?>
+                <p id="successMessage"><?= htmlspecialchars($message) ?></p>
+            </div>
+            
         </form>
     </section>
 </body>
 </html>
+
+<?php
+if(isset($conn)){
+    $conn->close();
+}
+?>
