@@ -1,4 +1,5 @@
 <?php
+require 'admin_auth.php';
 include 'config.php';
 
 /*SET THE DEFAULT PAGE AND LIMIT */

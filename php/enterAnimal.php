@@ -33,7 +33,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                                                 So here, I am saying that if the date is empty, give it the current date. I'm basically assigning a 
                                                 default date but in PHP. That's what this line is for: date('Y-m-d')*/
 
-    if($quantity >= 1){/*This is cz the fallback is zero and you don't want to bring negatives*/
+    if($quantity >= 1){/*This is cz the fallback is zero and you don't want to have wrong insertions*/
         $query = "INSERT INTO animals (animal_type_id, breed_id, gender, health_status_id, created_at) 
         VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
@@ -44,7 +44,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             $stmt->execute();
         }
 
-        $success = true;
+        if($stmt->affected_rows > 0){
+            $success = true;
+        }
         $stmt->close();
     }
 
