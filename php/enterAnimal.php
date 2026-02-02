@@ -5,6 +5,7 @@ include 'config.php';
 $success = false;
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $animalType = (int) $_POST['animalType'];
+    $quantity = !empty($_POST['quantity']) ? (int) $_POST['quantity'] : 0;
     $breed = !empty($_POST['breed']) ? (int)($_POST['breed']): null;
     /*With the above and tagNumber below, they are optional so incase they aren't set, the value should be null not zero cz if you put zero,
      u'll be saying that there's a foreign key 0 and there isn't so it'll bring an error during submission.
@@ -14,7 +15,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $breed = (int) ($_POST['breed']) ? null, Notice the brackets ends b4 the question mark. If let's say a breed existed with the id 0, ?:
         considers 0 as an empty so it would assign null to any breed id with the value 0. Chat has advised to always cast after checking the 
         condition hence the long version of empty */
-    $tagNumber = trim($_POST['tagNumber'] ?: '');
     $gender = $_POST['gender'] ?: ''; /*Note the ?: instead of ?? So I've learnt that ?? does not check if the input is empty, it
                                         just checks if it is missing(has been submitted by the form). I know it doesn't make sense why 
                                         sb would need to check if the form has submitted the input cz if u've assigned name to the input
@@ -33,13 +33,20 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                                                 So here, I am saying that if the date is empty, give it the current date. I'm basically assigning a 
                                                 default date but in PHP. That's what this line is for: date('Y-m-d')*/
 
-    $query = "INSERT INTO animals (animal_type_id, breed_id, tag_number, gender, health_status_id, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("iissis", $animalType, $breed, $tagNumber, $gender, $healthStatus, $createdAt);
-    $stmt->execute();
+    if($quantity >= 1){/*This is cz the fallback is zero and you don't want to bring negatives*/
+        $query = "INSERT INTO animals (animal_type_id, breed_id, gender, health_status_id, created_at) 
+        VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        for($count = 0; $count < $quantity; $count++) {
+            /*The rule is to prepare once(the prepared stmt above) then execute multiple times so the
+            ones below are the ones that are put in the loop.*/
+            $stmt->bind_param("iisis", $animalType, $breed, $gender, $healthStatus, $createdAt);
+            $stmt->execute();
+        }
 
-    $stmt->close();
+        $success = true;
+        $stmt->close();
+    }
 
 }
 ?>
@@ -121,6 +128,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 </select>
             </div>
 
+            <div class="oneinput">
+                <input type="number" id="quantity" name="quantity" placeholder=" " required>
+                <label for="quantity">Quantity</label>
+            </div>
+
             <div>
                 <div class="select-wrapper">
                     <select name="breed" id="breed">
@@ -133,20 +145,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                         }
                         ?>
                     </select>
-                </div>
-                <label for="" id="message">* <span id="text">Optional</span></label>
-            </div>
-
-            <div class="optionalInput">
-                <div class="oneinput">
-                    <input type="text" id="tagNumber" name="tagNumber" placeholder=" " >
-                        <!--value=" htmlspecialchars($_POST['tagNumber'] ?? '') ?>"
-                        Okay so now I am starting to see why ?? exists. Here it checks if the form 
-                        submitted tagNumber. If it did, it tells it to display the value, but if it didn't,
-                        it tells it to keep the input empty. If we used ?: here, if the user entered 0, null
-                        or false the clicked the arrow to go back, the input wouldn't be retained bcz ?: 
-                        considers those values equivalent to empty so that's one reason ?? exists-->
-                    <label for="tagNumber">Tag Number</label>
                 </div>
                 <label for="" id="message">* <span id="text">Optional</span></label>
             </div>
