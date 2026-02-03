@@ -107,8 +107,8 @@ CREATE TABLE feeding_records (-- To track amount of feeds to respective animal p
 CREATE TABLE products (-- record of all products produced by the farm. It's used as a reference for actual production
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,-- Eg milk
-    category_id INT,-- For milk it'll belong to category dairy
-    unit VARCHAR(20),-- Eg litres, kgs, trays
+    category_id INT NOT NULL,-- For milk it'll belong to category dairy
+    unit VARCHAR(20) NOT NULL,-- Eg litres, kgs, trays
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES product_categories(id)
 );

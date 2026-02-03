@@ -5,7 +5,8 @@ Handle the backend for all enterRecord pages:
     4. enterSale.php
     5. enterSupplier.php        ✔
     6. enterFarmPurchase.php
+    7. enterProduct.php         ✔
 
 Make sure you start sessions in every page(require auth.php or admin_auth.php)
-In enterRecord.php , add enterProduct.php cz Farm may expand and produce more than just milk and eggs
 For the tables, add color to pending and approved depending on the value.
+Research on how Kales are measured in farms, bundles or kgs? Rn you've picked bundles cz its more practical but just research to be sure
