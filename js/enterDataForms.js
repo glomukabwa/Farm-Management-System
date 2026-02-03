@@ -57,3 +57,21 @@ if(successMessage){
 }
 
 
+/*This is for total cost in enterSale.php */
+const totalCost = document.getElementById("total-cost");
+const unit = document.getElementById("unitCost");
+const quantity = document.getElementById("quantity-input");
+
+if(totalCost && unit && quantity){
+    
+    function calculateTotal(){
+        totalCost.textContent = Number(quantity.value || 0) * Number(unit.value || 0);
+        /*The OR operator (||) in JS is not just true/false — it returns the first “truthy” value it finds.
+        A truthy value is anything that is considered valid/true in JS while a falsy value is considered “empty” or false-like.
+        So it only kicks in if the quantity or unitCost is empty or undefined(when nothing has been entered yet which will really
+        help cz I've added an event listener to both quantity and unit) */
+    }
+
+    quantity.addEventListener("input", calculateTotal);
+    unit.addEventListener("input", calculateTotal);
+}

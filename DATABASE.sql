@@ -155,16 +155,26 @@ CREATE TABLE product_inventory (-- Now that products have been produced, how muc
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE TABLE sales (-- Tracks the selling of products to buyers
+CREATE TABLE product_sales (-- Tracks the selling of products to buyers
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    quantity DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
     total_cost DECIMAL(10,2) 
         GENERATED ALWAYS AS (quantity * unit_cost) STORED,
     sale_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     sold_by INT,
     FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (sold_by) REFERENCES users(id)
+);
+
+CREATE TABLE animal_sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    animal_id INT NOT NULL,
+    sale_price DECIMAL(10,2) NOT NULL,
+    sale_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    sold_by INT,
+    FOREIGN KEY (animal_id) REFERENCES animals(id),
     FOREIGN KEY (sold_by) REFERENCES users(id)
 );
 

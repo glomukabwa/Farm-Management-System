@@ -7,6 +7,7 @@ Handle the backend for all enterRecord pages:
     6. enterFarmPurchase.php
     7. enterProduct.php         ✔
 
+Need to make changes the the enterSale.php so that user can pick between product or animal sale
 Make sure you start sessions in every page(require auth.php or admin_auth.php)
 For the tables, add color to pending and approved depending on the value.
-Research on how Kales are measured in farms, bundles or kgs? Rn you've picked bundles cz its more practical but just research to be sure
+Research on how Kales are measured in farms, bundles or kgs? Rn I've picked bundles cz its more practical but just research to be sure
