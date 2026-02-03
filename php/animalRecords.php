@@ -2,9 +2,34 @@
 require 'admin_auth.php';
 include 'config.php';
 
-$stmt = $conn->prepare("SELECT * FROM animals");
+/*Pagination*/
+//Setting the defaults
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 10;
+$offset = ($page - 1) * $limit;
+
+//Safety measures
+if($page < 1){
+    $page = 1;
+}
+
+if(!in_array($limit, [10,20,30])){
+    $limit = 10;
+}
+
+$stmt = $conn->prepare("SELECT * FROM animals
+                        ORDER BY id ASC
+                        LIMIT ?,?");
+$stmt->bind_param("ii", $offset, $limit);
 $stmt->execute();
 $result = $stmt->get_result();
+
+$totalStmt = $conn->prepare("SELECT COUNT(*) AS total FROM animals");
+$totalStmt->execute();
+$totalResult = $totalStmt->get_result();
+$totalRow = $totalResult->fetch_assoc();
+$totalRecords = (int) $totalRow['total'];
+$totalPages = ceil($totalRecords/$limit);
 ?>
 
 <!DOCTYPE html>
@@ -98,6 +123,40 @@ $result = $stmt->get_result();
                 ?>
             </tbody>
         </table>
+
+        <div class="controls">
+            <form method="GET">
+                <input type="hidden" value="1" name="page">
+
+                <label for="limit">
+                    Show rows per page
+                    <select name="limit" id="limit" onchange="this.form.submit()">
+                        <option value="10"<?= $limit == 10 ? 'selected' : '' ?>>10</option>
+                        <option value="20"<?= $limit == 20 ? 'selected' : '' ?>>20</option>
+                        <option value="30"<?= $limit == 30 ? 'selected' : '' ?>>30</option>
+                    </select>
+                    <span class="arrow">⌄</span>
+                </label>
+            </form>
+
+            <div class="arrows">
+                <?php
+                if($page > 1){
+                    ?>
+                    <a id="lessThan" href="?page=<?= $page - 1 ?>&limit=<?= $limit ?>">&lt;</a>
+                    <?php
+                }
+                ?>
+                <span> Page <?= $page ?> of <?= $totalPages ?> </span>
+                <?php
+                if($page < $totalPages){
+                    ?>
+                    <a id="greaterThan" href="?page=<?= $page + 1 ?>&limit=<?= $limit ?>">&gt;</a>
+                    <?php
+                }
+                ?>
+            </div>
+        </div>
     </section>
 </body>
 </html>

@@ -66,7 +66,7 @@
                 <p>Users</p>
             </a>
 
-            <a href="#" class="link">
+            <a href="http://localhost/Farm%20Website/php/animalRecords.php" class="link">
                 <img src="../images/white_background.jpg" alt="">
                 <p>Animals</p>
             </a>

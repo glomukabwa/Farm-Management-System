@@ -56,8 +56,8 @@ $totalArray = $totalResult->fetch_assoc();/*This will return only one value in a
                                             ]*/
 $totalRows = $totalArray['total'];/*This will return the value of the column which is 21 */
 
-$totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the brackests so if the limit is 10 the
-                                           answer will be 3 pages*/
+$totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the brackests so if the limit is 10 and
+                                           the division results in 2.7, the answer will be 3 pages*/
 ?>
 
 <!DOCTYPE html>
@@ -173,7 +173,7 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
         </table>
 
         <div class="controls">
-            <form action="GET">
+            <form method="GET">
                 <input type="hidden" name="page" value="1"><!--This resets page to 1 every time the limit has been 
                                                             changed. Chat says this is good measure and I honestly 
                                                             don't understand its explanation of why it is so just 
@@ -204,16 +204,16 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
 
             <div class="arrows">
             <?php
-                if($page > 1){//You want the less than sign to only appear for pages that are not 1  cz 1 has no preceding page
+                if($page > 1){//You want the less than sign to only appear for pages that are not 1 cz 1 has no preceding page
                 ?>
                 <!--Below, the final link should look sth like this:
                         users.php?page=1&limit=20   
                     Which means display page 1 and display 20 rows-->
                 <a href="?page=<?= $page - 1 ?>&limit=<?= $limit ?>">&lt;</a>
                     <!--Don't forget to do the subtraction for the page cz we're moving to the previous page-->
-                    <!--Note, the reason we had to create form for the options is cz the form sends needs to send
-                        a GET request for them(which is in form of a link[URL]) but for these 2 links in this div, the
-                        href already has the link needed-->
+                    <!--Note, the reason we had to create form for the options is cz the form needs to send a
+                        GET request for them(which is in form of a link[URL]) but for these 2 links in this div, 
+                        the href already has the link needed-->
                 <?php
                 }
                 ?>
