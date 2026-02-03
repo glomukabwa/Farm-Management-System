@@ -1,5 +1,32 @@
 <?php
+require 'admin_auth.php';
 include 'config.php';
+
+$success = false;
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    $product = (int) $_POST['productName'];
+    $quantity = (int) $_POST['quantity'] ?: 0;
+    $user = $_SESSION['user_id'];
+    $date = $_POST['date'] ?: date('Y-m-d H:i:s');
+    $comment = $_POST['comment'] ?: null;
+
+    $stmt = $conn->prepare("INSERT INTO production_records (product_id, quantity, recorded_by, created_at, comment)
+            VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("iiiss", $product, $quantity, $user, $date, $comment);
+    $stmt->execute();
+
+    $updateInventory = $conn->prepare("UPDATE product_inventory
+                                       SET quantity_available = quantity_available + ?
+                                       WHERE product_id = ?");
+    $updateInventory->bind_param("ii", $quantity, $product);
+    $updateInventory->execute();
+
+    if($stmt->affected_rows > 0 && $updateInventory->affected_rows > 0){
+        $success = true;
+    }
+    $stmt->close();
+    $updateInventory->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +79,7 @@ include 'config.php';
     </section>
 
     <section class="main-content">
-        <form method="GET">
+        <form method="POST">
             <h1>Record Production</h1>
 
             <div class="select-wrapper">
@@ -62,7 +89,7 @@ include 'config.php';
                     $products = "SELECT * FROM products";
                     $productsResult = $conn->query($products);
                     while($productsRow = $productsResult->fetch_assoc()){
-                        echo '<option value="'.$productsRow['id'].'">'.$productsResult['name'].'</option>';
+                        echo '<option value="'.$productsRow['id'].'">'.$productsRow['name'].'</option>';
                     }
                     ?>
                 </select>
@@ -70,22 +97,26 @@ include 'config.php';
 
             <div class="quantityAndUnit">
                 <div class="oneinput" id="quantity">
-                    <input type="number" id="quantity" name="quantity" placeholder=" " required>
+                    <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
                     <label for="quantity">Quantity</label>
                 </div>
                 <div class="select-wrapper" id="unit">
                     <select name="unit" id="unit" required>
                         <option value="">Unit</option>
-                        <option value="Kgs">Kgs</option>
-                        <option value="Bales">Bales</option>
-                        <option value="Sacks">Sacks</option>
+                        <?php
+                        $units = "SELECT * FROM products";
+                        $unitsResult = $conn->query($units);
+                        while($unitsRow = $unitsResult->fetch_assoc()){
+                            echo '<option value="' .$unitsRow['unit']. '">' .$unitsRow['unit']. '</option>';
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
 
             <div class="date">
                 <div>
-                    <input type="date" id="date" name="date">
+                    <input type="datetime-local" id="date" name="date">
                 </div>
                 <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>
@@ -98,8 +129,23 @@ include 'config.php';
                 <label for="" id="message">* <span id="text">Optional</span></label>
             </div>
 
-            <button type="submit">Enter</button>
+            <div class="submission">
+                <button type="submit">Enter</button>
+                <?php 
+                $message = '';
+                if($success){
+                    $message = 'Record added successfully!';
+                }
+                ?>
+                <p id="successMessage"><?= htmlspecialchars($message) ?></p>
+            </div>
         </form>
     </section>
 </body>
 </html>
+
+<?php
+if(isset($conn)){
+    $conn->close();
+}
+?>

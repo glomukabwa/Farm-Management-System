@@ -116,9 +116,10 @@ CREATE TABLE products (-- record of all products produced by the farm. It's used
 CREATE TABLE production_records (-- This tracks the active production of the products 
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    quantity DECIMAL(10,2) NOT NULL,-- This will just be the number. The unit is in the products table
+    quantity INT NOT NULL,-- This will just be the number. The unit is in the products table
     recorded_by INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    comment TEXT,
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (recorded_by) REFERENCES users(id)
 );
@@ -149,7 +150,7 @@ CREATE TABLE purchases (-- Tracks purchases of products from supplier to farm eg
 CREATE TABLE product_inventory (-- Now that products have been produced, how much do we have in the store that hasn't been sold?
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    quantity_available DECIMAL(10,2) DEFAULT 0,
+    quantity_available INT DEFAULT 0,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id)
 );

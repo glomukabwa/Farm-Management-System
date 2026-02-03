@@ -1,9 +1,11 @@
 Handle the backend for all enterRecord pages:
     1. enterAnimal.php          ✔
     2. recordFeeding.php        ✔
-    3. recordProduction.php
+    3. recordProduction.php     ✔
     4. enterSale.php
     5. enterSupplier.php        ✔
     6. enterFarmPurchase.php
 
 Make sure you start sessions in every page(require auth.php or admin_auth.php)
+In enterRecord.php , add enterProduct.php cz Farm may expand and produce more than just milk and eggs
+For the tables, add color to pending and approved depending on the value.

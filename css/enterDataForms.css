@@ -209,7 +209,7 @@ button{
     gap:2rem;
 }
 
-.quantityAndUnit #quantity, .quantityAndUnit #unit{
+.quantityAndUnit #quantity-input, .quantityAndUnit #unit{
     width:15rem;
 }
 
