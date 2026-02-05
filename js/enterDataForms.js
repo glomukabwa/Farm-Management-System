@@ -81,15 +81,24 @@ if(totalCost && unit && quantity){
 const feedSelect = document.getElementById("feedSelect");
 const existingFeed = document.querySelector(".existingFeed");
 const newFeed = document.querySelector(".newFeed");
-
+const existingInputs = existingFeed.querySelectorAll("input, select");
+const newInputs = newFeed.querySelectorAll("input, select");
+existingInputs.forEach(input => input.disabled = false);/*the const is a list, so you have to disable individually*/
+newInputs.forEach(input => input.disabled = true);
+            
 if(feedSelect && existingFeed && newFeed){
-    feedSelect.addEventListener("change", function(){
+    feedSelect.addEventListener("change", function(){/*Using a function would be better here, but I'm getting
+        confused when I create one so I'll just stick to this. The more I  learn, the more I'll use functions*/
         if(feedSelect.value == "New Feed"){
-            existingFeed.style.display = "none";
-            newFeed.style.display = "block";
+            existingFeed.classList.add("hidden");
+            newFeed.classList.remove("hidden");
+            existingInputs.forEach(input => input.disabled = true);
+            newInputs.forEach(input => input.disabled = false);
         }else{
-            existingFeed.style.display = "block";
-            newFeed.style.display = "none";
+            existingFeed.classList.remove("hidden");
+            newFeed.classList.add("hidden");
+            existingInputs.forEach(input => input.disabled = false);
+            newInputs.forEach(input => input.disabled = true);
         }
     });
         
