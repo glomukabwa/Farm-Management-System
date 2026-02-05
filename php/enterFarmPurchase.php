@@ -1,3 +1,68 @@
+<?php
+require 'admin_auth.php';
+include 'config.php';
+
+$success = false;
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $purchaseName = $_POST['purchaseName'] ?: '';
+    $purCategory = (int) $_POST['purchaseCategory'];
+    $quantity = (float) $_POST['quantity'] ?: 0.00;
+    $unitCost = (float) $_POST['unitCost'] ?: 0.00;
+    $supplierName = $_POST['supplierName'] ?: '';
+    $supplierPNumber = $_POST['supplierPNumber'] ?: '';
+    $purDate = $_POST['date'] ?: date('Y-m-d H:i:s');
+    $userId = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("INSERT INTO purchases (purchase_name, purchase_category_id, quantity, unit_cost, supplier_name, supplier_phone_number, purchase_date, recorded_by)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("siddsssi", $purchaseName, $purCategory, $quantity, $unitCost, $supplierName, $supplierPNumber, $purDate, $userId);
+    $stmt->execute();
+    if($stmt->affected_rows > 0){
+        $success = true;
+    }
+    $stmt->close();
+
+    if($purCategory == 1){
+        $alertStmt = $conn->prepare("INSERT INTO alerts (title, description, alert_date, user_id)
+                    VALUES (?, ?, ?, ?)");
+
+        $title = 'Update Animal Records';
+        $description = 'New animals have been purchased. Please create new records of the animals.
+
+                        Link: http://localhost/Farm%20Website/php/enterAnimal.php';
+
+        $alertStmt->bind_param("sssi", $title, $description, $purDate, $userId);
+        $alertStmt->execute();
+    }
+
+    if($purCategory == 2){
+        $alertStmt2 = $conn->prepare("INSERT INTO alerts (title, description, alert_date, user_id)
+                    VALUES (?, ?, ?, ?)");
+
+        $title = 'Update Product Inventory';
+        $description = 'New crops have been purchased. Please update the products inventory.
+
+                        Link:http://localhost/Farm%20Website/php/recordProduction.php';
+
+        $alertStmt2->bind_param("sssi", $title, $description, $purDate, $userId);
+        $alertStmt2->execute();
+    }
+
+    if($purCategory == 3){
+        $alertStmt3 = $conn->prepare("INSERT INTO alerts (title, description, alert_date, user_id)
+                    VALUES (?, ?, ?, ?)");
+
+        $title = 'Update Feed Records';
+        $description = 'New feeds have been purchased. Please update the feeds inventory.
+
+                        Link:http://localhost/Farm%20Website/php/enterFeed.php';
+
+        $alertStmt3->bind_param("sssi", $title, $description, $purDate, $userId);
+        $alertStmt3->execute();
+    }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +114,7 @@
     </section>
 
     <section class="main-content">
-        <form method="GET">
+        <form method="POST">
             <h1>Enter Farm Purchase</h1>
 
             <div class="optionalInput"><!--I am just borrowing the styling of optional but this isn't optional-->
@@ -60,8 +125,21 @@
                 <label for="" id="message">* <span id="text">Enter what was bought by the farm</span></label>
             </div>
 
+            <div class="select-wrapper">
+                <select name="purchaseCategory" id="purchaseCategory" required>
+                    <option value="">Purchase Category</option>
+                    <?php
+                    $purchaseCategories = "SELECT * FROM purchase_categories";
+                    $purchaseResult = $conn->query($purchaseCategories);
+                    while($purchaseRow = $purchaseResult->fetch_assoc()){
+                        echo '<option value="'.$purchaseRow['id'].'">'.$purchaseRow['name'].'</option>'; 
+                    }
+                    ?>
+                </select>
+            </div>
+
             <div class="oneinput" id="quantity">
-                <input type="number" id="quantity" name="quantity" placeholder=" " required>
+                <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
                 <label for="quantity">Quantity</label>
             </div>
 
@@ -75,7 +153,7 @@
 
             <div class="totalCost">
                 <label>Total Cost:</label>
-                <label class="labelTwo">Kshs 0</label>
+                <label class="labelTwo">Kshs <span id="total-cost">0</span></label>
             </div>
 
             <div class="supplierDetails">
@@ -84,20 +162,34 @@
                     <label for="supplierName">Supplier Name</label>
                 </div>
 
-                <div class="oneinput" id="supplierPNumber">
-                    <input type="text" id="supplierPNumber" name="supplierPNumber" placeholder=" " required>
-                    <label for="supplierPNumber">Supplier Phone Number</label>
+                <div class="optionalInput">
+                    <div class="oneinput">
+                        <div class="oneinput" id="supplierPNumber">
+                            <input type="text" id="supplierPNumber" name="supplierPNumber" placeholder=" " required>
+                            <label for="supplierPNumber">Supplier Phone Number</label>
+                        </div>
+                    </div>
+                    <label for="" id="message">* <span id="text">Optional</span></label>
                 </div>
             </div>
 
             <div class="date">
                 <div>
-                    <input type="date" id="date" name="date">
+                    <input type="datetime-local" id="date" name="date">
                 </div>
                 <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>
 
-            <button type="submit" class="purchaseButton">Enter</button>
+            <div class="submission">
+                <button type="submit" class="purchaseButton">Enter</button>
+                <?php 
+                $message = '';
+                if($success){
+                    $message = 'Record added successfully!';
+                }
+                ?>
+                <p id="successMessage"><?= htmlspecialchars($message) ?></p>
+            </div>
         </form>
     </section>
 </body>

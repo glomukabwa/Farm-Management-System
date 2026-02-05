@@ -115,6 +115,11 @@ require 'admin_auth.php';/*User must have admin priviledges for this page*/
                 <p>Enter New Product</p>
             </a>
 
+            <a href="http://localhost/Farm%20Website/php/enterFeed.php" class="link">
+                <img src="../images/white_background.jpg" alt="">
+                <p>Enter New Feed</p>
+            </a>
+
         </div>
     </section>
 </body>

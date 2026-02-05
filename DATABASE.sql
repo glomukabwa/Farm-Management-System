@@ -38,6 +38,11 @@ CREATE TABLE animal_lifecycle_statuses (
     description TEXT
 );
 
+CREATE TABLE purchase_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
 -- Core Tables
 CREATE TABLE users (-- record of users
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -136,14 +141,16 @@ CREATE TABLE suppliers (-- record of all farm suppliers
 CREATE TABLE purchases (-- Tracks purchases of products from supplier to farm eg bulls are purchased then fattened
     id INT AUTO_INCREMENT PRIMARY KEY,
     purchase_name VARCHAR(100) NOT NULL,
+    purchase_category_id INT NOT NULL,
     quantity DECIMAL(10,2) NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
     total_cost DECIMAL(10,2) 
         GENERATED ALWAYS AS (quantity * unit_cost) STORED,
-    supplier_id INT,
-    purchase_date DATETIME,
-    recorded_by INT,
-    FOREIGN KEY(supplier_id) REFERENCES suppliers(id),
+    supplier_name VARCHAR(100) NOT NULL,
+    supplier_phone_number VARCHAR(50),
+    purchase_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    recorded_by INT NOT NULL,
+    FOREIGN KEY (purchase_category_id) REFERENCES purchase_categories(id),
     FOREIGN KEY (recorded_by) REFERENCES users(id)
 );
 
@@ -158,7 +165,7 @@ CREATE TABLE product_inventory (-- Now that products have been produced, how muc
 CREATE TABLE product_sales (-- Tracks the selling of products to buyers
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    quantity INT NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
     total_cost DECIMAL(10,2) 
         GENERATED ALWAYS AS (quantity * unit_cost) STORED,
