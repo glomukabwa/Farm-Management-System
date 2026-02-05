@@ -14,7 +14,7 @@ $success = false;
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/enterDataForms.css">
     <script src="../js/main.js" defer></script>
-    <script src="../js/recordOptions.js" defer></script>
+    <script src="../js/enterDataForms.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -74,14 +74,13 @@ $success = false;
             </div>
 
             <div class="existingFeed">
-
                 <div class="quantityAndUnit">
                     <div class="oneinput" id="quantity">
-                        <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
+                        <input type="number" id="existing-input" name="quantity" placeholder=" " required>
                         <label for="quantity">Quantity</label>
                     </div>
                     <div class="select-wrapper" id="unit">
-                        <select name="unit" id="unit" required>
+                        <select name="unit" id="existing-unit" required>
                             <option value="">Unit</option>
                             <?php
                             $units = "SELECT DISTINCT unit FROM feeds";
@@ -95,17 +94,17 @@ $success = false;
                 </div>
 
                 <div class="expiryDate">
-                    <label for="date" id="expiryLabel">Expiry Date: </label>
+                    <label id="expiryLabel">Expiry Date: </label>
                     <div class="date">
                         <div>
                             <input type="date" id="date" name="date">
                         </div>
-                        <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+                        <label id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
                     </div>
                 </div>
             </div>
 
-            <div class="newFeed">
+            <div class="newFeed hidden">
                 <div class="oneinput">
                     <input type="text" name="feedName" id="feedName" placeholder=" " required>
                     <label for="feedName">Feed Name</label>
@@ -113,11 +112,11 @@ $success = false;
 
                 <div class="quantityAndUnit">
                     <div class="oneinput" id="quantity">
-                        <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
+                        <input type="number" id="new-input" name="quantity" placeholder=" " required>
                         <label for="quantity">Quantity</label>
                     </div>
                     <div class="oneinput">
-                        <input type="text" id="unit" name="unit" placeholder=" " required>
+                        <input type="text" id="unit" name="new-unit" placeholder=" " required>
                         <label for="unit">Unit</label>
                     </div>
                 </div>

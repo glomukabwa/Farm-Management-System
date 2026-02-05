@@ -208,7 +208,7 @@ button{
     gap:2rem;
 }
 
-.quantityAndUnit #quantity-input, .quantityAndUnit #unit{
+.quantityAndUnit #quantity-input, .quantityAndUnit #unit, .quantityAndUnit #existing-input, .quantityAndUnit #new-input{
     width:15rem;
 }
 
@@ -273,6 +273,6 @@ button{
     gap:2rem;
 }
 
-.newFeed{
+.hidden{
     display:none;
 }

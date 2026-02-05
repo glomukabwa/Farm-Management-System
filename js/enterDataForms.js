@@ -79,32 +79,20 @@ if(totalCost && unit && quantity){
 
 /*This is for enterFeeds.php*/
 const feedSelect = document.getElementById("feedSelect");
-const existingFeedDiv = document.querySelector(".existingFeed");
-const newFeedDiv = document.querySelector(".newFeed");
+const existingFeed = document.querySelector(".existingFeed");
+const newFeed = document.querySelector(".newFeed");
 
-if (feedSelect && existingFeedDiv && newFeedDiv) {
-
-    function toggleSection(section, show) {
-        section.style.display = show ? "block" : "none";
-
-        section.querySelectorAll("input, select").forEach(el => {
-            el.disabled = !show;
-        });
-    }
-
-    function toggleFeedInputs() {
-        if (feedSelect.value === "New Feed") {
-            toggleSection(newFeedDiv, true);
-            toggleSection(existingFeedDiv, false);
-        } else {
-            toggleSection(newFeedDiv, false);
-            toggleSection(existingFeedDiv, true);
+if(feedSelect && existingFeed && newFeed){
+    feedSelect.addEventListener("change", function(){
+        if(feedSelect.value == "New Feed"){
+            existingFeed.style.display = "none";
+            newFeed.style.display = "block";
+        }else{
+            existingFeed.style.display = "block";
+            newFeed.style.display = "none";
         }
-    }
-
-    feedSelect.addEventListener("change", toggleFeedInputs);
-    toggleFeedInputs();
-
+    });
+        
 }
 
 
