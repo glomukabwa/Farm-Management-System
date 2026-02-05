@@ -103,5 +103,3 @@ if(feedSelect && existingFeed && newFeed){
     });
         
 }
-
-

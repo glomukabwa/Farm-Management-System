@@ -3,6 +3,44 @@ require 'admin_auth.php';
 include 'config.php';
 
 $success = false;
+$noModeSubmitted = false;
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $mode = $_POST['feedMode'];
+    if($mode === 'existing'){
+        $id = (int) $_POST['feed'];
+        $quantity = (float) $_POST['quantity'];
+        $expiryDate = $_POST['date'] ?: null;
+
+        $stmt = $conn->prepare("UPDATE feeds
+                              SET quantity = quantity + ? , expiry_date = ?
+                              WHERE id = ?");
+        $stmt->bind_param("dsi", $quantity, $expiryDate, $id);
+        $stmt->execute();
+        if($stmt->affected_rows > 0){
+            $success = true;
+        }
+        $stmt->close();
+    }elseif($mode === 'new'){
+        $feedName = $_POST['feedName'];
+        $feedQuantity = (float) $_POST['quantity'] ?: 0.00;
+        $feedUnit = trim(strtolower($_POST['new-unit']));
+        $exDate = $_POST['date'] ?: null;
+        $reorderLevel = $_POST['reorderLevel'] ?: 0.00;
+
+        $stmt2 = $conn->prepare("INSERT INTO feeds (name, quantity, unit, expiry_date, reorder_level)
+                                VALUES (?, ?, ?, ?, ?)");
+        $stmt2->bind_param("sdssd", $feedName, $feedQuantity, $feedUnit, $exDate, $reorderLevel);
+        $stmt2->execute();
+        if($stmt2->affected_rows > 0){
+            $success = true;
+        }
+        $stmt2->close();
+
+    }else{
+        die("Unknown feed mode");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,6 +112,8 @@ $success = false;
             </div>
 
             <div class="existingFeed">
+                <input type="hidden" name="feedMode" value="existing">
+
                 <div class="quantityAndUnit">
                     <div class="oneinput" id="quantity">
                         <input type="number" id="existing-input" name="quantity" placeholder=" " required>
@@ -105,6 +145,8 @@ $success = false;
             </div>
 
             <div class="newFeed hidden">
+                <input type="hidden" name="feedMode" value="new">
+
                 <div class="oneinput">
                     <input type="text" name="feedName" id="feedName" placeholder=" " required>
                     <label for="feedName">Feed Name</label>
@@ -118,6 +160,16 @@ $success = false;
                     <div class="oneinput">
                         <input type="text" id="unit" name="new-unit" placeholder=" " required>
                         <label for="unit">Unit</label>
+                    </div>
+                </div>
+
+                <div class="expiryDate">
+                    <label id="expiryLabel2">Expiry Date: </label>
+                    <div class="date">
+                        <div>
+                            <input type="date" id="date2" name="date">
+                        </div>
+                        <label id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
                     </div>
                 </div>
 
@@ -147,3 +199,9 @@ $success = false;
     </section>
 </body>
 </html>
+
+<?php
+if(isset($conn)){
+    $conn->close();
+}
+?>

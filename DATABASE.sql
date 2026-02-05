@@ -75,10 +75,10 @@ CREATE TABLE animals (-- record of all existing animals
 CREATE TABLE feeds (-- record of all existing feeds
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    quantity DECIMAL(10,2),
+    quantity DECIMAL(10,2) NOT NULL,
     unit VARCHAR(20) NOT NULL,-- kgs, bales etc
     expiry_date DATE,
-    reorder_level DECIMAL(10,2),-- quantity that triggers alert system
+    reorder_level DECIMAL(10,2) NOT NULL,-- quantity that triggers alert system
     created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );
 

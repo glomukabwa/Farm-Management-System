@@ -140,3 +140,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </section>
 </body>
 </html>
+
+<?php
+if(isset($conn)){
+    $conn->close();
+}
+?>
