@@ -256,3 +256,23 @@ button{
     opacity: 1;/*I am doing this and the line below so that in JS I can make it disappear*/
     transition: opacity 0.5s ease;
 }
+
+.expiryDate{
+    display: flex;
+    gap:1rem;
+    margin-left:1rem;
+}
+
+.expiryDate #expiryLabel{
+    padding-top:1rem;
+}
+
+.newFeed , .existingFeed{
+    display: flex;
+    flex-direction: column;
+    gap:2rem;
+}
+
+.newFeed{
+    display:none;
+}

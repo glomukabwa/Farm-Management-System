@@ -149,14 +149,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             
             <div class="quantityAndUnit">
                 <div class="oneinput" id="quantity">
-                    <input type="number" id="quantity" name="quantity" placeholder=" " required>
+                    <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
                     <label for="quantity">Quantity</label>
                 </div>
                 <div class="select-wrapper" id="unit">
                     <select name="unit" id="unit" required>
                         <option value="">Unit</option>
-                        <option value="kg">Kgs</option>
-                        <option value="bales">Bales</option>
+                        <?php
+                        $units = "SELECT DISTINCT unit FROM feeds";
+                        $unitsResult = $conn->query($units);
+                        while($unitsRow = $unitsResult->fetch_assoc()){
+                            echo '<option value="' .$unitsRow['unit']. '">' .$unitsRow['unit']. '</option>';
+                        }
+                        ?>
                     </select>
                 </div>
             </div>

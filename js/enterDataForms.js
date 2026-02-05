@@ -75,3 +75,36 @@ if(totalCost && unit && quantity){
     quantity.addEventListener("input", calculateTotal);
     unit.addEventListener("input", calculateTotal);
 }
+
+
+/*This is for enterFeeds.php*/
+const feedSelect = document.getElementById("feedSelect");
+const existingFeedDiv = document.querySelector(".existingFeed");
+const newFeedDiv = document.querySelector(".newFeed");
+
+if (feedSelect && existingFeedDiv && newFeedDiv) {
+
+    function toggleSection(section, show) {
+        section.style.display = show ? "block" : "none";
+
+        section.querySelectorAll("input, select").forEach(el => {
+            el.disabled = !show;
+        });
+    }
+
+    function toggleFeedInputs() {
+        if (feedSelect.value === "New Feed") {
+            toggleSection(newFeedDiv, true);
+            toggleSection(existingFeedDiv, false);
+        } else {
+            toggleSection(newFeedDiv, false);
+            toggleSection(existingFeedDiv, true);
+        }
+    }
+
+    feedSelect.addEventListener("change", toggleFeedInputs);
+    toggleFeedInputs();
+
+}
+
+

@@ -55,7 +55,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $title = 'Update Feed Records';
         $description = 'New feeds have been purchased. Please update the feeds inventory.
 
-                        Link:http://localhost/Farm%20Website/php/enterFeed.php';
+                        Link:http://localhost/Farm%20Website/php/updateFeedsInventory.php';
 
         $alertStmt3->bind_param("sssi", $title, $description, $purDate, $userId);
         $alertStmt3->execute();
