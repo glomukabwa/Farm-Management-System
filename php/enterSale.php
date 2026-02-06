@@ -4,20 +4,43 @@ include 'config.php';
 
 $success = false;
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $productId = (int) $_POST['productName'];
-    $quantity = (int) $_POST['quantity'] ?: 0;
-    $unitCost = (float) $_POST['unitCost'] ?: 0.00;
-    $date = $_POST['date'] ?: date('Y-m-d H:i:s');
-    $user = $_SESSION['user_id'];
+    $choice = $_POST['saleChoice'];
+    if($choice === 'productChoice'){
+        $productId = (int) $_POST['productName'];
+        $quantity = (float) $_POST['quantity'] ?: 0.00;
+        $unitCost = (float) $_POST['unitCost'] ?: 0.00;
+        $date = $_POST['date'] ?: date('Y-m-d H:i:s');
+        $user = (int) $_SESSION['user_id'];
 
-    $stmt = $conn->prepare("INSERT INTO sales (product_id, quantity, unit_cost, sale_date, sold_by)
-                            VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("iidsi", $productId, $quantity, $unitCost, $date, $user);
-    $stmt->execute();
-    if($stmt->affected_rows > 0){
-        $success = true;
+        $stmt = $conn->prepare("INSERT INTO product_sales (product_id, quantity, unit_cost, sale_date, sold_by)
+                                VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("iddsi", $productId, $quantity, $unitCost, $date, $user);
+        $stmt->execute();
+        if($stmt->affected_rows > 0){
+            $success = true;
+        }
+        $stmt->close();
+
+        $productUpdate = $conn->prepare("UPDATE TABLE product_inventory
+                                        SET quantity_available = quantity_available - ?
+                                        WHERE product_id = ? AND quantity_available >= ?");
+        $productUpdate->bind_param("did", $quantity, $productId, $quantity);
+        $productUpdate->execute();
+        $productUpdate->close();
+    }elseif($choice === 'animalChoice'){
+        $animalid = (int) $_POST['animalType'];
+        $animalGender = $_POST['gender'];
+        $animalQuantity = (float) $_POST['quantity'] ?: 0.00;
+        $aniUnitCost = (float) $_POST['unitCost'] ?: 0.00;
+        $saleDate = $_POST['date'] ?: date('Y-m-d H:i:s');
+        $userId = (int) $_SESSION['user_id'];
+
+        $stmt2 = $conn->prepare("INSERT INTO animal_sales (animal_type_id, gender, quantity, unit_cost, sale_date, sold_by)
+                                VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt2->bind_param("isddsi", $animalid, $animalGender, $animalQuantity, $aniUnitCost, $saleDate, $userId);
+        $stmt2->execute();
     }
-    $stmt->close();
+    
 }
 ?>
 <!DOCTYPE html>
@@ -83,6 +106,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </div>
 
             <div class="productMode">
+                <input type="hidden" name="saleChoice" value="productChoice">
+
                 <div class="select-wrapper">
                     <select name="productName" id="productName" required>
                         <option value="">Product Name</option>
@@ -139,6 +164,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </div>
 
             <div class="animalMode hidden">
+                <input type="hidden" name="saleChoice" value="animalChoice">
+
                 <div class="select-wrapper">
                     <select name="animalType" id="animalType" required>
                         <option value="">Animal Type</option>
