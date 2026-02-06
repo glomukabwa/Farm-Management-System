@@ -74,9 +74,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <form method="POST">
             <h1>Enter Sale</h1>
 
-            <div class="select-wrapper" id="pickSaleKind">
+            <div class="select-wrapper">
                 <select name="saleCategory" id="saleCategory" required>
-                    <option value="">Sale Category</option>
+                    <option value="">-- Pick a sale Category --</option>
                     <option value="productSale">Product Sale</option>
                     <option value="animalSale">Animal Sale</option>
                 </select>
@@ -102,7 +102,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <label for="quantity">Quantity</label>
                     </div>
                     <div class="select-wrapper" id="unit">
-                        <select name="unit" id="unit" required>
+                        <select name="unit" id="unitSelect" required>
                             <option value="">Unit</option>
                             <?php
                             $units = "SELECT * FROM products";

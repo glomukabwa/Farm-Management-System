@@ -56,6 +56,34 @@ if(successMessage){
     }
 }
 
+/*This is for enterFeeds.php*/
+const feedSelect = document.getElementById("feedSelect");
+const existingFeed = document.querySelector(".existingFeed");
+const newFeed = document.querySelector(".newFeed");
+            
+if(feedSelect && existingFeed && newFeed){
+    const existingInputs = existingFeed.querySelectorAll("input, select");
+    const newInputs = newFeed.querySelectorAll("input, select");
+    existingInputs.forEach(input => input.disabled = false);/*the const is a list, so you have to disable individually*/
+    newInputs.forEach(input => input.disabled = true);
+
+    feedSelect.addEventListener("change", function(){/*Using a function would be better here, but I'm getting
+        confused when I create one so I'll just stick to this. The more I  learn, the more I'll use functions*/
+        if(feedSelect.value == "New Feed"){
+            existingFeed.classList.add("hidden");
+            newFeed.classList.remove("hidden");
+            existingInputs.forEach(input => input.disabled = true);
+            newInputs.forEach(input => input.disabled = false);
+        }else{
+            existingFeed.classList.remove("hidden");
+            newFeed.classList.add("hidden");
+            existingInputs.forEach(input => input.disabled = false);
+            newInputs.forEach(input => input.disabled = true);
+        }
+    });
+        
+}
+
 /*ENTERSALE.PHP */
 /*This is for the first total cost in enterSale.php */
 const totalCost = document.getElementById("total-cost");
@@ -92,15 +120,16 @@ if(totalCost2 && unit2 && quantity2){
 }
 
 /*Toggling sale kind*/
-const selectSale = document.getElementById("pickSaleKind");
+const selectSale = document.getElementById("saleCategory");
 const productMode = document.querySelector(".productMode");
 const animalMode = document.querySelector(".animalMode");
-const productInputs = document.querySelectorAll("input, select");
-const animalInputs = document.querySelectorAll("input, select");
-productInputs.forEach(input => input.disabled = false);
-animalInputs.forEach(input => input.disabled = true);
 
 if(selectSale && productMode && animalMode){
+    const productInputs = productMode.querySelectorAll("input, select");
+    const animalInputs = animalMode.querySelectorAll("input, select");
+    productInputs.forEach(input => input.disabled = false);
+    animalInputs.forEach(input => input.disabled = true);
+    
     selectSale.addEventListener("change", function(){
         if(selectSale.value == "animalSale"){
             animalMode.classList.remove("hidden");
@@ -113,34 +142,6 @@ if(selectSale && productMode && animalMode){
             animalInputs.forEach(input => input.disabled = true);
             productInputs.forEach(input => input.disabled = false);
         }
-    })
+    });
 }
 /*END OF ENTERSALE.PHP */
-
-
-/*This is for enterFeeds.php*/
-const feedSelect = document.getElementById("feedSelect");
-const existingFeed = document.querySelector(".existingFeed");
-const newFeed = document.querySelector(".newFeed");
-const existingInputs = existingFeed.querySelectorAll("input, select");
-const newInputs = newFeed.querySelectorAll("input, select");
-existingInputs.forEach(input => input.disabled = false);/*the const is a list, so you have to disable individually*/
-newInputs.forEach(input => input.disabled = true);
-            
-if(feedSelect && existingFeed && newFeed){
-    feedSelect.addEventListener("change", function(){/*Using a function would be better here, but I'm getting
-        confused when I create one so I'll just stick to this. The more I  learn, the more I'll use functions*/
-        if(feedSelect.value == "New Feed"){
-            existingFeed.classList.add("hidden");
-            newFeed.classList.remove("hidden");
-            existingInputs.forEach(input => input.disabled = true);
-            newInputs.forEach(input => input.disabled = false);
-        }else{
-            existingFeed.classList.remove("hidden");
-            newFeed.classList.add("hidden");
-            existingInputs.forEach(input => input.disabled = false);
-            newInputs.forEach(input => input.disabled = true);
-        }
-    });
-        
-}
