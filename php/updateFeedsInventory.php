@@ -133,14 +133,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     </div>
                 </div>
 
-                <div class="expiryDate">
-                    <label id="expiryLabel">Expiry Date: </label>
-                    <div class="date">
-                        <div>
-                            <input type="date" id="date" name="date">
-                        </div>
-                        <label id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+                <div class="date">
+                    <div class="oneinput">
+                        <input type="date" id="date" name="date">
+                        <label for="date">Expiry date</label>
                     </div>
+                    <label id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
                 </div>
             </div>
 

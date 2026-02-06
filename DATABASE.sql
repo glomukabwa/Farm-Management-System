@@ -62,7 +62,7 @@ CREATE TABLE animals (-- record of all existing animals
     breed_id INT,-- This is important especially for cows however it is optional
     tag_number VARCHAR(50) UNIQUE,-- This is optional just incase the farm uses tags
     lifecycle_status_id INT NOT NULL DEFAULT 1,
-    gender ENUM('male','female'),
+    gender ENUM('male','female') NOT NULL,
     health_status_id INT,
     created_at DATE NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
@@ -177,11 +177,15 @@ CREATE TABLE product_sales (-- Tracks the selling of products to buyers
 
 CREATE TABLE animal_sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    animal_id INT NOT NULL,
-    sale_price DECIMAL(10,2) NOT NULL,
+    animal_type_id INT NOT NULL,
+    gender ENUM('male','female') NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL,
+    unit_cost DECIMAL(10,2) NOT NULL,
+    total_cost DECIMAL(10,2) 
+        GENERATED ALWAYS AS (quantity * unit_cost) STORED,
     sale_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     sold_by INT,
-    FOREIGN KEY (animal_id) REFERENCES animals(id),
+    FOREIGN KEY (animal_type_id) REFERENCES animals(animal_type_id),
     FOREIGN KEY (sold_by) REFERENCES users(id)
 );
 

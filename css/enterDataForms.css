@@ -267,7 +267,7 @@ button{
     padding-top:1rem;
 }
 
-.newFeed , .existingFeed{
+.newFeed , .existingFeed, .productMode, .animalMode{
     display: flex;
     flex-direction: column;
     gap:2rem;

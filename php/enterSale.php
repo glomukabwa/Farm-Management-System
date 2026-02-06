@@ -74,56 +74,117 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <form method="POST">
             <h1>Enter Sale</h1>
 
-            <div class="select-wrapper">
-                <select name="productName" id="productName" required>
-                    <option value="">Product Name</option>
-                    <?php
-                    $products = "SELECT * FROM products";
-                    $productsResult = $conn->query($products);
-                    while($productsRow = $productsResult->fetch_assoc()){
-                        echo '<option value="'.$productsRow['id'].'">'.$productsRow['name'].'</option>';
-                    }
-                    ?>
+            <div class="select-wrapper" id="pickSaleKind">
+                <select name="saleCategory" id="saleCategory" required>
+                    <option value="">Sale Category</option>
+                    <option value="productSale">Product Sale</option>
+                    <option value="animalSale">Animal Sale</option>
                 </select>
             </div>
 
-            <div class="quantityAndUnit">
-                <div class="oneinput" id="quantity">
-                    <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
-                    <label for="quantity">Quantity</label>
-                </div>
-                <div class="select-wrapper" id="unit">
-                    <select name="unit" id="unit" required>
-                        <option value="">Unit</option>
+            <div class="productMode">
+                <div class="select-wrapper">
+                    <select name="productName" id="productName" required>
+                        <option value="">Product Name</option>
                         <?php
-                        $units = "SELECT * FROM products";
-                        $unitsResult = $conn->query($units);
-                        while($unitsRow = $unitsResult->fetch_assoc()){
-                            echo '<option value="' .$unitsRow['unit']. '">' .$unitsRow['unit']. '</option>';
+                        $products = "SELECT * FROM products";
+                        $productsResult = $conn->query($products);
+                        while($productsRow = $productsResult->fetch_assoc()){
+                            echo '<option value="'.$productsRow['id'].'">'.$productsRow['name'].'</option>';
                         }
                         ?>
                     </select>
                 </div>
+
+                <div class="quantityAndUnit">
+                    <div class="oneinput" id="quantity">
+                        <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
+                        <label for="quantity">Quantity</label>
+                    </div>
+                    <div class="select-wrapper" id="unit">
+                        <select name="unit" id="unit" required>
+                            <option value="">Unit</option>
+                            <?php
+                            $units = "SELECT * FROM products";
+                            $unitsResult = $conn->query($units);
+                            while($unitsRow = $unitsResult->fetch_assoc()){
+                                echo '<option value="' .$unitsRow['unit']. '">' .$unitsRow['unit']. '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="optionalInput"><!--I am just borrowing the styling of optional but this isn't optional-->
+                    <div class="oneinput">
+                        <input type="number" name="unitCost" id="unitCost" placeholder=" " required>
+                        <label for="unitCost">Unit Cost</label>
+                    </div>
+                    <label for="" id="message">* <span id="text">Enter cost of one good</span></label>
+                </div>
+
+                <div class="totalCost">
+                    <label>Total Cost:</label>
+                    <label class="labelTwo" >Kshs <span id="total-cost">0</span></label>
+                </div>
+
+                <div class="date">
+                    <div class="oneinput">
+                        <input type="date" id="date" name="date">
+                        <label for="date">Sale Date</label>
+                    </div>
+                    <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+                </div>
+
             </div>
 
-            <div class="optionalInput"><!--I am just borrowing the styling of optional but this isn't optional-->
+            <div class="animalMode hidden">
+                <div class="select-wrapper">
+                    <select name="animalType" id="animalType" required>
+                        <option value="">Animal Type</option>
+                        <?php
+                        $animalTypes = "SELECT * FROM animal_types";
+                        $typeResult = $conn->query($animalTypes);
+                        while($typeRow = $typeResult->fetch_assoc()){
+                            echo '<option value="'.$typeRow['id'].'">'.$typeRow['name'].'</option>'; 
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="select-wrapper">
+                    <select name="gender" id="gender" required>
+                        <option value="">Gender</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+
                 <div class="oneinput">
-                    <input type="number" name="unitCost" id="unitCost" placeholder=" " required>
-                    <label for="unitCost">Unit Cost</label>
+                    <input type="number" id="quantity-input2" name="quantity" placeholder=" " required>
+                    <label for="quantity-input2">Quantity</label>
                 </div>
-                <label for="" id="message">* <span id="text">Enter cost of one good</span></label>
-            </div>
 
-            <div class="totalCost">
-                <label>Total Cost:</label>
-                <label class="labelTwo" >Kshs <span id="total-cost">0</span></label>
-            </div>
-
-            <div class="date">
-                <div>
-                    <input type="date" id="date" name="date">
+                <div class="optionalInput"><!--I am just borrowing the styling of optional but this isn't optional-->
+                    <div class="oneinput">
+                        <input type="number" name="unitCost" id="unitCost2" placeholder=" " required>
+                        <label for="unitCost2">Unit Cost</label>
+                    </div>
+                    <label for="" id="message">* <span id="text">Enter cost of one good</span></label>
                 </div>
-                <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+
+                <div class="totalCost">
+                    <label>Total Cost:</label>
+                    <label class="labelTwo" >Kshs <span id="total-cost2">0</span></label>
+                </div>
+
+                <div class="date">
+                    <div class="oneinput">
+                        <input type="date" id="date" name="date">
+                        <label for="date">Sale Date</label>
+                    </div>
+                    <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+                </div>
             </div>
 
             <div class="submission">

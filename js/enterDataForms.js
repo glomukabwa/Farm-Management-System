@@ -56,8 +56,8 @@ if(successMessage){
     }
 }
 
-
-/*This is for total cost in enterSale.php */
+/*ENTERSALE.PHP */
+/*This is for the first total cost in enterSale.php */
 const totalCost = document.getElementById("total-cost");
 const unit = document.getElementById("unitCost");
 const quantity = document.getElementById("quantity-input");
@@ -75,6 +75,47 @@ if(totalCost && unit && quantity){
     quantity.addEventListener("input", calculateTotal);
     unit.addEventListener("input", calculateTotal);
 }
+
+/*This is for the ones in animal mode */
+const totalCost2 = document.getElementById("total-cost2");
+const unit2 = document.getElementById("unitCost2");
+const quantity2 = document.getElementById("quantity-input2");
+
+if(totalCost2 && unit2 && quantity2){
+    
+    function calculateTotal2(){
+        totalCost2.textContent = Number(quantity2.value || 0) * Number(unit2.value || 0);
+    }
+
+    quantity2.addEventListener("input", calculateTotal2);
+    unit2.addEventListener("input", calculateTotal2);
+}
+
+/*Toggling sale kind*/
+const selectSale = document.getElementById("pickSaleKind");
+const productMode = document.querySelector(".productMode");
+const animalMode = document.querySelector(".animalMode");
+const productInputs = document.querySelectorAll("input, select");
+const animalInputs = document.querySelectorAll("input, select");
+productInputs.forEach(input => input.disabled = false);
+animalInputs.forEach(input => input.disabled = true);
+
+if(selectSale && productMode && animalMode){
+    selectSale.addEventListener("change", function(){
+        if(selectSale.value == "animalSale"){
+            animalMode.classList.remove("hidden");
+            productMode.classList.add("hidden");
+            animalInputs.forEach(input => input.disabled = false);
+            productInputs.forEach(input => input.disabled = true);
+        }else{
+            animalMode.classList.add("hidden");
+            productMode.classList.remove("hidden");
+            animalInputs.forEach(input => input.disabled = true);
+            productInputs.forEach(input => input.disabled = false);
+        }
+    })
+}
+/*END OF ENTERSALE.PHP */
 
 
 /*This is for enterFeeds.php*/
