@@ -276,3 +276,20 @@ button{
 .hidden{
     display:none;
 }
+
+.messageContainer{
+    color: var(--basecolor);
+}
+
+/*The sweet alert message styling*/
+.messageConfirmButton{
+    background-color: var(--basecolor) !important;
+    width:20rem !important;
+    border-radius: 2rem; 
+    /*height:4rem;
+    padding:1rem 2rem;
+    border-radius: 2rem; 
+    text-align: center;
+    cursor: pointer;
+    margin-top: 2rem;*/
+}

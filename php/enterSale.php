@@ -3,6 +3,7 @@ require 'admin_auth.php';
 include 'config.php';
 
 $success = false;
+$inStock = true;
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $choice = $_POST['saleChoice'];
     if($choice === 'productChoice'){
@@ -11,34 +12,70 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $unitCost = (float) $_POST['unitCost'] ?: 0.00;
         $date = $_POST['date'] ?: date('Y-m-d H:i:s');
         $user = (int) $_SESSION['user_id'];
-
-        $stmt = $conn->prepare("INSERT INTO product_sales (product_id, quantity, unit_cost, sale_date, sold_by)
+        
+        $checkInventory = $conn->prepare("SELECT * FROM product_inventory WHERE product_id = ? AND quantity_available >= ?");
+        $checkInventory->bind_param("id", $productId, $quantity);
+        $checkInventory->execute();
+        $inventoryResult = $checkInventory->get_result();
+        if($inventoryResult->num_rows === 0){
+            $inStock = false;
+        }else{
+            $stmt = $conn->prepare("INSERT INTO product_sales (product_id, quantity, unit_cost, sale_date, sold_by)
                                 VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("iddsi", $productId, $quantity, $unitCost, $date, $user);
-        $stmt->execute();
-        if($stmt->affected_rows > 0){
-            $success = true;
-        }
-        $stmt->close();
+            $stmt->bind_param("iddsi", $productId, $quantity, $unitCost, $date, $user);
+            $stmt->execute();
 
-        $productUpdate = $conn->prepare("UPDATE TABLE product_inventory
+            $productUpdate = $conn->prepare("UPDATE product_inventory
                                         SET quantity_available = quantity_available - ?
                                         WHERE product_id = ? AND quantity_available >= ?");
-        $productUpdate->bind_param("did", $quantity, $productId, $quantity);
-        $productUpdate->execute();
-        $productUpdate->close();
+            $productUpdate->bind_param("did", $quantity, $productId, $quantity);
+            $productUpdate->execute();
+        
+            if($stmt->affected_rows > 0 && $productUpdate->affected_rows > 0){
+                $success = true;
+            }
+
+            $stmt->close();
+            $productUpdate->close();
+        }
+        $checkInventory->close();
+
     }elseif($choice === 'animalChoice'){
         $animalid = (int) $_POST['animalType'];
         $animalGender = $_POST['gender'];
-        $animalQuantity = (float) $_POST['quantity'] ?: 0.00;
+        $animalQuantity = (int) $_POST['quantity'] ?: 0;
         $aniUnitCost = (float) $_POST['unitCost'] ?: 0.00;
         $saleDate = $_POST['date'] ?: date('Y-m-d H:i:s');
         $userId = (int) $_SESSION['user_id'];
 
-        $stmt2 = $conn->prepare("INSERT INTO animal_sales (animal_type_id, gender, quantity, unit_cost, sale_date, sold_by)
+        $checkAnimalInventory = $conn->prepare("SELECT * FROM animals WHERE lifecycle_status_id = 1 AND animal_type_id = ? AND gender = ?");
+        $checkAnimalInventory->bind_param("is", $animalid, $animalGender);
+        $checkAnimalInventory->execute();
+        $animalInventoryResult = $checkAnimalInventory->get_result();
+        if($animalInventoryResult->num_rows === 0 || $animalInventoryResult->num_rows < $animalQuantity){
+            $inStock = false;
+        }else{
+            $stmt2 = $conn->prepare("INSERT INTO animal_sales (animal_type_id, gender, quantity, unit_cost, sale_date, sold_by)
                                 VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt2->bind_param("isddsi", $animalid, $animalGender, $animalQuantity, $aniUnitCost, $saleDate, $userId);
-        $stmt2->execute();
+            $stmt2->bind_param("isidsi", $animalid, $animalGender, $animalQuantity, $aniUnitCost, $saleDate, $userId);
+            $stmt2->execute();
+
+            $animalUpdate = $conn->prepare("UPDATE animals
+                                        SET lifecycle_status_id = 2
+                                        WHERE lifecycle_status_id = 1 AND animal_type_id = ? AND gender = ?
+                                        ORDER BY id ASC
+                                        LIMIT ? ");
+            $animalUpdate->bind_param("isi", $animalid, $animalGender, $animalQuantity);
+            $animalUpdate->execute();
+
+            if($stmt2->affected_rows > 0 && $animalUpdate->affected_rows > 0){
+                $success = true;
+            }
+
+            $stmt2->close();
+            $animalUpdate->close();
+        }
+        $checkAnimalInventory->close();
     }
     
 }
@@ -52,6 +89,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/enterDataForms.css">
+    <script src="../js/sweetalert2.all.min.js"></script>
     <script src="../js/enterDataForms.js" defer></script>
 </head>
 <body>
@@ -218,8 +256,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <button type="submit">Enter</button>
                 <?php 
                 $message = '';
-                if($success){
+                if($success && $inStock){
                     $message = 'Record added successfully!';
+                }elseif(!$inStock){
+                    ?>
+                    <script>
+                        Swal.fire({
+                            title: 'Out of Stock!',
+                            text: 'The quantity of the product you have selected is not available.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                popup: 'messageContainer',
+                                title: 'messageTitle',
+                                content: 'messageText',
+                                confirmButton: 'messageConfirmButton'
+                            }
+                        });
+                    </script>
+                    <?php
                 }
                 ?>
                 <p id="successMessage"><?= htmlspecialchars($message) ?></p>

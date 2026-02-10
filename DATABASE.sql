@@ -179,7 +179,7 @@ CREATE TABLE animal_sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_type_id INT NOT NULL,
     gender ENUM('male','female') NOT NULL,
-    quantity DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
     total_cost DECIMAL(10,2) 
         GENERATED ALWAYS AS (quantity * unit_cost) STORED,
