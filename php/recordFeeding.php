@@ -6,6 +6,7 @@ $success = false;/*You need to define this flag here(it'll be used to indicate s
                     the if below cz POST will not always run so when the page loads(GET request) and u've used this variable in the
                     html(next to the button), u'll get an error that the variable is undefined cz it doesn't exist yet. You
                     also must always define it first(I know this is sth you don't always see the importance of) cz of the same reasons*/
+$inStock = true;
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $animalId = (int) $_POST['pickAnimal'];
     $feedId = (int) $_POST['feed'];
@@ -14,22 +15,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $dateTime = $_POST['date'] ?: date('Y-m-d H:i:s');
     $userId = (int) $_SESSION['user_id'];
 
-    $stmt = $conn->prepare("INSERT INTO feeding_records(animal_type_id, feed_id, care_task_id, quantity_used, fed_at, recorded_by)
-                            VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("iiidsi", $animalId, $feedId, $careTaskId, $quantity, $dateTime, $userId);
-    $stmt->execute();
-    if($stmt->affected_rows > 0){
-        $success = true;
-    }
-    $stmt->close();
+    $checkFeedsInventory = $conn->prepare("SELECT * FROM feeds WHERE id = ? AND quantity >= ?");
+    $checkFeedsInventory->bind_param("id", $feedId, $quantity);
+    $checkFeedsInventory->execute();
+    $inventoryResult = $checkFeedsInventory->get_result();
+    if($inventoryResult->num_rows === 0){
+        $inStock = false;
 
-    $editFeedsTable = $conn->prepare("UPDATE feeds 
-                                      SET quantity = quantity - ?
-                                      WHERE id = ? AND quantity >= ?");
-    $editFeedsTable->bind_param("did", $quantity, $feedId, $quantity);
-    $editFeedsTable->execute();
-
-    if($editFeedsTable->affected_rows === 0){
         $title = "Low stock alert";
 
         /*Getting the feed name for the description*/
@@ -39,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $getResult = $getFeedName->get_result();
         $getRow = $getResult->fetch_assoc();
         $feedName = $getRow['name'];
-        $description = $feedName . " is running low on stock. Please restock.";
+        $description = $feedName . " quantity is running low. Please restock.";
         $getFeedName->close();
 
         $alertDate = date('Y-m-d');
@@ -47,9 +39,32 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $alertStmt->bind_param("sssi", $title, $description, $alertDate, $userId);
         $alertStmt->execute();
         $alertStmt->close();
+    }else{
+        $stmt = $conn->prepare("INSERT INTO feeding_records(animal_type_id, feed_id, care_task_id, quantity_used, fed_at, recorded_by)
+                                VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("iiidsi", $animalId, $feedId, $careTaskId, $quantity, $dateTime, $userId);
+        $stmt->execute();
 
+        $careTasksStmt = $conn->prepare("INSERT INTO daily_animal_care(animal_type_id, care_task_id, performed_at, performed_by, status)
+                                        VALUES (?, ?, ?, ?, ?)");
+        $careStatus = true;/*This will be stored as 1 in sql, so in bind_param() below we'll say int. False is stored as 0. 
+                        We can also use 1 here in place of true, it'll work the same */
+        $careTasksStmt->bind_param("iisii", $animalId, $careTaskId, $dateTime, $userId, $careStatus);
+        $careTasksStmt->execute();
+
+        $editFeedsTable = $conn->prepare("UPDATE feeds 
+                                        SET quantity = quantity - ?
+                                        WHERE id = ? AND quantity >= ?");
+        $editFeedsTable->bind_param("did", $quantity, $feedId, $quantity);
+        $editFeedsTable->execute();
+
+        if($stmt->affected_rows > 0 && $careTasksStmt->affected_rows > 0 && $editFeedsTable->affected_rows > 0){
+            $success = true;
+        }
+        $stmt->close();
+        $careTasksStmt->close();
+        $editFeedsTable->close();
     }
-    $editFeedsTable->close();
     
 }
 
@@ -63,6 +78,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/enterDataForms.css">
+    <script src="../js/sweetalert2.all.min.js"></script>
     <script src="../js/enterDataForms.js" defer></script>
 </head>
 <body>
@@ -125,7 +141,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <select name="mealCategory" id="mealCategory" required>
                     <option value="">Meal Category</option>
                     <?php
-                    $mealCategories = "SELECT * FROM care_tasks";
+                    $mealCategories = "SELECT * FROM care_tasks WHERE category = 'Feeding'";
                     $categoriesResult = $conn->query($mealCategories);
                     while($categoriesRow = $categoriesResult->fetch_assoc()){
                         echo '<option value="'.$categoriesRow['id'].'">'.$categoriesRow['name'].'</option>';
@@ -149,7 +165,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             
             <div class="quantityAndUnit">
                 <div class="oneinput" id="quantity">
-                    <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
+                    <input type="number" step="0.01" id="quantity-input" name="quantity" placeholder=" " required>
+                    <!--step="0.01" allows the input to have up to 2 decimal places-->
                     <label for="quantity">Quantity</label>
                 </div>
                 <div class="select-wrapper" id="unit">
@@ -177,8 +194,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <button type="submit">Enter</button>
                 <?php 
                 $message = '';
-                if($success){
+                if($success && $inStock){
                     $message = 'Record added successfully!';
+                }elseif(!$inStock){
+                    ?>
+                    <script>
+                        Swal.fire({
+                            title: 'Low Stock Alert!',
+                            text: 'The quantity of the product you have selected is not available.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                popup: 'messageContainer',
+                                title: 'messageTitle',
+                                content: 'messageText',
+                                confirmButton: 'messageConfirmButton'
+                            }
+                        })
+                    </script>
+                    <?php
                 }
                 ?>
                 <p id="successMessage"><?= htmlspecialchars($message) ?></p>

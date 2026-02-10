@@ -19,6 +19,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $inventoryResult = $checkInventory->get_result();
         if($inventoryResult->num_rows === 0){
             $inStock = false;
+
+            $title = 'Low Stock Alert';
+
+            $productNameStmt = $conn->prepare("SELECT name FROM products WHERE id = ?");
+            $productNameStmt->bind_param("i", $productId);
+            $productNameStmt->execute();
+            $productNameRes = $productNameStmt->get_result();
+            $productNameRow = $productNameRes->fetch_assoc();
+            $productName = $productNameRow['name'];
+            $description = $productName . " quantity is running low. Please restock.";
+            $productNameStmt->close();
+
+            $alertDate = date('Y-m-d');
+            $alertStmt = $conn->prepare("INSERT INTO alerts(title, description, alert_date, user_id) VALUES (?, ?, ?, ?)");
+            $alertStmt->bind_param("sssi", $title, $description, $alertDate, $user);
+            $alertStmt->execute();
+            $alertStmt->close();
+
         }else{
             $stmt = $conn->prepare("INSERT INTO product_sales (product_id, quantity, unit_cost, sale_date, sold_by)
                                 VALUES (?, ?, ?, ?, ?)");
@@ -54,6 +72,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $animalInventoryResult = $checkAnimalInventory->get_result();
         if($animalInventoryResult->num_rows === 0 || $animalInventoryResult->num_rows < $animalQuantity){
             $inStock = false;
+
+            $title = 'Low Stock Alert';
+
+            $animalNameStmt = $conn->prepare("SELECT name FROM animal_types WHERE id = ?");
+            $animalNameStmt->bind_param("i", $animalid);
+            $animalNameStmt->execute();
+            $animalNameRes = $animalNameStmt->get_result();
+            $animalNameRow = $animalNameRes->fetch_assoc();
+            $animalName = $animalNameRow['name'];
+            $description = $animalName . " numbers are running low. Please restock.";
+            $animalNameStmt->close();
+
+            $alertDate = date('Y-m-d');
+            $alertStmt = $conn->prepare("INSERT INTO alerts(title, description, alert_date, user_id) VALUES (?, ?, ?, ?)");
+            $alertStmt->bind_param("sssi", $title, $description, $alertDate, $userId);
+            $alertStmt->execute();
+            $alertStmt->close();
         }else{
             $stmt2 = $conn->prepare("INSERT INTO animal_sales (animal_type_id, gender, quantity, unit_cost, sale_date, sold_by)
                                 VALUES (?, ?, ?, ?, ?, ?)");
@@ -161,7 +196,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                 <div class="quantityAndUnit">
                     <div class="oneinput" id="quantity">
-                        <input type="number" id="quantity-input" name="quantity" placeholder=" " required>
+                        <input type="number" step="0.01" id="quantity-input" name="quantity" placeholder=" " required>
                         <label for="quantity">Quantity</label>
                     </div>
                     <div class="select-wrapper" id="unit">
@@ -262,7 +297,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     ?>
                     <script>
                         Swal.fire({
-                            title: 'Out of Stock!',
+                            title: 'Low Stock Alert!',
                             text: 'The quantity of the product you have selected is not available.',
                             icon: 'error',
                             confirmButtonText: 'OK',

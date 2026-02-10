@@ -10,7 +10,8 @@ CREATE TABLE animal_statuses (
 CREATE TABLE care_tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,-- Morning Feeding, Evening Feeding, Water Refill
-    description TEXT
+    description TEXT,
+    category TEXT
 );
 
 CREATE TABLE product_categories (
@@ -83,6 +84,11 @@ CREATE TABLE feeds (-- record of all existing feeds
 );
 
 CREATE TABLE daily_animal_care (-- To track whether morning meal, evening meal and water refill have been done
+    -- This feels like a repeat of feeding_records below but the reason I include it is for separation purposes
+    -- If I merge the two tables, I'll have to make the feed_id in feeding_records null cz when someone records water refill, they don't use a feed
+    -- I don't think its ideal to have the feed id be nullable so instead we'll have feeding_records below focusing on tracking feeding and feed quantities
+    -- and then we'll have this one for tracking just if all the care tasks have been done. Additionally, if I want to add a new care task like grooming, I can
+    -- just do that easily. It keeps the tables clean and easy to understand
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_type_id INT NOT NULL,
     care_task_id INT NOT NULL,
