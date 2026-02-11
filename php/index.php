@@ -55,11 +55,14 @@ include 'config.php';
     </section>
 
     <section class="main-content">
-        <?php $Fname = $_SESSION['user_name'] ?>
-        <h1>Hello <?= htmlspecialchars($Fname) ?></h1>
-        
+        <div class="logoSpace">
+            <img src="../images/black image.jpeg" alt="logo">
+        </div>
         <div class="content">
             <div class="left">
+
+                <?php $Fname = $_SESSION['user_name'] ?>
+                <h1>Hello <?= htmlspecialchars($Fname) ?></h1>
 
                 <div class="feedings">
                     <h2>Today's Feeding</h2>
