@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $description = $productName . " quantity is running low. Please restock.";
             $productNameStmt->close();
 
-            $alertDate = date('Y-m-d');
+            $alertDate = date('Y-m-d H:i:s');
             $alertStmt = $conn->prepare("INSERT INTO alerts(title, description, alert_date, user_id) VALUES (?, ?, ?, ?)");
             $alertStmt->bind_param("sssi", $title, $description, $alertDate, $user);
             $alertStmt->execute();
@@ -84,7 +84,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $description = $animalName . " numbers are running low. Please restock.";
             $animalNameStmt->close();
 
-            $alertDate = date('Y-m-d');
+            $alertDate = date('Y-m-d H:i:s');
             $alertStmt = $conn->prepare("INSERT INTO alerts(title, description, alert_date, user_id) VALUES (?, ?, ?, ?)");
             $alertStmt->bind_param("sssi", $title, $description, $alertDate, $userId);
             $alertStmt->execute();

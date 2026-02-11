@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $feedId = (int) $_POST['feed'];
     $careTaskId = (int) $_POST['mealCategory'];
     $quantity = !empty($_POST['quantity']) ? (float) $_POST['quantity'] : 0.00;/*Note the float cz quantity if of type decimal*/
-    $dateTime = $_POST['date'] ?: date('Y-m-d H:i:s');
+    $dateTime = $_POST['date'] ?: date('Y-m-d');
     $userId = (int) $_SESSION['user_id'];
 
     $checkFeedsInventory = $conn->prepare("SELECT * FROM feeds WHERE id = ? AND quantity >= ?");
@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $description = $feedName . " quantity is running low. Please restock.";
         $getFeedName->close();
 
-        $alertDate = date('Y-m-d');
+        $alertDate = date('Y-m-d H:i:s');
         $alertStmt = $conn->prepare("INSERT INTO alerts(title, description, alert_date, user_id) VALUES (?, ?, ?, ?)");
         $alertStmt->bind_param("sssi", $title, $description, $alertDate, $userId);
         $alertStmt->execute();
@@ -185,7 +185,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             <div class="date">
                 <div>
-                    <input type="datetime-local" id="date" name="date"><!--datetime-local makes it provide the date too-->
+                    <input type="date" id="date" name="date"><!--datetime-local makes it provide the date too-->
                 </div>
                 <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
             </div>

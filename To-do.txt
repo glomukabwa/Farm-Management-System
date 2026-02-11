@@ -1,14 +1,12 @@
-Handle the backend for all enterRecord pages:
-    1. enterAnimal.php          ✔
-    2. recordFeeding.php        ✔
-    3. recordProduction.php     ✔
-    4. enterSale.php            ✔
-    5. enterSupplier.php        ✔
-    6. enterFarmPurchase.php    ✔
-    7. enterProduct.php         ✔
-    8. updateFeedsInventory.php ✔
+Overview Page:
+    1. Daily tasks
+            ~ You need to add sth to edit water refill
+    2. Alert
+    3. Weekly Sales Report 
+    3. Today's Sales
 
 Use sweetAlert2 to give messages to the users ine every page. Link: https://sweetalert2.github.io/#examples
+                                                    Github: https://github.com/sweetalert2/sweetalert2/releases
 
 Make sure you start sessions in every page(require auth.php or admin_auth.php)
 

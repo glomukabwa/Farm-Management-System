@@ -1,9 +1,6 @@
 <?php
-session_start();
-if(isset($_SESSION['flash'])) {
-    echo "<div class='flash-message'>" . $_SESSION['flash'] . "</div>";
-    unset($_SESSION['flash']); /*After setting it, you have to clear it so that it only shows once*/
-}
+require 'auth.php';
+include 'config.php';
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +55,8 @@ if(isset($_SESSION['flash'])) {
     </section>
 
     <section class="main-content">
-        <h1>Hello User</h1>
+        <?php $Fname = $_SESSION['user_name'] ?>
+        <h1>Hello <?= htmlspecialchars($Fname) ?></h1>
         
         <div class="content">
             <div class="left">
@@ -73,42 +71,106 @@ if(isset($_SESSION['flash'])) {
                             <th>Evening Meal</th>
                             <th>Water Refill</th>
                         </tr>
-                        <tr>
-                            <td id="animal">Cows</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                        </tr>
-                        <tr>
-                            <td id="animal">Calves</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                        </tr>
-                        <tr>
-                            <td id="animal">Bulls</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                        </tr>
-                        <tr>
-                            <td id="animal">Pigs</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                        </tr>
-                        <tr>
-                            <td id="animal">Piglets</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                        </tr>
-                        <tr>
-                            <td id="animal">Chicken</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                            <td>✕</td>
-                        </tr>
+                        <?php
+                        $getAnimals = $conn->query("SELECT * FROM animal_types");
+                        while($getAnimalRow = $getAnimals->fetch_assoc()){
+                            ?>
+                            <tr>
+                                <td id="animal"><?= $getAnimalRow['name'] ?></td>
+
+                                <!--MORNING MEAL-->
+                                <?php
+                                $morningMeal = false;
+
+                                $morningStmt = $conn->prepare("SELECT status FROM daily_animal_care 
+                                                               WHERE care_task_id = 1 
+                                                               AND animal_type_id = ? 
+                                                               AND performed_at = ?");
+                                $todaysDate = date('Y-m-d');
+                                $morningStmt->bind_param("is", $getAnimalRow['id'], $todaysDate);
+                                $morningStmt->execute();
+                                $morningResult = $morningStmt->get_result();
+                                if($morningResult->num_rows > 0){
+                                    $morningRow = $morningResult->fetch_assoc();
+                                    if($morningRow['status'] === 1){
+                                        $morningMeal = true;
+                                    }
+                                }
+                                
+                                if(!$morningMeal){
+                                    ?>
+                                    <td>✕</td>
+                                    <?php
+                                }else{
+                                    ?>
+                                    <td>✔</td>
+                                    <?php
+                                }
+                                
+
+                                /*EVENING MEAL*/
+                                $eveningMeal = false;
+
+                                $eveningStmt = $conn->prepare("SELECT status FROM daily_animal_care 
+                                                               WHERE care_task_id = 2
+                                                               AND animal_type_id = ? 
+                                                               AND performed_at = ?");
+                                
+                                $eveningStmt->bind_param("is", $getAnimalRow['id'], $todaysDate);
+                                $eveningStmt->execute();
+                                $eveningResult = $eveningStmt->get_result();
+                                if($eveningResult->num_rows > 0){
+                                    $eveningRow = $eveningResult->fetch_assoc();
+                                    if($eveningRow['status'] === 1){
+                                        $eveningMeal = true;
+                                    }
+                                }
+
+                                if(!$eveningMeal){
+                                    ?>
+                                    <td>✕</td>
+                                    <?php
+                                }else{
+                                    ?>
+                                    <td>✔</td>
+                                    <?php
+                                }
+
+
+                                /*WATER REFILL*/
+                                $waterRefill = false;
+
+                                $waterStmt = $conn->prepare("SELECT status FROM daily_animal_care 
+                                                               WHERE care_task_id = 3
+                                                               AND animal_type_id = ? 
+                                                               AND performed_at = ?");
+                                
+                                $waterStmt ->bind_param("is", $getAnimalRow['id'], $todaysDate);
+                                $waterStmt ->execute();
+                                $waterResult = $waterStmt ->get_result();
+                                if($waterResult->num_rows > 0){
+                                    $waterRow = $waterResult->fetch_assoc();
+                                    if($waterRow['status'] === 1){
+                                        $waterRefill = true;
+                                    }
+                                }
+
+                                if(!$waterRefill){
+                                    ?>
+                                    <td>✕</td>
+                                    <?php
+                                }else{
+                                    ?>
+                                    <td>✔</td>
+                                    <?php
+                                }
+                                ?>
+    
+                            </tr>
+                            <?php
+                        }
+                        ?>
+
                     </table>
 
                     <a href="#">EDIT</a>
