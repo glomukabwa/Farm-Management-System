@@ -1,7 +1,8 @@
 Overview Page:
     1. Daily tasks
             ~ You need to add sth to edit water refill
-    2. Alert
+    2. Alert   
+            ~ You need to put a link to direct view button              
     3. Weekly Sales Report 
     3. Today's Sales
 

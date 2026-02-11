@@ -184,8 +184,34 @@ include 'config.php';
             <div class="right">
                 <div class="alerts">
                     <h2>Alerts</h2>
-                    <p>No alerts found</p>
-                    <a href="#">See More</a>
+
+                    <div class="alertList">
+                        <?php
+                        $alertStmt = $conn->prepare("SELECT * FROM alerts");
+                        $alertStmt->execute();
+                        $alertRes = $alertStmt->get_result();
+                        if($alertRes->num_rows === 0){
+                            ?>
+                            <p>No alerts found</p>
+                            <?php
+                        }else{
+                            while($alertRows = $alertRes->fetch_assoc()){
+                            ?>
+                            <div class="singleAlert">
+                                <h3><?= htmlspecialchars($alertRows['title']) ?></h3>
+                                <div class="contentAndBtn">
+                                    <p><?= htmlspecialchars($alertRows['description']) ?></p>
+                                    <a href="#">VIEW</a>
+                                </div>
+                            </div>
+
+                            <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                    
+                    <a class="seeMore" href="#">See More</a>
                 </div>
 
                 <div class="todays-sales">
@@ -195,6 +221,7 @@ include 'config.php';
                         <p>Ksh 0</p>
                     </div>
                 </div>
+
             </div>
         </div>
 
