@@ -4,7 +4,7 @@ Overview Page:
     2. Alert   
             ~ You need to put a link to direct view button              
     3. Weekly Sales Report 
-    3. Today's Sales
+    3. Today's Sales                            ✔
 
 Use sweetAlert2 to give messages to the users ine every page. Link: https://sweetalert2.github.io/#examples
                                                     Github: https://github.com/sweetalert2/sweetalert2/releases

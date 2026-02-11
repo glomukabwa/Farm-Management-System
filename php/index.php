@@ -185,6 +185,39 @@ include 'config.php';
             </div>
 
             <div class="right">
+
+                <div class="todays-sales">
+                    <img src="../icons/sale.png" alt="sale">
+                    <div>
+                        <h2>Today's Sales</h2>
+                        <?php
+                        $pSalesStmt = $conn->prepare("SELECT total_cost FROM product_sales WHERE sale_date = ?");
+                        $pSalesStmt->bind_param("s", $todaysDate);
+                        $pSalesStmt->execute();
+                        $pSalesResult = $pSalesStmt->get_result();
+                        $pSales = 0.00;
+                        while($pSalesRow = $pSalesResult->fetch_assoc()){
+                            $pSales += (float) $pSalesRow['total_cost'];
+                        }
+
+                        $aSalesStmt = $conn->prepare("SELECT total_cost FROM animal_sales WHERE sale_date = ?");
+                        $aSalesStmt->bind_param("s", $todaysDate);
+                        $aSalesStmt->execute();
+                        $aSalesResult = $aSalesStmt->get_result();
+                        $aSales = 0.00;
+                        while($aSalesRow = $aSalesResult->fetch_assoc()){
+                            $aSales += (float) $aSalesRow['total_cost'];
+                        }
+
+                        $totalSales = $pSales + $aSales;
+                        ?>
+                        <p>Ksh <?= number_format($totalSales, 2) ?></p>
+                        <!--I've just learnt that php removes trailing zeros so if you don't tell it that you want a decimal number format, it'll
+                        remove the trailing zeros so 200.00 will be 200 and 100.50 will be 100.5
+                        Also, apparently for htmlspecialchars is mostly for text and userinput, not so much for numbers. That's what Chat said-->
+                    </div>
+                </div>
+
                 <div class="alerts">
                     <h2>Alerts</h2>
 
@@ -217,14 +250,7 @@ include 'config.php';
                     <a class="seeMore" href="#">See More</a>
                 </div>
 
-                <div class="todays-sales">
-                    <h2>Today's Sales</h2>
-                    <div>
-                        <img src="../icons/sale.png" alt="sale">
-                        <p>Ksh 0</p>
-                    </div>
-                </div>
-
+                
             </div>
         </div>
 

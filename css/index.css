@@ -98,6 +98,32 @@ body{
     width:50rem;
 }
 
+/*TODAY'S SALES SECTION*/
+.todays-sales{
+    border: solid 0.2rem black;
+    border-radius: 2rem;
+    padding: 2rem;
+    display: flex;
+    gap:2rem;
+    margin-top: 7.5rem;
+    width:30rem;
+    margin-left:auto;
+}
+
+.todays-sales div{
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+.todays-sales p{
+    font-size:2rem;
+    padding-left:0.5rem;
+}
+
+.todays-sales img{
+    height:7rem;
+}
 
 /*ALERTS SECTION*/
 .alerts{
@@ -108,7 +134,6 @@ body{
     flex-direction: column;
     gap:1rem;
     width:40rem;
-    margin-top:2rem;
     height:44rem;
 }
 
@@ -205,25 +230,4 @@ body{
 
 .alerts .seeMore:hover::after{
     left:7.3rem;
-}
-
-
-/*TODAY'S SALES SECTION*/
-.todays-sales{
-    border: solid 0.2rem black;
-    border-radius: 2rem;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap:1rem;
-}
-
-.todays-sales div{
-    display:flex;
-    font-size: 2rem;
-    gap:1rem;
-}
-
-.todays-sales img{
-    height:3rem;
 }
