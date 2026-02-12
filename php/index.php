@@ -181,7 +181,56 @@ include 'config.php';
 
                 <div class="weekly-sales">
                     <h2>Weekly Sales Report</h2>
+
+                    <?php
+                    $weeklySales = [
+                        'Monday' => 0,
+                        'Tuesday' => 0,
+                        'Wednesday' => 0,
+                        'Thursday' => 0,
+                        'Friday' => 0,
+                        'Saturday' => 0,
+                        'Sunday' => 0
+                    ];
+
+                    $productWeeklySales = $conn->query("SELECT
+                                                            DAYNAME(sale_date) as day,
+                                                            SUM(total_cost) as total
+                                                        FROM product_sales
+                                                        WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                                                        GROUP BY DAYNAME(sale_date)
+                                                        ORDER BY WEEKDAY(sale_date)");
+                    while($prodSalesRow = $productWeeklySales->fetch_assoc()){
+                        $dayName = $prodSalesRow['day'];
+                        $dayTotal = $prodSalesRow['total'];
+
+                        $weeklySales[$dayName] = $dayTotal;
+                    }
+
+                    $animalWeeklySales = $conn->query("SELECT
+                                                            DAYNAME(sale_date) as day,
+                                                            SUM(total_cost) as total
+                                                        FROM animal_sales
+                                                        WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                                                        GROUP BY DAYNAME(sale_date)
+                                                        ORDER BY WEEKDAY(sale_date)");
+                    while($animalSalesRow = $animalWeeklySales->fetch_assoc()){
+                        $dayName = $animalSalesRow['day'];
+                        $dayTotal = $animalSalesRow['total'];
+                        
+                        $weeklySales[$dayName] += $dayTotal;
+                    }
+                    ?>
+
+                    <p>
+                        <?php
+                        foreach($weeklySales as $name => $sale){
+                            echo $name . " = " . $sale . "<br>" ;
+                        }
+                        ?>
+                    </p>
                 </div>
+
             </div>
 
             <div class="right">
