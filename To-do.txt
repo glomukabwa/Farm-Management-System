@@ -3,7 +3,7 @@ Overview Page:
             ~ You need to add sth to edit water refill
     2. Alert   
             ~ You need to put a link to direct view button              
-    3. Weekly Sales Report 
+    3. Weekly Sales Report                      ✔
     3. Today's Sales                            ✔
 
 Use sweetAlert2 to give messages to the users ine every page. Link: https://sweetalert2.github.io/#examples

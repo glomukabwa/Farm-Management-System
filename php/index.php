@@ -245,6 +245,14 @@ include 'config.php';
                     }
                     ?>
 
+                    <div class="salesContent"
+                        data-labels = '<?php echo json_encode(array_keys($weeklySales)); ?>'
+                        data-values = '<?php echo json_encode(array_values($weeklySales)) ?>'>
+                        <!--A data attribute is a special HTML attribute that allows you to store info on an element. It is not shown on the browser but can be accessed by JS-->
+                        <!--Data attributtes always start with data- followed by a name of your choosing as long as u specify that name correctly in JS-->
+                        <!--Also, notice that the data attributes are part of the div's opening tag-->
+                    </div>
+
                     <div>
                         <canvas id="salesChart"></canvas>
                     </div>
