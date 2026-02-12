@@ -14,6 +14,8 @@ include 'config.php';
     <link rel="stylesheet" href="../css/index.css">
     <script src="../js/main.js" defer></script><!--defer here means:wait until the HTML is parsed before running your JS, so you don’t 
     need DOMContentLoaded(an event that can be added to an action listener) if you use defer.-->
+    <script src="../js/Chart.js"></script>
+    <script src="../js/index.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -243,13 +245,10 @@ include 'config.php';
                     }
                     ?>
 
-                    <!--<p>
-                        <?php
-                        /*foreach($weeklySales as $name => $sale){
-                            echo $name . " = " . $sale . "<br>" ;
-                        }*/
-                        ?>
-                    </p>-->
+                    <div>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    
                 </div>
 
             </div>
