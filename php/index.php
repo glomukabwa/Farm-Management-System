@@ -200,6 +200,27 @@ include 'config.php';
                                                         WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
                                                         GROUP BY DAYNAME(sale_date)
                                                         ORDER BY WEEKDAY(sale_date)");
+                    /*Ok so above, DAYNAME() returns eg Thursday instead of 12th February
+                      SUM(total_cost) calculates the total of all the sales selected but GROUP BY DAYNAME(sale_date) makes is calculate 
+                      the total of each day instead of the total of everything.
+                      WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) This line means the sale_date from Monday to today:
+                                DATE_SUB(x, INTERVAL y DAY) is for subtraction on days
+                                The x stands for the current date so eg 2026-02-12
+                                As for the y:
+                                    WEEKDAY(date) returns a number depending on the date:
+                                                Monday returns 0
+                                                Tuesday returns 1
+                                                Wednesday returns 2
+                                                Thursday returns 3
+                                                Friday returns 4
+                                                Saturday returns 5
+                                                Sunday returns 6
+                                    WEEKDAY(CURDATE()) will return 3. {The day I'm writing this comment is Thursday 2026-02-12}
+                                So now we have: DATE_SUB(2026-02-12, INTERVAL 3 DAY) which basically means, subtract today by 3 days
+                                You will get Monday and so it'll be WHERE sale_date >= Monday. This means get the sales from Monday to Today and this
+                                ensures your graph only shows Monday to Today. There is a different approach where you can take the last 7 days and that
+                                is sale_date >= CURDATE() - INTERVAL 7 DAYS. So it won't always start from Monday, it'll start from the last 7th day
+                    */
                     while($prodSalesRow = $productWeeklySales->fetch_assoc()){
                         $dayName = $prodSalesRow['day'];
                         $dayTotal = $prodSalesRow['total'];
@@ -222,13 +243,13 @@ include 'config.php';
                     }
                     ?>
 
-                    <p>
+                    <!--<p>
                         <?php
-                        foreach($weeklySales as $name => $sale){
+                        /*foreach($weeklySales as $name => $sale){
                             echo $name . " = " . $sale . "<br>" ;
-                        }
+                        }*/
                         ?>
-                    </p>
+                    </p>-->
                 </div>
 
             </div>
