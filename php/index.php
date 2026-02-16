@@ -175,10 +175,39 @@ include 'config.php';
                             <?php
                         }
                         ?>
-
                     </table>
 
-                    <a href="#">EDIT</a>
+                    <a id="editTasks" href="#">EDIT</a>
+
+                    <div class="editTasksOverLay">
+                        <div class="editTasksPopup">
+                            <span id="closeEditTasks">&times;</span><!--&times; is the X icon-->
+
+                            
+                            <div class="content">
+                                <a href="http://localhost/Farm%20Website/php/recordFeeding.php">Edit Morning Meal</a>
+                                <a href="http://localhost/Farm%20Website/php/recordFeeding.php">Edit Evening Meal</a>
+
+                                <p>Edit Water Refill:</p>
+
+                                <table>
+                                    <?php
+                                    $getAnimalNames = $conn->query("SELECT * FROM animal_types");
+                                    while($namesRow = $getAnimalNames->fetch_assoc()){
+                                        ?>
+                                        <tr>
+                                            <td id="name"><?= $namesRow['name'] ?></td>
+                                            <td><span id="tick">&check;</span></td><!--This is the tick-->
+                                            <td><span id="cross">&times;</span></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
                 <div class="weekly-sales">

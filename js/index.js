@@ -90,3 +90,21 @@ new Chart(salesChart, {
         }
     }
 });
+
+const overLay = document.querySelector(".editTasksOverLay");
+const openPopUp = document.getElementById("editTasks");
+const closePopUp = document.getElementById("closeEditTasks");
+
+openPopUp.onclick = () => {
+    overLay.classList.add("show");
+};
+
+closePopUp.onclick = () => {
+    overLay.classList.remove("show");
+};
+
+overLay.onclick = (e) => {
+    if(e.target === overLay){
+        overLay.classList.remove("show");
+    }/*This part means that if you click the overlay which is outside the popup, then exit*/
+};
