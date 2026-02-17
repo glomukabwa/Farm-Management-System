@@ -97,7 +97,10 @@ CREATE TABLE daily_animal_care (-- To track whether morning meal, evening meal a
     status BOOLEAN DEFAULT FALSE, -- tick or X
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     FOREIGN KEY (care_task_id) REFERENCES care_tasks(id),
-    FOREIGN KEY (performed_by) REFERENCES users(id)
+    FOREIGN KEY (performed_by) REFERENCES users(id),
+
+    CONSTRAINT unique_daily_task
+        UNIQUE (animal_type_id, care_task_id, performed_at)
 );
 
 CREATE TABLE feeding_records (-- To track amount of feeds to respective animal per day

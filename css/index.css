@@ -165,7 +165,11 @@ body{
                                the first and last td. Also for table, if you want to see the border radius, per
                                row, you set it on the first and last td of the row. If u set it on the tr, it
                                won't reflect*/
-    border-spacing:0 1rem;
+    border-spacing:0 0.5rem;
+}
+
+.editTasksTable tr{
+    background-color: var(--lightestgrey);
 }
 
 .editTasksTable tr td:first-child{

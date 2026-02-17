@@ -1,6 +1,32 @@
 <?php
 require 'auth.php';
 include 'config.php';
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $status = $_POST['status'];/*I've learnt that I don't need to do the parsing here unless I need it for
+                                comparison or sth b4 binding cz when binding, php will automatically bind
+                                for me cz eg I'll tell it to expect an int so it'll convert the string it
+                                receives to int*/
+    $animalID = $_POST['animalId'];
+    $careTaskID = 3;
+    $userID = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("INSERT INTO daily_animal_care(animal_type_id, care_task_id, performed_by, status)
+                            VALUES(?, ?, ?, ?)
+                            ON DUPLICATE KEY UPDATE
+                                status = VALUES(status),
+                                performed_by = VALUES(performed_by)");
+    /*The above statement inserts a new daily task if it is unique, if it already exists depending on the 
+       date + animal + care_task (I've put a constraint in the DB so this is how it'll determine if its
+       unique) then it'll update the table and it'll only update the values of status and performed by
+       by the ones I will bind with below. The reason I'm also updating performed by is cz not just one
+       person can do the water refill right? Let's say we have 2 managers and one notices the other notices
+       that the other made a mistake and recorded that cows were given water and they weren't, they will
+       edit and record they weren't so it should indicate that they updated*/
+    $stmt->bind_param("iiii", $animalID, $careTaskID, $userID, $status);
+    $stmt->execute();
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -199,14 +225,14 @@ include 'config.php';
                                             <td id="name"><?= $namesRow['name'] ?></td>
                                             <td>
                                                 <form method="POST">
-                                                    <input type="hidden" value="check" name="check">
-                                                    <button id="tick">&check;</button><!--This is the tick-->
+                                                    <input type="hidden" value="<?= $namesRow['id'] ?>" name="animalId">
+                                                    <button id="tick" name="status" value="1">&check;</button><!--This is the tick-->
                                                 </form>
                                             </td>
                                             <td>
                                                 <form method="POST">
-                                                    <input type="hidden" value="cross" name="cross">
-                                                    <button id="cross">&times;</button>
+                                                    <input type="hidden" value="<?= $namesRow['id'] ?>" name="animalId">
+                                                    <button id="cross" name="status" value="0">&times;</button>
                                                 </form>
                                             </td>
                                         </tr>
