@@ -108,21 +108,21 @@ body{
 .editTasksPopup{
     background-color: var(--support2);
     width:40rem;
-    height:40rem;
+    height:45rem;
     position:relative;
     border-radius: 2rem;
 }
 
 #closeEditTasks{
     position:absolute;
-    top:1rem;
+    top:0.5rem;
     right:2rem;
     font-size: 3rem;
     cursor:pointer;
 }
 
 .editTasksPopup .content{
-    margin: 4rem 0;
+    margin: 5rem 0;
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -159,17 +159,47 @@ body{
     color:var(--supportcolor);
 }
 
-.editTasksPopup .content tr{
-    border:solid 0.1rem black;
-    background-color: var(--lightestgrey);
-    border-radius: 2rem;
+.editTasksTable{
+    border-collapse: separate;/*When you make the borders separate(btw collapse is the opposite of this), if
+                               you try to put borders in tr, they are ignore so instead I'll put borders in
+                               the first and last td. Also for table, if you want to see the border radius, per
+                               row, you set it on the first and last td of the row. If u set it on the tr, it
+                               won't reflect*/
+    border-spacing:0 1rem;
 }
 
-.editTasksPopup .content td{
-    padding: 0.5rem 3rem;
+.editTasksTable tr td:first-child{
+    border-left:solid 0.1rem var(--black);
+    border-radius: 2rem 0 0 2rem;/*This means top-left, top-right, bottom-right, bottom-left*/
 }
 
-.editTasksPopup .content #tick, .editTasksPopup .content #cross{
+.editTasksTable tr td:last-child{
+    border-right:solid 0.1rem var(--black);
+    border-radius:0 2rem 2rem 0;
+}
+
+.editTasksTable td{
+    border-top:solid 0.1rem var(--black);
+    border-bottom: solid 0.1rem var(--black);
+}
+
+.editTasksTable tr td:nth-child(1){
+    padding-left:2rem;
+    text-align: left;
+}
+
+.editTasksTable tr td:nth-child(2){
+    /*border: solid 0.1rem black;*/
+    padding-left:6rem;
+    padding-right:3rem;
+}
+
+.editTasksTable tr td:nth-child(3){
+    padding-right:1.5rem;
+    /*border-left:solid 0.1rem black;*/
+}
+
+.editTasksTable #tick, .editTasksTable #cross{
     background-color: rgb(43, 149, 43);
     border-radius: 50%;
     padding:0.35rem 0.6rem;
@@ -178,7 +208,7 @@ body{
     cursor: pointer;
 }
 
-.editTasksPopup .content #cross{
+.editTasksTable #cross{
     font-size: 2.1rem;
     padding:0 0.6rem;
     background-color: rgb(219, 96, 96);

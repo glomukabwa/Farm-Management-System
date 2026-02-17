@@ -190,15 +190,25 @@ include 'config.php';
 
                                 <p>Edit Water Refill:</p>
 
-                                <table>
+                                <table class="editTasksTable">
                                     <?php
                                     $getAnimalNames = $conn->query("SELECT * FROM animal_types");
                                     while($namesRow = $getAnimalNames->fetch_assoc()){
                                         ?>
                                         <tr>
                                             <td id="name"><?= $namesRow['name'] ?></td>
-                                            <td><span id="tick">&check;</span></td><!--This is the tick-->
-                                            <td><span id="cross">&times;</span></td>
+                                            <td>
+                                                <form method="POST">
+                                                    <input type="hidden" value="check" name="check">
+                                                    <button id="tick">&check;</button><!--This is the tick-->
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form method="POST">
+                                                    <input type="hidden" value="cross" name="cross">
+                                                    <button id="cross">&times;</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         <?php
                                     }
