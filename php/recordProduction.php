@@ -49,7 +49,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             <div class="top-links">
                 <a href="http://localhost/Farm%20Website/php/index.php"><img src="../icons/category.png" alt="overview">OVERVIEW</a>
                 <a href="http://localhost/Farm%20Website/php/enterRecord.php"><img src="../icons/enter_record.png" alt="records">ENTER RECORD</a>
-                <a href="#"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
+                <a href="http://localhost/Farm%20Website/php/calendar.php"><img src="../icons/calendar.png" alt="calendar">CALENDAR</a>
 
                 <a href="#" class="products-menu">
                     <div><img src="../icons/product.png" alt="products">PRODUCTS</div>

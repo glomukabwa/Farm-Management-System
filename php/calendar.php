@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm Records</title>
+    <title>Calendar</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/farmRecords.css">
-    <script src="../js/main.js" defer></script>
-    <script src="../js/recordOptions.js" defer></script>
+    <script src="../fullcalendar/index.global.min.js"></script>
 </head>
 <body>
     <section class="sidebar">
@@ -50,63 +48,43 @@
     </section>
 
     <section class="main-content">
-        <form method="GET">
-            <div class="search">
-                <input id="search" type="text" placeholder=" ">
-                <label for="search">
-                    <img src="../icons/search.png" alt="search">
-                    <span>Search</span>
-                </label>
-            </div>
-        </form>
+        <div id="calendar"></div>
 
-        <div class="link-container">
-            <a href="http://localhost/Farm%20Website/php/users.php" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Users</p>
-            </a>
-
-            <a href="http://localhost/Farm%20Website/php/animalRecords.php" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Animals</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Feeds</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Feeding Records</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Suppliers</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Purchases</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Production Records</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Product Inventory</p>
-            </a>
-
-            <a href="#" class="link">
-                <img src="../images/white_background.jpg" alt="">
-                <p>Sales</p>
-            </a>
-
+        <div id="eventPopup">
+            <form method="POST">
+                <div class="oneinput">
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder=" " required>
+            <label for="phoneNumber">Phone Number</label>
         </div>
+            </form>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const calendarEl = document.getElementById("calendar");
+
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'timeGridWeek',
+                    headerToolbar: {
+                        left: 'timeGridWeek, timeGridDay',
+                        center: 'title',
+                        right: 'prev, next' //user can switch between the two
+                    },
+                    dateClick: function(info) {
+                        const title = prompt("Event Title:");
+
+                        if(title) {
+                            calendar.addEvent({
+                                title: title,
+                                start: info.dateStr
+                            })
+                        }
+                    }
+                });
+
+                calendar.render();
+            });
+        </script>
     </section>
 </body>
 </html>
