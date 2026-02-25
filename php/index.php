@@ -389,7 +389,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         ?>
                     </div>
                     
-                    <a class="seeMore" href="#">See More</a>
+                    <a class="seeMore" href="http://localhost/Farm%20Website/php/calendar.php">See More</a>
                 </div>
 
                 

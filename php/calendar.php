@@ -6,6 +6,7 @@
     <title>Calendar</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/calendar.css">
     <script src="../fullcalendar/index.global.min.js"></script>
 </head>
 <body>
@@ -51,11 +52,35 @@
         <div id="calendar"></div>
 
         <div id="eventPopup">
-            <form method="POST">
+            <form method="POST" id="eventform">
+                <span id="closePopup">&times;</span>
+
                 <div class="oneinput">
-            <input type="text" id="phoneNumber" name="phoneNumber" placeholder=" " required>
-            <label for="phoneNumber">Phone Number</label>
-        </div>
+                    <input type="text" id="eventTitle" name="eventTitle" placeholder=" " required>
+                    <label for="eventTitle">Event Title</label>
+                </div>
+
+                <div class="time">
+                    <div class="timeSelector">
+                        <div class="oneinput">
+                            <input type="time" id="startTime" name="startTime" required>
+                            <label for="startTime">Start Time</label>
+                        </div>
+                        <div class="oneinput">
+                            <input type="time" id="endTime" name="endTime" required>
+                            <label for="endTime">End Time</label>
+                        </div>
+                    </div>
+
+                    <p>* Click the clock icon on the right to select the time *</p>
+                </div>
+
+                <div class="oneinput">
+                    <textarea name="description" id="description" placeholder=" "></textarea>
+                    <label for="description">Add Description</label>
+                </div>
+
+                <button class="submitBtn" type="submit">Enter</button>
             </form>
         </div>
 
@@ -71,18 +96,35 @@
                         right: 'prev, next' //user can switch between the two
                     },
                     dateClick: function(info) {
-                        const title = prompt("Event Title:");
+                        console.log("Date clicked");
+                        const eventPop = document.getElementById("eventPopup");
+                        eventPop.classList.add("show");
+
+                        /*Closing the popup*/
+                        const closePop = document.getElementById("closePopup");
+                        closePop.onclick = function(){
+                            eventPop.classList.remove("show");
+                        }
+
+                        eventPop.onclick = function(e){
+                            if(e.target === eventPop){/*The eventPop is the overlay*/
+                                eventPop.classList.remove("show");
+                            }
+                        }
+
+                        /*const title = prompt("Event Title:");
 
                         if(title) {
                             calendar.addEvent({
                                 title: title,
                                 start: info.dateStr
                             })
-                        }
+                        }*/
                     }
                 });
 
                 calendar.render();
+
             });
         </script>
     </section>
