@@ -3,6 +3,8 @@ Calendar:
         2.Add eventPopup functionality
         3.Change calendar default colors
         4.Add functionality where user can specify who else can see the event
+        5.Add popup or error indication for when end date of event is less than start date
+        6.Disable autocomplete for the event popup
 
 Use sweetAlert2 to give messages to the users in every page. Link: https://sweetalert2.github.io/#examples
                                                     Github: https://github.com/sweetalert2/sweetalert2/releases

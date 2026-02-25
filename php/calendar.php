@@ -52,7 +52,8 @@
         <div id="calendar"></div>
 
         <div id="eventPopup">
-            <form method="POST" id="eventform">
+            
+            <form method="POST" id="eventform" autocapitalize="off">
                 <span id="closePopup">&times;</span>
 
                 <div class="oneinput">
@@ -140,14 +141,14 @@
                                                                                              Padding is necessary bcz html expects time in form of HH:MM, also having single digits looks awkward*/
                         const startminutes = String(clickedDate.getMinutes()).padStart(2, '0');
 
-                        const startformattedDate = `${starthours}:${startminutes}`;
+                        const startformattedTime = `${starthours}:${startminutes}`;
 
                         const endHours = String((clickedDate.getHours() + 1) % 24).padStart(2, '0');
                         /*Above I am setting the default end time of an event as one hour after the start time.
                           I am using modulus 24 to ensure that there's nothing that goes beyond 23 eg 23 + 1 is 24 and there's nothing such as 24 in time so when u say modulus 24, it gives you 00 which means
                           it restarts the time from midnight correctly.*/
 
-                        const endformattedDate = `${endHours}:${startminutes}`; /*the minutes never change, only the hours are affected in the addition*/
+                        const endformattedTime = `${endHours}:${startminutes}`; /*the minutes never change, only the hours are affected in the addition*/
 
                         
                         /*Assigning the default values of the date and time to the form inputs*/
@@ -162,8 +163,41 @@
                           So now [0] targets the first element of the array which is just the year. Why are we 
                           doing this? The datepicker expects just the year in that format so if u just assign
                           info.dateStr without doing some modifications, it won't display the default date*/
-                        document.getElementById("startTime").value = startformattedDate;
-                        document.getElementById("endTime").value = endformattedDate;
+                        document.getElementById("startTime").value = startformattedTime;
+                        document.getElementById("endTime").value = endformattedTime;
+
+
+                        /*Setting the content of the event after it has been submitted*/
+                        document.getElementById("eventform").onsubmit = function(e) {
+                            e.preventDefault();
+                            /*You are preventing default so that the page doesn't reload. Rn I have still not
+                            connected this page to a DB so even if the events are added, they will not be 
+                            stored. This means that if I deliberately reload the page, an event I have added
+                            will disappear. For now, I'll use this to understand how someone adds an event */
+
+                            const EventTitle = document.getElementById("eventTitle").value;
+                            const EventDate = document.getElementById("eventD").value;
+                            const EventStart = document.getElementById("startTime").value;
+                                    /*We can't use the default times I've gottent up there cz user can alter
+                                      them to what she wants*/
+                            const EventEnd = document.getElementById("endTime").value;
+
+                            const Start = EventDate + "T" + EventStart;/*We need to do this cz the addEvent below
+                                                                         expects the date and time so that it knows
+                                                                         where to place the event. If you give it
+                                                                         just time, it won't know where to place
+                                                                         the event so the event won't appear at all*/
+                            const End = EventDate + "T" + EventEnd;
+
+                            calendar.addEvent({
+                                title: EventTitle,
+                                start: Start,
+                                end: End
+                            });
+
+                            eventPop.classList.remove("show");
+
+                        }
                     }
                 });
 
