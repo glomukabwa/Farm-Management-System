@@ -60,19 +60,27 @@
                     <label for="eventTitle">Event Title</label>
                 </div>
 
-                <div class="time">
-                    <div class="timeSelector">
-                        <div class="oneinput">
-                            <input type="time" id="startTime" name="startTime" required>
-                            <label for="startTime">Start Time</label>
+                <div class="dtAndMessage">
+                    <div class="time">
+                        <div>
+                            <div class="oneinput">
+                                <input type="date" id="eventD" name="eventD" required>
+                                <label for="eventD">Date</label>
+                            </div>
                         </div>
-                        <div class="oneinput">
-                            <input type="time" id="endTime" name="endTime" required>
-                            <label for="endTime">End Time</label>
+                        <div class="timeSelector">
+                            <div class="oneinput">
+                                <input type="time" id="startTime" name="startTime" required>
+                                <label for="startTime">Start Time</label>
+                            </div>
+                            <div class="oneinput">
+                                <input type="time" id="endTime" name="endTime" required>
+                                <label for="endTime">End Time</label>
+                            </div>
                         </div>
                     </div>
 
-                    <p>* Click the clock icon on the right to select the time *</p>
+                    <p>* Click the clock icon on the right to select the date/time *</p>
                 </div>
 
                 <div class="oneinput">
@@ -112,14 +120,50 @@
                             }
                         }
 
-                        /*const title = prompt("Event Title:");
 
-                        if(title) {
-                            calendar.addEvent({
-                                title: title,
-                                start: info.dateStr
-                            })
-                        }*/
+                        /*Getting the event data and displaying it as default on form*/
+                        const clickedDate = info.date;/*This gives you the date and time of where the user has clicked
+                                                        There is info.date and info.dateStr.info.date is a JS Date Object. 
+                                                        It's output looks sth like: Wed Feb 25 2026 09:00:00 GMT+0300 (East Africa Time)
+                                                        It is used for calculations since it has everything that is needed and in a 
+                                                        structure that JS understands. You will see its use below
+                                                        info.dateStr returns a formatted date and it in string format. It looks like 
+                                                        this: 2026-02-25T07:30:00+03:00 
+                                                        Despite the fact that this one looks like sth the computer would understand
+                                                        better than a human while the first one looks more user friendly, this one
+                                                        can't be used for calculations. It is a string. It is used for things such as
+                                                        DB use cz DB stores date as YYYY-MM-DD. You'll see it when I am assigning the
+                                                        default date below. You can't extract the hours or minutes from this as we've
+                                                        done below since it is treated as one whole string*/
+
+                        const starthours = String(clickedDate.getHours()).padStart(2, '0');/*We convert it to a string cz padStart() only works with strings. getHours() returns a number
+                                                                                             Padding is necessary bcz html expects time in form of HH:MM, also having single digits looks awkward*/
+                        const startminutes = String(clickedDate.getMinutes()).padStart(2, '0');
+
+                        const startformattedDate = `${starthours}:${startminutes}`;
+
+                        const endHours = String((clickedDate.getHours() + 1) % 24).padStart(2, '0');
+                        /*Above I am setting the default end time of an event as one hour after the start time.
+                          I am using modulus 24 to ensure that there's nothing that goes beyond 23 eg 23 + 1 is 24 and there's nothing such as 24 in time so when u say modulus 24, it gives you 00 which means
+                          it restarts the time from midnight correctly.*/
+
+                        const endformattedDate = `${endHours}:${startminutes}`; /*the minutes never change, only the hours are affected in the addition*/
+
+                        
+                        /*Assigning the default values of the date and time to the form inputs*/
+                        document.getElementById("eventD").value = info.dateStr.split('T')[0];
+                        /*Above I've introduced info.dateStr. Eg if the output is 2026-02-25T07:30:00+03:00 , 
+                          split('T') will split the string into 2 strings and it'll look like this:
+                                [
+                                 '2026-02-25',
+                                 '07:30:00+03:00'
+                                ]
+                          Notice that the T is not part of either strings, there's just the part b4 and after T
+                          So now [0] targets the first element of the array which is just the year. Why are we 
+                          doing this? The datepicker expects just the year in that format so if u just assign
+                          info.dateStr without doing some modifications, it won't display the default date*/
+                        document.getElementById("startTime").value = startformattedDate;
+                        document.getElementById("endTime").value = endformattedDate;
                     }
                 });
 
