@@ -53,7 +53,7 @@
 
         <div id="eventPopup">
             
-            <form method="POST" id="eventform" autocapitalize="off">
+            <form method="POST" id="eventform">
                 <span id="closePopup">&times;</span>
 
                 <div class="oneinput">
@@ -104,10 +104,19 @@
                         center: 'title',
                         right: 'prev, next' //user can switch between the two
                     },
+                    events: 'loadEvents.php',
+
                     dateClick: function(info) {
                         console.log("Date clicked");
                         const eventPop = document.getElementById("eventPopup");
                         eventPop.classList.add("show");
+                        document.getElementById("eventform").reset();
+                        /*The above line clears the form so that there is no field that is autofilled.
+                          Below I will set the default dates and they will be set on empty fields bcz
+                          I've cleared the form. Without this line, the form was showing the previous 
+                          title, date, time of the event that had been submitted and trying to disable
+                          it from html wasn't working.
+                        */
 
                         /*Closing the popup*/
                         const closePop = document.getElementById("closePopup");
@@ -170,30 +179,50 @@
                         /*Setting the content of the event after it has been submitted*/
                         document.getElementById("eventform").onsubmit = function(e) {
                             e.preventDefault();
-                            /*You are preventing default so that the page doesn't reload. Rn I have still not
-                            connected this page to a DB so even if the events are added, they will not be 
-                            stored. This means that if I deliberately reload the page, an event I have added
-                            will disappear. For now, I'll use this to understand how someone adds an event */
+                            /*Every time you want to use fetch(AJAX), you must preventDefault(). Why? When a page reloads,
+                            all the JS tasks are cancelled, everything siezes and returns itself to the state it is initially
+                            supposed to be. This means that if u submit and the page reloads, in the background the fetch is
+                            doing its work right? It might get interrupted b4 it has sfinished so u might end up with half saved
+                            data, no saved data or fully saved data. Since we don't want to depend on luck, we ensure we prevent
+                            the default behaviour. You're, probably wondering, so what happens when a user deliberately reloads
+                            the page? Up there when initializing the FullCalendar, u'll notive a line like events: 'loadEvents.php'
+                            This line uses php to display all events in the DB so even when the page reloads, all events saved will
+                            still be displayed cz they are retrieved as often as the page is reloaded*/
 
                             const EventTitle = document.getElementById("eventTitle").value;
                             const EventDate = document.getElementById("eventD").value;
                             const EventStart = document.getElementById("startTime").value;
-                                    /*We can't use the default times I've gottent up there cz user can alter
-                                      them to what she wants*/
                             const EventEnd = document.getElementById("endTime").value;
+                            const Eventdesc = document.getElementById("description").value;
 
-                            const Start = EventDate + "T" + EventStart;/*We need to do this cz the addEvent below
-                                                                         expects the date and time so that it knows
-                                                                         where to place the event. If you give it
-                                                                         just time, it won't know where to place
-                                                                         the event so the event won't appear at all*/
-                            const End = EventDate + "T" + EventEnd;
+                            fetch('saveEvent.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                    /*Initially, I thought that JS and PHP can only communicate using JSON but I've learnt that there are
+                                      a number of ways they can communicate. Some of them are:
+                                            multipart/form-data                 ->      File uploads
+                                            application/x-www-form-urlencoded   ->      Classic forms (most common)
+                                            application/json                    ->      APIs / modern SPAs
+                                            Query strings (?id=5)               ->      GET requests
+                                            Plain text                          ->      Rare but valid
 
-                            calendar.addEvent({
-                                title: EventTitle,
-                                start: Start,
-                                end: End
+                                      This is one of them, it is number 2 on the table. It is the way data submitted by forms is normally
+                                      packaged. It is very easy for PHP to understand this format and unlike JSON, you won't have to decode
+                                      it to PHP when it is sent. Below, new URLserachParams() is what will convert the JS data to the form 
+                                      format. In the PHP file, u'll notice I'm just using the normal eg $_POST['EventTitle'] to access the data
+                                    */
+                                },
+                                body: new URLSearchParams({
+                                    EventTitle,
+                                    EventDate,
+                                    EventStart,
+                                    EventEnd,
+                                    Eventdesc
+                                })
                             });
+
+                            calendar.refetchEvents();/*So that when the eventPopup disappears the new event is already shown on the calendar */
 
                             eventPop.classList.remove("show");
 
