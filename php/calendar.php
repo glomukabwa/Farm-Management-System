@@ -55,6 +55,7 @@
             
             <form method="POST" id="eventform">
                 <span id="closePopup">&times;</span>
+                <span id="deleteBtn"><img src="../icons/delete.png" alt="trashcan"></span>
 
                 <div class="oneinput">
                     <input type="text" id="eventTitle" name="eventTitle" placeholder=" " required>
@@ -280,10 +281,48 @@
                             }
                         }
 
+                        const EventId = info.event.id;
+
+                        /*Deleting popup*/
+                        const DeleteBtn = document.getElementById("deleteBtn");
+                        DeleteBtn.onclick = function(){
+                            fetch('deleteEvent.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: new URLSearchParams({
+                                    EventId
+                                })
+                            });
+
+                            info.event.remove();/*calendar.refetchEvents() runs simultaneously to the fetch above
+                            so u might notice that even though it has been deleted in the DB, it is not reflecting
+                            cz it is refetching b4 the DB is done deleting so instead, I am deleting in the UI as
+                            the Db deletes in the background. This reflects faster. I can either do this or put
+                            echo 'success message' right after the sql statement in deleteEvent.php then do the 
+                            following: 
+                            .then(response => response.text())
+                            .then(data => {
+                                    if(data === 'success message'){
+                                        calendar.refetchEvents();
+                                        eventPop.classList.remove("show");
+                                    }
+                                })
+                            
+                            The above code would ensure that it only refetches and removes the popup after the DB
+                            is done deleting but then I was afraid of a delay even though I think it would be small,
+                            I'd rather it's fast. I think I might incooperate calendar.addEvent() for the form
+                            submit button if I get another glitch with calendar.refetchEvents(); cz I have had
+                            instances where I have had to reload the page for the event to show
+                            */
+
+                            eventPop.classList.remove("show");
+                        }
+
                         document.getElementById("eventform").onsubmit = function(e){
                             e.preventDefault();
 
-                            const EventId = info.event.id;
                             const EventTitle = document.getElementById("eventTitle").value;
                             const EventDate = document.getElementById("eventD").value;
                             const EventStart = document.getElementById("startTime").value;

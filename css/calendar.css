@@ -35,7 +35,7 @@ body{
 
 form{
     width:55rem;
-    height:50rem;
+    height:53rem;
     background-color: var(--support2);
     border-radius: 2rem;
     padding:0 2rem;
@@ -51,10 +51,34 @@ form{
 
 #closePopup{
     position:absolute;
-    top:0.5rem;
-    right:2rem;
+    top:1.5rem;
+    right:3rem;
     font-size: 3rem;
     cursor:pointer;
+    padding: 0.05rem 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#deleteBtn{
+    position: absolute;
+    top: 1.3rem;
+    right:8rem;
+    cursor:pointer;
+    padding: 0.6rem 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#deleteBtn img{
+    width:2.5rem;
+}
+
+#closePopup:hover, #deleteBtn:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
 }
 
 .oneinput{
