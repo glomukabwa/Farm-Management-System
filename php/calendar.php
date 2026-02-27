@@ -227,7 +227,91 @@
                             eventPop.classList.remove("show");
 
                         }
+                    },
+
+                    eventClick: function(info){
+                        /*When FullCalendar triggers a callback like dateClick or eventClick, it passes an object
+                          with useful data which in this case we are calling info. You can give it any other name
+                          For eventClick, it looks like this:
+                                    info = {
+                                        event: EventObject,
+                                        el: clickedHTMLElement,
+                                        jsEvent: nativeClickEvent,
+                                        view: calendarView
+                                    } 
+                            event holds the data of the event that we already got through loadEvents.php
+                            Chat says that FullCalendar does the mapping internally and knows which event is being
+                            clicked so u don't have to worry about that. el is the HTML container that will contain
+                            the data. In this case, el is the form. If you want to change styling, u'd use el to
+                            do it eg: info.el.style.border = "solid 0.2rem blue"
+                            Below u'll see how we'll use info.event
+                        */
+                        const eventPop = document.getElementById("eventPopup");
+                        eventPop.classList.add("show");
+
+                        document.getElementById("eventTitle").value = info.event.title;
+                        document.getElementById("eventD").value = info.event.startStr.split("T")[0];
+                        /*Above, you can't use split on a data object which is what event.start would return so
+                          you say event.startStr to get the formatted string. loadEvents.php gave it the data
+                          it needs and FullCalendar stored it the way it wants to so now if u want to access
+                          its data, you use its rules. I was getting confused on why we'd use startStr when in 
+                          the php file, we stored the events using just start but now that we have handed the data
+                          to FullCalendar, we use its rules to access it*/
+                        document.getElementById("startTime").value = info.event.startStr.split("T")[1].slice(0,5);
+                        /*Since the time has seconds too, we need to extract only the HH:MM. Slice means the 
+                          slicing that we learnt in data analytys so we're saying give me the number from index
+                          0 to the one before index 5. If you look at HH:MM:SS, the element before index 5 is the
+                          last minute so that's how we get the right time format to display in the form
+                        */
+                        document.getElementById("endTime").value = info.event.endStr.split("T")[1].slice(0,5);
+                        console.log(info.event);
+                        console.log(info.event.extendedProps.description);
+                        document.getElementById("description").value = info.event.extendedProps.description;
+
+                        /*Closing the popup*/
+                        const closePop = document.getElementById("closePopup");
+                        closePop.onclick = function(){
+                            eventPop.classList.remove("show");
+                        }
+
+                        eventPop.onclick = function(e){
+                            if(e.target === eventPop){/*The eventPop is the overlay*/
+                                eventPop.classList.remove("show");
+                            }
+                        }
+
+                        document.getElementById("eventform").onsubmit = function(e){
+                            e.preventDefault();
+
+                            const EventId = info.event.id;
+                            const EventTitle = document.getElementById("eventTitle").value;
+                            const EventDate = document.getElementById("eventD").value;
+                            const EventStart = document.getElementById("startTime").value;
+                            const EventEnd = document.getElementById("endTime").value;
+                            const Eventdesc = document.getElementById("description").value;
+
+                            fetch('updateEvent.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: new URLSearchParams({
+                                    EventId,
+                                    EventTitle,
+                                    EventDate,
+                                    EventStart,
+                                    EventEnd,
+                                    Eventdesc
+                                })
+                            });
+
+                            calendar.refetchEvents();
+
+                            eventPop.classList.remove("show");
+                        }
+
                     }
+
                 });
 
                 calendar.render();

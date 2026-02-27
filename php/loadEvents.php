@@ -8,11 +8,14 @@ $stmt = $conn->query("SELECT * FROM events WHERE user_id = $userID");
 
 while($row = $stmt->fetch_assoc()){
     $events[] = [
+        'id' => $row['id'], /*I'll need this for updating(when user tries to alter an event) */
         'title' => $row['title'],
         'start' => $row['event_date'] . 'T' . $row['startTime'],
         /*Remember the calendar expects start and edn in the format: dateTtime */
         'end' => $row['event_date'] . 'T' . $row['endTime'],
-        'description' => $row['description']
+        'extendedProps' => [
+            'description' => $row['description']
+        ]
     ];
 }
 
