@@ -11,7 +11,7 @@ let limit = 10;
 
 searchInput.addEventListener("input", function(){
     page = 1; /*Despite the fact that we've set page above to 1, it's a mutable variable so lets say that the
-                user is in page 3 and has started seraching. The value of the vpage variable has changed to 3.
+                user is in page 3 and has started searching. The value of the page variable has changed to 3.
                 It is best practice to change it back to 1 cz maybe the value being searched is not in page 3, 
                 it is in page 1. If not set to 1, the offset will be from the beginning of page 3 to the end of 
                 the limit set and that means it will say that no records are found when they do exist*/ 

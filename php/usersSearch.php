@@ -22,7 +22,7 @@ $stmt = $conn->prepare("SELECT * FROM users
 /*Above, you need to know that WHERE can work with either = or LIKE. However, if you use = the user has to type the
   exact word. If they type An and the name in the DB is Ann, it will return "No records found" because the search
   word has to be exact. However, with LIKE, you don't have to type the exact thing. An will return Ann, Annastasia,
-  Analisa etc Basiaclly any word that contains An. Plz note that both = and LIKE are not case sensitive so you can
+  Analisa etc Basically any word that contains An. Plz note that both = and LIKE are not case sensitive so you can
   still type with small letters with both so even with = if you type ann, it'll return Ann. However, in the DB if
   you've made the columns in your table case sensitive, this won't work. How do you check? Open the table in 
   PHPmyAdmin, go to structure and check if the columns have utf8mb4_general_ci. This means they are case insensitive
