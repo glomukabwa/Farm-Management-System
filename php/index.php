@@ -77,7 +77,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             <div class="bottom-links">
                 <a href="#"><img src="../icons/profile.png" alt="profile">PROFILE</a>
                 <a href="#"><img src="../icons/settings.png" alt="settings">SETTINGS</a>
-                <a href="#"><img src="../icons/logout.png" alt="log out">LOG OUT</a>
+                <a href="#" id="logoutNav"><img src="../icons/logout.png" alt="log out">LOG OUT</a>
             </div>
         </div>
     </section>
@@ -397,5 +397,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div>
 
     </section>
+
+    <div id="logoutModal" class="logoutmodal">
+        <form action="logout.php" method="POST" id="logoutModalContent">
+            <img src="../icons/logout.png" alt="logout">
+            <h1>Log Out</h1>
+            <p>Are you sure you want to log out?</p>
+            <div>
+                <button type="button" id="cancelLogout">CANCEL</button>
+                <button type="submit">LOG OUT</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

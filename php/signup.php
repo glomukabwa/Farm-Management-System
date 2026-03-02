@@ -6,7 +6,7 @@ the user’s browser as a cookie). Every request the browser makes to your serve
 to the same user as before.” It uses it to keep track of data (like login status, flash messages, shopping cart contents) across requests.
 The session ID is just a key. You decide what values to attach to it in $_SESSION. 
 For a flash message, we store $_SESSION['flash'] = "Flash message".
-For login, you can store an email, userId etc. Since I want a more user friendly webiste, I am going to apply auto-log in which is basically 
+For login, you can store an email, userId etc. Since I want a more user friendly website, I am going to apply auto-log in which is basically 
 allowing the user to access the index page without redirecting them to log in to confirm their credentials. Once they sign-up, they'll be 
 able to access the website immediately. The auto-logging concept comes in when you store the user details in session variables here instead 
 of in log in for the first time. In log in, you'll notice that I have stored the session variables again there and that is because after some 
