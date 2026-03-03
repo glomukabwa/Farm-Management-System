@@ -186,6 +186,7 @@ a{
     border-radius: 0;
     background-color: transparent;
     color: var(--basecolor);
+    border-radius: 2rem;
 }
 
 .logoutmodal form #cancelLogout{
