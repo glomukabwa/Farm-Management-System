@@ -1,3 +1,13 @@
+<?php
+require 'auth.php';
+include 'config.php';
+
+$milkInStock = 0;
+$totalSales = 0;
+$adultCows = 0;
+$femaleCalves = 0;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +58,45 @@
         </div>
     </section>
 
-    <section class="main-content"></section>
+    <section class="main-content">
+        <div class="tally">
+            <div>
+                <p><?= $milkInStock . " Ltrs" ?></p>
+                <p>Milk In Stock</p>
+            </div>
+
+            <div>
+                <p><?= "Ksh " . $totalSales ?></p>
+                <p>Total Sales (Weekly) </p>
+            </div>
+
+            <div>
+                <p><?= $adultCows ?></p>
+                <p>Adult Cows</p>
+            </div>
+
+            <div>
+                <p><?= $femaleCalves ?></p>
+                <p>Female Calves</p>
+            </div>
+        </div>
+
+        <div class="graphs">
+            <div class="productionGraph">
+                <h2>Milk Production</h2>
+            </div>
+
+            <div class="salesGraph">
+                <h2>Milk Sales</h2>
+            </div>
+        </div>
+
+        <div class="cowsTable">
+            <h2>Cows(Female) Records</h2>
+        </div>
+
+
+    </section>
 
     <div id="logoutModal" class="logoutmodal">
         <form action="logout.php" method="POST" id="logoutModalContent">
