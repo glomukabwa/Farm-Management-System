@@ -47,6 +47,30 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         if($stmt->affected_rows > 0){
             $success = true;
         }
+
+        $cowIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Cow'");/*This is for safety incase 
+                                                                someone changes the ID of cow in the DB */
+        $cowIdRow = $cowIdRes->fetch_assoc();
+        $cowId = (int)$cowIdRow['id'];
+
+        if($gender == "female" && $animalType == $cowId){/*I'm putting this below the success flag so that incase 
+                                                            the animals are female cows and they are not inserted,
+                                                            the success flag is made to be false. See it after the
+                                                            insertion stmt has been executed. */
+            $femCowsStmt = $conn->prepare("INSERT INTO female_cows (animal_type_id, breed_id, health_status_id,
+                 created_at) VALUES (?, ?, ?, ?)");
+            for($count = 0; $count < $quantity; $count++){
+                $femCowsStmt->bind_param("iiis", $animalType, $breed, $healthStatus, $createdAt);
+                $femCowsStmt->execute();
+            }
+
+            if($femCowsStmt->affected_rows == 0){/*It is safe to put this here cz in case the gender is male, it
+                                                    won't accidentally make the success flag wrong cz this code
+                                                    runs only if it is a female cow being entered */
+                $success = false;
+            }
+        }
+
         $stmt->close();
     }
 

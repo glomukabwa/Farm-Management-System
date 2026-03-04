@@ -61,7 +61,7 @@ CREATE TABLE animals (-- record of all existing animals
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_type_id INT NOT NULL,-- Either cow, bull, chicken etc
     breed_id INT,-- This is important especially for cows however it is optional
-    tag_number VARCHAR(50) UNIQUE,-- This is optional just incase the farm uses tags
+    tag_name VARCHAR(50) UNIQUE,-- This is optional just incase the farm uses tags
     lifecycle_status_id INT NOT NULL DEFAULT 1,
     gender ENUM('male','female') NOT NULL,
     health_status_id INT,
@@ -218,4 +218,20 @@ CREATE TABLE events (
     user_id INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE female_cows(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    animal_type_id INT NOT NULL,
+    breed_id INT,
+    tag_name VARCHAR(50) UNIQUE,
+    milkProduction INT,
+    isPregnant BOOLEAN DEFAULT FALSE,
+    lifecycle_status_id INT NOT NULL DEFAULT 1,
+    health_status_id INT,
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
+    FOREIGN KEY (breed_id) REFERENCES breeds(id),
+    FOREIGN KEY (lifecycle_status_id) REFERENCES animal_lifecycle_statuses(id),
+    FOREIGN KEY (health_status_id) REFERENCES animal_statuses(id)
 );

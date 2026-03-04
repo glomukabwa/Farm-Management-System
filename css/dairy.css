@@ -34,14 +34,14 @@ a{
 }
 
 .tally{
-    margin-top:4rem;
+    margin-top:2rem;
     display: flex;
     justify-content: space-between;
 }
 
 .tally div{
-    width:13rem;
-    height:17rem;
+    width:20rem;
+    height:20rem;
     padding:0 1rem;
     border:solid 0.2rem var(--basecolor);
     border-radius: 2rem;
@@ -50,19 +50,19 @@ a{
     gap:1rem;
     text-align: center;
     justify-content: center;
+    align-items: center;
 }
 
-.tally div p:nth-child(1){
-    font-size: 3rem;
-    height:6rem;
-    padding-top: 1rem;
+.tally div h2{
+    height:7rem;
+    width:15rem;
+    
 }
 
-.tally div p:nth-child(2){
-    height:4rem;
-    padding-top: 1rem;
+.tally div p{
+    font-size: 2rem;
+    height:2rem;
 }
-
 
 /*GRAPHS*/
 .graphs{
@@ -81,4 +81,5 @@ a{
 /*TABLE*/
 .cowsTable{
     height:100vh;
+    padding: 2rem 0;
 }

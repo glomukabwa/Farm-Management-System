@@ -2,10 +2,39 @@
 require 'auth.php';
 include 'config.php';
 
-$milkInStock = 0;
-$totalSales = 0;
+/*Default tally*/
+$milkInStock = 0.00;
+$weeklySales = 0.00;
 $adultCows = 0;
 $femaleCalves = 0;
+
+/*Getting the milk in stock from the DB */
+$milkIdRes = $conn->query("SELECT id FROM products WHERE name = 'Milk'");
+$milkIdRow = $milkIdRes->fetch_assoc();
+$milkId = (int)$milkIdRow['id'];
+$milkStockRes = $conn->query("SELECT quantity_available FROM product_inventory WHERE product_id = $milkId");
+$milkStockRow = $milkStockRes->fetch_assoc();
+$milkInStock = $milkStockRow['quantity_available'];
+
+/*Getting the total sales(weekly) from the DB */
+$weekTotalSalesStmt = $conn->query("SELECT COALESCE(SUM(total_cost), 0.00) as weeklyTotal
+                                FROM product_sales
+                                WHERE 
+                                    product_id = $milkId AND
+                                    sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                                ");/*DATE_SUB(x, INTERVAL y DAY) */
+                                /*Above COALESCE returns the first non-null value so for example:
+                                    COALESCE(null, null, 2, 7, null) will return 5 cz it's the first non-null
+                                    value in the set of numbers
+                                */
+$weekTotalSalesRow = $weekTotalSalesStmt->fetch_assoc();
+$weekTotalSales = $weekTotalSalesRow['weeklyTotal'];
+
+/*Getting the total sales(weekly) from the DB */
+$adultCowsStmt = $conn->query("SELECT COUNT(*) as count FROM female_cows");
+$adultCowsRow = $adultCowsStmt->fetch_assoc();
+$adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce operator(??) is important*/
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +42,7 @@ $femaleCalves = 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milk</title>
+    <title>Dairy</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/dairy.css">
@@ -61,23 +90,27 @@ $femaleCalves = 0;
     <section class="main-content">
         <div class="tally">
             <div>
-                <p><?= $milkInStock . " Ltrs" ?></p>
-                <p>Milk In Stock</p>
+                <h2>Milk In Stock</h2>
+                <p><?= $milkInStock ?></p>
+                <p>Litres</p>
             </div>
 
             <div>
-                <p><?= "Ksh " . $totalSales ?></p>
-                <p>Total Sales (Weekly) </p>
+                <h2>Total Sales (Weekly) </h2>
+                <p>Ksh</p>
+                <p><?= $weekTotalSales ?></p>
             </div>
 
             <div>
+                <h2>Cow Population</h2>
+                <p></p>
                 <p><?= $adultCows ?></p>
-                <p>Adult Cows</p>
             </div>
 
             <div>
+                <h2>Female Calves</h2>
+                <p></p>
                 <p><?= $femaleCalves ?></p>
-                <p>Female Calves</p>
             </div>
         </div>
 

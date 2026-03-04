@@ -128,7 +128,11 @@ if(selectSale && productMode && animalMode){
     const productInputs = productMode.querySelectorAll("input, select");
     const animalInputs = animalMode.querySelectorAll("input, select");
     productInputs.forEach(input => input.disabled = false);
-    animalInputs.forEach(input => input.disabled = true);
+    animalInputs.forEach(input => input.disabled = true);/*You are disabling cz the inputs are required so if
+                                                            the user wants to enter a product sale, it'll refuse
+                                                            to submit cz the animal required fields will still not
+                                                            be filled even though they are not being displayed.
+                                                            This gets rid of that anticipated issue.*/
     
     selectSale.addEventListener("change", function(){
         if(selectSale.value == "animalSale"){
