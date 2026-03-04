@@ -32,58 +32,6 @@ form{
     gap:2rem;
 }
 
-/*Customized select*/
-/*.topOption{
-    background-color: var(--support2);
-    display: block;
-    height:4rem;
-    width: 50rem;
-    padding:1rem 2rem;
-    border-radius: 2rem;
-}
-
-.topOption:hover{
-    cursor: pointer;
-}
-
-.downwardArrow{
-    font-size: 1.1rem;
-    padding-left: 2rem;
-}
-
-.options{
-    background-color: var(--lightestgrey);
-    width: 50.1rem;
-    border-radius: 2rem;
-    border:solid 0.1rem black;
-    display: none;
-}
-
-.options li{
-    background-color: var(--support2);
-    display: block;
-    height:4rem;
-    width: 50rem;
-    padding:1rem 2rem;
-    
-}
-
-.options .first{
-    border-top-right-radius: 2rem;
-    border-top-left-radius: 2rem;
-}
-
-.options .last{
-    border-bottom-left-radius: 2rem;
-    border-bottom-right-radius: 2rem;
-}
-
-.options li:hover{
-    cursor:pointer;
-    background-color: var(--supportcolor);
-}
-/**/
-
 .select-wrapper{ 
     position: relative;
     background-color: var(--support2);

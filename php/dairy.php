@@ -126,6 +126,134 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
         <div class="cowsTable">
             <h2>Cows(Female) Records</h2>
+
+            <div class="topControls">
+                <div class="right">
+                    <div class="select-wrapper">
+                        <select name="searchCriteria" id="searchCriteria">
+                            <option value="">-- Search By --</option>
+                            <option value="name">Name</option>
+                            <option value="healthStatus">Health Status</option>
+                            <option value="milkProd">Milk Production</option>
+                            <option value="isPreg">Pregnancy Status</option>
+                            <option value="lifeStatus">Life Status</option>
+                        </select>
+                    </div>
+
+                    <div class="oneinput">
+                        <input type="text" id="searchValue" name="searchValue" placeholder=" ">
+                        <label for="searchValue">Enter Search Value</label>
+                    </div>
+
+                    <button>SEARCH</button>
+                </div>
+
+                <div class="left">
+                    <button>MORE OPTIONS</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Health Status</th>
+                        <th>Milk Production(Ltrs)</th>
+                        <th>Pregnancy Status</th>
+                        <th>Life Status</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php
+                    $cowsStmt = $conn->prepare("SELECT * FROM female_cows");
+                    $cowsStmt->execute();
+                    $cowRes = $cowsStmt->get_result();
+                    if($cowRes->num_rows > 0){
+                        while($cowsRow = $cowRes->fetch_assoc()){
+                            /*Getting the health status name and color */
+                            $healthy = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Healthy'");
+                            $healthyRes = $healthy->fetch_assoc();
+                            $sick = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Sick'");
+                            $sickRes = $sick->fetch_assoc();
+                            $quara = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Quarantined'");
+                            $quaraRes = $quara->fetch_assoc();
+
+                            $healthStatusName = "undefined";
+                            $healthStatusColor = "undetermined";
+                            if((int)$cowsRow['health_status_id'] == (int)$healthyRes['id']){
+                                $healthStatusName = "Healthy";
+                                $healthStatusColor = "green";
+                            }elseif((int)$cowsRow['health_status_id'] == (int)$sickRes['id']){
+                                $healthStatusName = "Sick";
+                                $healthStatusColor = "red";
+                            }elseif((int)$cowsRow['health_status_id'] == (int)$quaraRes['id']){
+                                $healthStatusName = "Sick";
+                                $healthStatusColor = "yellow";
+                            }
+
+                            /*Getting the life status name and color */
+                            $alive = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Alive in the farm'");
+                            $aliveRes = $alive->fetch_assoc();
+                            $sold = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Sold'");
+                            $soldRes = $sold->fetch_assoc();
+                            $dead = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Dead'");
+                            $deadRes = $dead->fetch_assoc();
+
+                            $lifeStatusName = "undefined";
+                            $lifeStatusColor = "undetermined";
+                            if((int)$cowsRow['lifecycle_status_id'] == (int)$aliveRes['id']){
+                                $lifeStatusName = "Alive in the farm";
+                                $lifeStatusColor = "green";
+                            }elseif((int)$cowsRow['lifecycle_status_id'] == (int)$soldRes['id']){
+                                $lifeStatusName = "Sold";
+                                $lifeStatusColor = "yellow";
+                            }elseif((int)$cowsRow['lifecycle_status_id'] == (int)$deadRes['id']){
+                                $lifeStatusName = "Dead";
+                                $lifeStatusColor = "red";
+                            }
+                        ?>
+                            <tr>
+                                <td><?= htmlspecialchars($cowsRow['tag_name'] ?? 'undefined') ?></td>
+                                <td><?= htmlspecialchars($healthStatusName) ?></td>
+                                <td><?= htmlspecialchars($cowsRow['milkProduction'] ?? 'undefined') ?></td>
+                                <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
+                                <td><?= htmlspecialchars($lifeStatusName) ?></td>
+                                <td><button>Edit</button></td>
+                                <td><button>Delete</button></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+            <div class="controls">
+                <form method="GET">
+                    <input type="hidden" name="page" value="1">
+
+                    <label for="limit">
+                        Show rows per page
+                        <select name="limit" id="limit" onchange="this.form.submit()">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                        <span class="arrow">⌄</span>
+                    </label>
+                </form>
+
+                <div class="arrows">
+                    <a href="#">&lt;</a>
+
+                    <span>Page of </span>
+
+                    <a href="#">&gt;</a>
+                </div>
+            </div>
         </div>
 
 
