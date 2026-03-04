@@ -1,35 +1,12 @@
-<?php
-require 'admin_auth.php';
-include 'config.php';
-
-$success = false;
-
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $pName = $_POST['pname'] ?: '';
-    $category = (int) $_POST['categoryName'];
-    $unit = $_POST['unit'];
-    $date = $_POST['date'] ?: date('Y-m-d H:i:s');
-
-    $stmt = $conn->prepare("INSERT INTO products (name, category_id, unit, created_at)
-                            VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("siss", $pName, $category, $unit, $date);
-    $stmt->execute();
-    if($stmt->affected_rows > 0){
-        $success = true;
-    }
-    $stmt->close();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Product</title>
+    <title>Milk</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/enterDataForms.css">
-    <script src="../js/enterDataForms.js" defer></script>
+    <link rel="stylesheet" href="../css/dairy.css">
     <script src="../js/main.js" defer></script>
 </head>
 <body>
@@ -71,53 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div>
     </section>
 
-    <section class="main-content">
-        <form method="POST">
-            <h1>Enter Product</h1>
-
-            <div class="oneinput">
-                <input type="text" id="pname" name="pname" placeholder=" " required>
-                <label for="pname">Product Name</label>
-            </div>
-
-            <div class="select-wrapper">
-                <select name="categoryName" id="categoryName" required>
-                    <option value="">Category</option>
-                    <?php
-                    $categories = "SELECT * FROM product_categories";
-                    $categoriesResult = $conn->query($categories);
-                    while($categoriesRow = $categoriesResult->fetch_assoc()){
-                        echo '<option value="'.$categoriesRow['id'].'">'.$categoriesRow['category_name'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-
-            <div class="oneinput">
-                <input type="text" id="unit" name="unit" placeholder=" " required>
-                <label for="unit">Unit</label>
-            </div>
-
-            <div class="date">
-                <div>
-                    <input type="datetime-local" id="date" name="date" required>
-                </div>
-                <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
-            </div>
-
-            <div class="submission">
-                <button type="submit">Enter</button>
-                <?php 
-                $message = '';
-                if($success){
-                    $message = 'Product added successfully!';
-                }
-                ?>
-                <p id="successMessage"><?= htmlspecialchars($message) ?></p>
-            </div>
-            
-        </form>
-    </section>
+    <section class="main-content"></section>
 
     <div id="logoutModal" class="logoutmodal">
         <form action="logout.php" method="POST" id="logoutModalContent">
@@ -132,9 +63,3 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </div>
 </body>
 </html>
-
-<?php
-if(isset($conn)){
-    $conn->close();
-}
-?>

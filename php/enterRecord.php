@@ -32,7 +32,7 @@ require 'admin_auth.php';/*User must have admin priviledges for this page*/
                 </a>
                 
                 <div class="products-submenu">
-                    <a href="#"><img src="../icons/milk.png" alt="milk">Dairy</a>
+                    <a href="http://localhost/Farm%20Website/php/dairy.php"><img src="../icons/milk.png" alt="milk">Dairy</a>
                     <a href="#"><img src="../icons/bull.png" alt="bull">Bulls</a>
                     <a href="#"><img src="../icons/chicken.png" alt="chicken">Broilers</a>
                     <a href="#"><img src="../icons/eggs.png" alt="eggs">Eggs</a>
