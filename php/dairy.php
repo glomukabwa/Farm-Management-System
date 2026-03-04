@@ -117,10 +117,12 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
         <div class="graphs">
             <div class="productionGraph">
                 <h2>Milk Production</h2>
+                <button>Update Production Records</button>
             </div>
 
             <div class="salesGraph">
                 <h2>Milk Sales</h2>
+                <button>Update Sales Records</button>
             </div>
         </div>
 
