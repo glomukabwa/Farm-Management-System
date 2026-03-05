@@ -290,6 +290,12 @@ table button{
     background-color: var(--lightestgrey);
 }
 
+.editOverlay form .select-wrapper{
+    width:33rem;
+    border: solid 0.1rem var(--basecolor);
+    background-color: var(--lightestgrey);
+}
+
 .editOverlay form button{
     margin-left:auto;
     margin-right: 5rem;

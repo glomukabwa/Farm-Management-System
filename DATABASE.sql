@@ -225,7 +225,7 @@ CREATE TABLE female_cows(
     animal_type_id INT NOT NULL,
     breed_id INT,
     tag_name VARCHAR(50) UNIQUE,
-    milkProduction INT,
+    milkProduction DECIMAL(10, 2),
     isPregnant BOOLEAN DEFAULT FALSE,
     lifecycle_status_id INT NOT NULL DEFAULT 1,
     health_status_id INT,

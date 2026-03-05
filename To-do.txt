@@ -1,4 +1,11 @@
-Dairy Page
+Dairy Page:
+        Add editting of breed in table
+        Add a notice to the user that the name of the animal already exists if it isn't unique
+        Enable deletion of rows in table
+        Add search functionality
+        Make the bottom controls funtional
+
+Add guidance on how to enter Animal in enterAnimal.php
 
 Calendar:
         1.Add an alert section

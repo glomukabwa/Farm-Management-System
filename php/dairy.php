@@ -232,8 +232,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 <td><?= htmlspecialchars(number_format($cowsRow['milkProduction'] ?? 0, 2)) ?></td>
                                 <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
                                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
-                                <td><button type="button" id="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
-                                <td><button type="button" id="triggerDelete">Delete</button></td>
+                                <td><button type="button" class="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
+                                <td><button type="button" class="triggerDelete">Delete</button></td>
                             </tr>
                             <?php
                         }
@@ -256,24 +256,43 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <label for="Name">Name</label>
                     </div>
 
-                    <div class="oneinput">
-                        <input type="text" id="healthStatus" name="healthStatus" placeholder=" " required>
-                        <label for="healthStatus">Health Status</label>
+                    <div class="select-wrapper">
+                        <select name="healthStatus" id="healthStatus" required>
+                            <option value="">Health Status</option>
+                            <?php 
+                            $healthStatuses = "SELECT * FROM animal_statuses";
+                            $healthResult = $conn->query($healthStatuses);
+                            while($healthRow = $healthResult->fetch_assoc()){
+                                echo '<option value="'.$healthRow['id'].'">'.$healthRow['status_name'].'</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <div class="oneinput">
-                        <input type="number" id="milkProd" name="milkProd" placeholder=" " required step="0.01">
+                        <input type="number" id="milkProd" name="milkProd" placeholder=" " required>
                         <label for="milkProd">Milk Production</label>
                     </div>
 
-                    <div class="oneinput">
-                        <input type="text" id="pregStatus" name="pregStatus" placeholder=" " required>
-                        <label for="pregStatus">Pregnancy Status</label>
+                    <div class="select-wrapper">
+                        <select name="pregStatus" id="pregStatus" required>
+                            <option value="">Pregnancy Status</option>
+                            <option value="0">Not Pregnant</option>
+                            <option value="1">Pregnant</option>
+                        </select>
                     </div>
 
-                    <div class="oneinput">
-                        <input type="text" id="lifeStatus" name="lifeStatus" placeholder=" " required>
-                        <label for="lifeStatus">Life Status</label>
+                    <div class="select-wrapper">
+                        <select name="lifeStatus" id="lifeStatus" required>
+                            <option value="">Life Status</option>
+                            <?php 
+                            $lifeStatuses = "SELECT * FROM animal_lifecycle_statuses";
+                            $lifeResult = $conn->query($lifeStatuses);
+                            while($lifeRow = $lifeResult->fetch_assoc()){
+                                echo '<option value="'.$lifeRow['id'].'">'.$lifeRow['name'].'</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <button class="actualEdit">EDIT</button>
