@@ -229,7 +229,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             <tr>
                                 <td><?= htmlspecialchars($cowsRow['tag_name'] ?? 'undefined') ?></td>
                                 <td><?= htmlspecialchars($healthStatusName) ?></td>
-                                <td><?= htmlspecialchars($cowsRow['milkProduction'] ?? 'undefined') ?></td>
+                                <td><?= htmlspecialchars(number_format($cowsRow['milkProduction'] ?? 0, 2)) ?></td>
                                 <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
                                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
                                 <td><button type="button" id="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
@@ -237,43 +237,42 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             </tr>
                             <?php
                         }
+                    }else{
+                        ?>
+                        <tr><td colspan="6">No Records Found</td></tr>
+                        <?php
                     }
                     ?>
                 </tbody>
             </table>
 
             <div class="editOverlay">
-                <form action="POST">
+                <form method="POST">
                     <span id="closePopup">&times;</span>
                     <span id="deleteBtn"><img src="../icons/delete.png" alt="trashcan"></span>
 
                     <div class="oneinput">
-                        <input type="text" id="Name" name="Name" placeholder=" " required
-                            value="<?= htmlspecialchars($cowsRow['tag_name'] ?? 'undefined') ?>">
+                        <input type="text" id="Name" name="Name" placeholder=" " required>
                         <label for="Name">Name</label>
                     </div>
 
                     <div class="oneinput">
-                        <input type="text" id="healthStatus" name="healthStatus" placeholder=" " required
-                            value="<?= htmlspecialchars($healthStatusName) ?>">
+                        <input type="text" id="healthStatus" name="healthStatus" placeholder=" " required>
                         <label for="healthStatus">Health Status</label>
                     </div>
 
                     <div class="oneinput">
-                        <input type="number" id="milkProd" name="milkProd" placeholder=" " required
-                            value="<?= htmlspecialchars( number_format($cowsRow['milkProduction'] ?? 0 , 2) ) ?>">
+                        <input type="number" id="milkProd" name="milkProd" placeholder=" " required step="0.01">
                         <label for="milkProd">Milk Production</label>
                     </div>
 
                     <div class="oneinput">
-                        <input type="text" id="pregStatus" name="pregStatus" placeholder=" " required
-                            value="<?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?>">
+                        <input type="text" id="pregStatus" name="pregStatus" placeholder=" " required>
                         <label for="pregStatus">Pregnancy Status</label>
                     </div>
 
                     <div class="oneinput">
-                        <input type="text" id="lifeStatus" name="lifeStatus" placeholder=" " required
-                            value="<?= htmlspecialchars($lifeStatusName) ?>">
+                        <input type="text" id="lifeStatus" name="lifeStatus" placeholder=" " required>
                         <label for="lifeStatus">Life Status</label>
                     </div>
 
