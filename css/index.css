@@ -111,14 +111,24 @@ body{
     height:45rem;
     position:relative;
     border-radius: 2rem;
+    padding-top: 1rem;
 }
 
 #closeEditTasks{
     position:absolute;
-    top:0.5rem;
+    top:1rem;
     right:2rem;
     font-size: 3rem;
     cursor:pointer;
+    padding: 0.05rem 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#closeEditTasks:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
 }
 
 .editTasksPopup .content{
@@ -215,7 +225,15 @@ body{
 .editTasksTable #cross{
     font-size: 2.1rem;
     padding:0 0.6rem;
-    background-color: rgb(219, 96, 96);
+    background-color: rgb(193, 25, 25);
+}
+
+.editTasksTable #tick:hover{
+    background-color: rgb(38, 96, 38);
+}
+
+.editTasksTable #cross:hover{
+    background-color: rgb(130, 22, 22);
 }
 
 /*WEEKLY SALES SECTION*/

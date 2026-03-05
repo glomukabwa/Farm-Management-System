@@ -47,6 +47,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/dairy.css">
     <script src="../js/main.js" defer></script>
+    <script src="../js/dairy.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -173,18 +174,35 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     $cowsStmt = $conn->prepare("SELECT * FROM female_cows");
                     $cowsStmt->execute();
                     $cowRes = $cowsStmt->get_result();
+
+                    /*Getting the health status id */
+                    $healthy = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Healthy'");
+                    $healthyRes = $healthy->fetch_assoc();
+                    $sick = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Sick'");
+                    $sickRes = $sick->fetch_assoc();
+                    $quara = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Quarantined'");
+                    $quaraRes = $quara->fetch_assoc();
+
+                    $healthStatusName = "undefined";
+                    $healthStatusColor = "undetermined";
+
+                    /*Getting the life status id*/
+                    $alive = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Alive in the farm'");
+                    $aliveRes = $alive->fetch_assoc();
+                    $sold = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Sold'");
+                    $soldRes = $sold->fetch_assoc();
+                    $dead = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Dead'");
+                    $deadRes = $dead->fetch_assoc();
+
+                    $lifeStatusName = "undefined";
+                    $lifeStatusColor = "undetermined";
+
                     if($cowRes->num_rows > 0){
                         while($cowsRow = $cowRes->fetch_assoc()){
-                            /*Getting the health status name and color */
-                            $healthy = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Healthy'");
-                            $healthyRes = $healthy->fetch_assoc();
-                            $sick = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Sick'");
-                            $sickRes = $sick->fetch_assoc();
-                            $quara = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Quarantined'");
-                            $quaraRes = $quara->fetch_assoc();
+                            /*Storing the id of the respective field for future use*/
+                            $rowId = $cowsRow['id'];
 
-                            $healthStatusName = "undefined";
-                            $healthStatusColor = "undetermined";
+                            /*Determining color depending of health status id */
                             if((int)$cowsRow['health_status_id'] == (int)$healthyRes['id']){
                                 $healthStatusName = "Healthy";
                                 $healthStatusColor = "green";
@@ -192,20 +210,11 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 $healthStatusName = "Sick";
                                 $healthStatusColor = "red";
                             }elseif((int)$cowsRow['health_status_id'] == (int)$quaraRes['id']){
-                                $healthStatusName = "Sick";
+                                $healthStatusName = "Quarantined";
                                 $healthStatusColor = "yellow";
                             }
 
-                            /*Getting the life status name and color */
-                            $alive = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Alive in the farm'");
-                            $aliveRes = $alive->fetch_assoc();
-                            $sold = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Sold'");
-                            $soldRes = $sold->fetch_assoc();
-                            $dead = $conn->query("SELECT id FROM animal_lifecycle_statuses WHERE name = 'Dead'");
-                            $deadRes = $dead->fetch_assoc();
-
-                            $lifeStatusName = "undefined";
-                            $lifeStatusColor = "undetermined";
+                            /*Determining color depending of lifecycle status id */
                             if((int)$cowsRow['lifecycle_status_id'] == (int)$aliveRes['id']){
                                 $lifeStatusName = "Alive in the farm";
                                 $lifeStatusColor = "green";
@@ -223,8 +232,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 <td><?= htmlspecialchars($cowsRow['milkProduction'] ?? 'undefined') ?></td>
                                 <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
                                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
-                                <td><button>Edit</button></td>
-                                <td><button>Delete</button></td>
+                                <td><button type="button" id="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
+                                <td><button type="button" id="triggerDelete">Delete</button></td>
                             </tr>
                             <?php
                         }
@@ -232,6 +241,56 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     ?>
                 </tbody>
             </table>
+
+            <div class="editOverlay">
+                <form action="POST">
+                    <span id="closePopup">&times;</span>
+                    <span id="deleteBtn"><img src="../icons/delete.png" alt="trashcan"></span>
+
+                    <div class="oneinput">
+                        <input type="text" id="Name" name="Name" placeholder=" " required
+                            value="<?= htmlspecialchars($cowsRow['tag_name'] ?? 'undefined') ?>">
+                        <label for="Name">Name</label>
+                    </div>
+
+                    <div class="oneinput">
+                        <input type="text" id="healthStatus" name="healthStatus" placeholder=" " required
+                            value="<?= htmlspecialchars($healthStatusName) ?>">
+                        <label for="healthStatus">Health Status</label>
+                    </div>
+
+                    <div class="oneinput">
+                        <input type="number" id="milkProd" name="milkProd" placeholder=" " required
+                            value="<?= htmlspecialchars( number_format($cowsRow['milkProduction'] ?? 0 , 2) ) ?>">
+                        <label for="milkProd">Milk Production</label>
+                    </div>
+
+                    <div class="oneinput">
+                        <input type="text" id="pregStatus" name="pregStatus" placeholder=" " required
+                            value="<?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?>">
+                        <label for="pregStatus">Pregnancy Status</label>
+                    </div>
+
+                    <div class="oneinput">
+                        <input type="text" id="lifeStatus" name="lifeStatus" placeholder=" " required
+                            value="<?= htmlspecialchars($lifeStatusName) ?>">
+                        <label for="lifeStatus">Life Status</label>
+                    </div>
+
+                    <button class="actualEdit">EDIT</button>
+                </form>
+            </div>
+
+            <div class="deleteRowOverlay">
+                <form action="" method="POST" id="">
+                    <img id="deleteLogo" src="../icons/delete.png" alt="trashcan">
+                    <p>Are you sure you want to delete this row?</p>
+                    <div>
+                        <button type="button" id="cancelDeleteRow">CANCEL</button>
+                        <button type="submit">DELETE</button>
+                    </div>
+                </form>
+            </div>
 
             <div class="controls">
                 <form method="GET">
