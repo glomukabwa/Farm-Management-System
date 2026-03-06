@@ -1,6 +1,6 @@
 Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
-        Add search functionality
+        Add search functionality - Not done yet
         Make the bottom controls functional
 
 Add guidance on how to enter Animal in enterAnimal.php
