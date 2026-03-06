@@ -248,7 +248,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
                                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
                                 <td><button type="button" class="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
-                                <td><button type="button" class="triggerDelete">Delete</button></td>
+                                <td><button type="button" class="triggerDelete" value="<?= $rowId ?>">Delete</button></td>
                             </tr>
                             <?php
                         }
@@ -264,7 +264,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
             <div class="editOverlay">
                 <form method="POST">
                     <span id="closePopup">&times;</span>
-                    <span id="deleteBtn"><img src="../icons/delete.png" alt="trashcan"></span>
+                    <span id="deleteBtn"><img id="dustbin" src="../icons/delete.png" alt="trashcan"></span>
 
                     <div class="oneinput">
                         <input type="text" id="Name" name="Name" placeholder=" " required>
@@ -333,7 +333,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <p>Are you sure you want to delete this row?</p>
                     <div>
                         <button type="button" id="cancelDeleteRow">CANCEL</button>
-                        <button type="submit">DELETE</button>
+                        <button type="submit" id="actualDelete">DELETE</button>
                     </div>
                 </form>
             </div>

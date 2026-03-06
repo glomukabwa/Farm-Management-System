@@ -236,7 +236,7 @@ table button{
 
 .editOverlay form{
     background-color: var(--support2);
-    height:45rem;
+    height:50rem;
     width:45rem;
     display: flex;
     flex-direction: column;

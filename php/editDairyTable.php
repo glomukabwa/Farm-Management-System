@@ -5,7 +5,10 @@ include 'config.php';
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $rowId = $_POST['rowId'];
     $name = $_POST['tagName'];
-    $breedId = $_POST['breedId'];
+    $breedId = empty($_POST['breedId']) ? null : $_POST['breedId'];
+                /*$_POST['breedId']) ?? null will only check to see if the breedId
+                    has been sent at all, it won't check if what has been sent is 
+                    an empty string. Yes, "" is known as an empty string.*/
     $health = $_POST['health'];
     $milk = $_POST['milk'];
     $preg = $_POST['preg'];

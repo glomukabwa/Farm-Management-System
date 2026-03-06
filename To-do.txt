@@ -1,8 +1,7 @@
 Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
-        Enable deletion of rows in table
         Add search functionality
-        Make the bottom controls funtional
+        Make the bottom controls functional
 
 Add guidance on how to enter Animal in enterAnimal.php
 

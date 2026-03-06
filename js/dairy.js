@@ -11,6 +11,8 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
     const deleteRowOverlay = document.querySelector(".deleteRowOverlay");
     const cancelDeleteRow = document.getElementById("cancelDeleteRow");
     const actualEdit = document.querySelector(".actualEdit");
+    const actualDelete = document.getElementById("actualDelete");
+    const dustbin = document.getElementById("dustbin");
 
     /*Showing edit popup */
     triggerEdits.forEach(button => button.onclick = function() {
@@ -31,9 +33,10 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
         .then(response => response.json())
         .then(data => {
 
-            console.log(data.healthStatus)
+            console.log(data.breed);
+            console.log(data.isPreg);
             editOverlayInputs[0].value = data.name ?? 'Undefined';
-            editOverlayInputs[1].value = data.breed ?? 'Not Specified';
+            editOverlayInputs[1].value = data.breed ?? '';
             editOverlayInputs[2].value = data.healthStatus;
             editOverlayInputs[3].value = Number(data.milkProduction ?? 0).toFixed(2);
             editOverlayInputs[4].value = data.isPreg;
@@ -67,6 +70,20 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
             })
         }
 
+        /*Actual Deletion*/
+        dustbin.onclick = function(){
+            fetch('deleteRowDairy.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    rowId : rowId
+                })
+            })
+        }
+
+
 
     });
 
@@ -84,6 +101,20 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
     /*Showing delete popup from table */
     triggerDeletes.forEach(button => button.onclick = function(){
         deleteRowOverlay.classList.add("show");
+        const rowId = button.value;
+
+        /*Actual Deletion*/
+        actualDelete.onclick = function(){
+            fetch('deleteRowDairy.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    rowId : rowId
+                })
+            })
+        }
     });
 
     /*Cancel delete */
