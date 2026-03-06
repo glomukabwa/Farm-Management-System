@@ -186,7 +186,7 @@ CREATE TABLE product_sales (-- Tracks the selling of products to buyers
 
 CREATE TABLE animal_sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    animal_type_id INT NOT NULL,
+    animal_type_id INT,
     gender ENUM('male','female') NOT NULL,
     quantity INT NOT NULL,
     unit_cost DECIMAL(10,2) NOT NULL,
@@ -194,7 +194,7 @@ CREATE TABLE animal_sales (
         GENERATED ALWAYS AS (quantity * unit_cost) STORED,
     sale_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     sold_by INT,
-    FOREIGN KEY (animal_type_id) REFERENCES animals(animal_type_id),
+    FOREIGN KEY (animal_type_id) REFERENCES animals(animal_type_id) ON DELETE SET NULL,
     FOREIGN KEY (sold_by) REFERENCES users(id)
 );
 
@@ -222,6 +222,7 @@ CREATE TABLE events (
 
 CREATE TABLE female_cows(
     id INT AUTO_INCREMENT PRIMARY KEY,
+    animal_reference_id INT NOT NULL UNIQUE,
     animal_type_id INT NOT NULL,
     breed_id INT,
     tag_name VARCHAR(50) UNIQUE,
@@ -230,6 +231,7 @@ CREATE TABLE female_cows(
     lifecycle_status_id INT NOT NULL DEFAULT 1,
     health_status_id INT,
     created_at DATE NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (animal_reference_id) REFERENCES animals(id) ON DELETE CASCADE,
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     FOREIGN KEY (breed_id) REFERENCES breeds(id),
     FOREIGN KEY (lifecycle_status_id) REFERENCES animal_lifecycle_statuses(id),

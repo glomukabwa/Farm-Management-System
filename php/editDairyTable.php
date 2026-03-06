@@ -14,7 +14,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $preg = $_POST['preg'];
     $life = $_POST['life'];
 
-    $stmt = $conn->prepare("UPDATE female_cows
+    $getAnimalsId = $conn->prepare("SELECT animal_reference_id FROM female_cows WHERE id = ?");
+    $getAnimalsId->bind_param("i", $rowId);
+    $getAnimalsId->execute();
+    $getAnimalsIdRes = $getAnimalsId->get_result();
+    $getAnimalsIdRow = $getAnimalsIdRes->fetch_assoc();
+    $AnimalsId = (int)$getAnimalsIdRow['animal_reference_id'];
+
+
+    $stmt = $conn->prepare("UPDATE animals
+                            SET breed_id = ?,
+                                tag_name = ?,
+                                lifecycle_status_id = ?,
+                                health_status_id = ?
+                            WHERE id = ?");
+    $stmt->bind_param("isiii", $breedId, $name, $life, $health, $AnimalsId);
+    $stmt->execute();
+
+
+    $stmt2 = $conn->prepare("UPDATE female_cows
                             SET tag_name = ?,
                                 breed_id = ?,
                                 health_status_id = ?,
@@ -22,8 +40,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                                 isPregnant = ?,
                                 lifecycle_status_id = ?
                             WHERE id = ?");
-    $stmt->bind_param("siidiii", $name, $breedId, $health, $milk, $preg, $life, $rowId);
-    $stmt->execute();
+    $stmt2->bind_param("siidiii", $name, $breedId, $health, $milk, $preg, $life, $rowId);
+    $stmt2->execute();
                 
 }
 ?>

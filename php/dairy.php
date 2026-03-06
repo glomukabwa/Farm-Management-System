@@ -254,7 +254,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         }
                     }else{
                         ?>
-                        <tr><td colspan="6">No Records Found</td></tr>
+                        <tr><td colspan="8">No Records Found</td></tr>
                         <?php
                     }
                     ?>

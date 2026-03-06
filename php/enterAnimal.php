@@ -33,45 +33,43 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                                                 So here, I am saying that if the date is empty, give it the current date. I'm basically assigning a 
                                                 default date but in PHP. That's what this line is for: date('Y-m-d')*/
 
+    
+
     if($quantity >= 1){/*This is cz the fallback is zero and you don't want to have wrong insertions*/
-        $query = "INSERT INTO animals (animal_type_id, breed_id, gender, health_status_id, created_at) 
-        VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($query);
-        for($count = 0; $count < $quantity; $count++) {
-            /*The rule is to prepare once(the prepared stmt above) then execute multiple times so the
-            ones below are the ones that are put in the loop.*/
-            $stmt->bind_param("iisis", $animalType, $breed, $gender, $healthStatus, $createdAt);
-            $stmt->execute();
-        }
-
-        if($stmt->affected_rows > 0){
-            $success = true;
-        }
-
+        
         $cowIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Cow'");/*This is for safety incase 
                                                                 someone changes the ID of cow in the DB */
         $cowIdRow = $cowIdRes->fetch_assoc();
         $cowId = (int)$cowIdRow['id'];
 
-        if($gender == "female" && $animalType == $cowId){/*I'm putting this below the success flag so that incase 
-                                                            the animals are female cows and they are not inserted,
-                                                            the success flag is made to be false. See it after the
-                                                            insertion stmt has been executed. */
-            $femCowsStmt = $conn->prepare("INSERT INTO female_cows (animal_type_id, breed_id, health_status_id,
-                 created_at) VALUES (?, ?, ?, ?)");
-            for($count = 0; $count < $quantity; $count++){
-                $femCowsStmt->bind_param("iiis", $animalType, $breed, $healthStatus, $createdAt);
-                $femCowsStmt->execute();
+        $animStmt = $conn->prepare("INSERT INTO animals (animal_type_id, breed_id, gender, health_status_id, created_at) 
+                        VALUES (?, ?, ?, ?, ?)");
+        $femaleStmt = $conn->prepare("INSERT INTO female_cows (animal_reference_id, animal_type_id, breed_id, health_status_id, created_at)
+                                        VALUES (?, ?, ?, ?, ?)");
+        
+        for($count = 0; $count < $quantity; $count++) {
+            /*The rule is to prepare once(the prepared stmt above) then execute multiple times so the
+            ones below are the ones that are put in the loop.*/
+            $animStmt->bind_param("iisis", $animalType, $breed, $gender, $healthStatus, $createdAt);
+            $animStmt->execute();
+
+            $animId = $conn->insert_id;
+
+            if($gender == "female" && $animalType == $cowId){
+                $femaleStmt->bind_param("iiiis", $animId, $animalType, $breed, $healthStatus, $createdAt);
+                $femaleStmt->execute();
             }
 
-            if($femCowsStmt->affected_rows == 0){/*It is safe to put this here cz in case the gender is male, it
-                                                    won't accidentally make the success flag wrong cz this code
-                                                    runs only if it is a female cow being entered */
+            if($animStmt->affected_rows > 0){/*If it doesn't insert eg 1 out of 3, this will set it to false
+                                                It runs for every animal entered*/
+                $success = true;
+            }else{
                 $success = false;
             }
         }
 
-        $stmt->close();
+
+        $animStmt->close();
     }
 
 }
