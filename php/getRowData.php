@@ -11,6 +11,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $stmtRow = $stmtRes->fetch_assoc();
 
     $name = $stmtRow['tag_name'];
+    $breedId = $stmtRow['breed_id'];
     $milkProd = $stmtRow['milkProduction'];
     $healthStatus = $stmtRow['health_status_id'];
     $isPreg = $stmtRow['isPregnant'];
@@ -18,6 +19,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $result = [
         "name" => $name,
+        "breed" => $breedId,
         "milkProduction" => $milkProd,
         "healthStatus" => $healthStatus,
         "isPreg" => $isPreg,

@@ -32,22 +32,24 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
         .then(data => {
 
             console.log(data.healthStatus)
-            editOverlayInputs[0].value = data.name ?? 'undefined';
-            editOverlayInputs[1].value = data.healthStatus;
-            editOverlayInputs[2].value = Number(data.milkProduction ?? 0).toFixed(2);
-            editOverlayInputs[3].value = data.isPreg;
-            editOverlayInputs[4].value = data.lifeStatus;
+            editOverlayInputs[0].value = data.name ?? 'Undefined';
+            editOverlayInputs[1].value = data.breed ?? 'Not Specified';
+            editOverlayInputs[2].value = data.healthStatus;
+            editOverlayInputs[3].value = Number(data.milkProduction ?? 0).toFixed(2);
+            editOverlayInputs[4].value = data.isPreg;
+            editOverlayInputs[5].value = data.lifeStatus;
         });
 
         /*Actual editing */
         actualEdit.onclick = function(){
             const tagName = editOverlayInputs[0].value;
-            const health = editOverlayInputs[1].value;
-            const milk = editOverlayInputs[2].value;
-            const preg = editOverlayInputs[3].value;
-            const life = editOverlayInputs[4].value;
+            const breedId = editOverlayInputs[1].value;
+            const health = editOverlayInputs[2].value;
+            const milk = editOverlayInputs[3].value;
+            const preg = editOverlayInputs[4].value;
+            const life = editOverlayInputs[5].value;
 
-            console.log({rowId, tagName, health, milk, preg, life});
+            console.log({rowId, tagName, breedId, health, milk, preg, life});
             fetch('editDairyTable.php', {
                 method : 'POST',
                 headers : {
@@ -56,6 +58,7 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
                 body : new URLSearchParams({
                     rowId,
                     tagName,
+                    breedId,
                     health,
                     milk,
                     preg,

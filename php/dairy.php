@@ -160,6 +160,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Breed</th>
                         <th>Health Status</th>
                         <th>Milk Production(Ltrs)</th>
                         <th>Pregnancy Status</th>
@@ -202,6 +203,19 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             /*Storing the id of the respective field for future use*/
                             $rowId = $cowsRow['id'];
 
+                            $breedName = '';
+                            $breedId = (int)$cowsRow['breed_id'];
+                            if($cowsRow['breed_id'] != null){
+                                $breedStmt = $conn->prepare("SELECT name FROM breeds WHERE id = ?");
+                                $breedStmt->bind_param("i", $breedId);
+                                $breedStmt->execute();
+                                $breedRes = $breedStmt->get_result();
+                                $breedRow = $breedRes->fetch_assoc();
+                                $breedName = $breedRow['name'];
+                            }else{
+                                $breedName = 'Not specified';
+                            }
+
                             /*Determining color depending of health status id */
                             if((int)$cowsRow['health_status_id'] == (int)$healthyRes['id']){
                                 $healthStatusName = "Healthy";
@@ -227,7 +241,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             }
                         ?>
                             <tr>
-                                <td><?= htmlspecialchars($cowsRow['tag_name'] ?? 'undefined') ?></td>
+                                <td><?= htmlspecialchars($cowsRow['tag_name'] ?? 'Undefined') ?></td>
+                                <td><?= htmlspecialchars($breedName) ?></td>
                                 <td><?= htmlspecialchars($healthStatusName) ?></td>
                                 <td><?= htmlspecialchars(number_format($cowsRow['milkProduction'] ?? 0, 2)) ?></td>
                                 <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
@@ -254,6 +269,19 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <div class="oneinput">
                         <input type="text" id="Name" name="Name" placeholder=" " required>
                         <label for="Name">Name</label>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <select name="breed" id="breed">
+                            <option value="">Breed</option>
+                            <?php 
+                            $breeds = "SELECT * FROM breeds";
+                            $breedResult = $conn->query($breeds);
+                            while($breedRow = $breedResult->fetch_assoc()){
+                                echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <div class="select-wrapper">

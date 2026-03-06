@@ -1,5 +1,4 @@
 Dairy Page:
-        Add editting of breed in table
         Add a notice to the user that the name of the animal already exists if it isn't unique
         Enable deletion of rows in table
         Add search functionality
