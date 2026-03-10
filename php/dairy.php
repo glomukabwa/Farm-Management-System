@@ -131,11 +131,12 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
             <h2>Cows(Female) Records</h2>
 
             <div class="topControls">
-                <div class="right">
-                    <div class="select-wrapper">
+                <form class="right" method="POST" id="searchForm">
+                    <div class="select-wrapper" id="searchCirteria">
                         <select name="searchCriteria" id="searchCriteria">
                             <option value="">-- Search By --</option>
                             <option value="name">Name</option>
+                            <option value="breed">Breed</option>
                             <option value="healthStatus">Health Status</option>
                             <option value="milkProd">Milk Production</option>
                             <option value="isPreg">Pregnancy Status</option>
@@ -148,8 +149,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <label for="searchValue">Enter Search Value</label>
                     </div>
 
-                    <button>SEARCH</button>
-                </div>
+                    <button id="searchSthBtn" type="submit">SEARCH</button>
+                </form>
 
                 <div class="left">
                     <button>MORE OPTIONS</button>
@@ -170,7 +171,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="table-body">
                     <?php
                     $cowsStmt = $conn->prepare("SELECT * FROM female_cows");
                     $cowsStmt->execute();

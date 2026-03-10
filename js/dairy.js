@@ -1,3 +1,51 @@
+/*SEARCH FUNCTIONALITY*/
+const searchForm = document.getElementById("searchForm");
+const searchCriteria = document.getElementById("searchCriteria");
+const searchInput = document.getElementById("searchValue");
+const searchBtn = document.getElementById("searchSthBtn");
+const tableBody = document.getElementById("table-body");
+
+function updateBtnState(){
+    if(searchCriteria.value === "" || searchInput.value.trim() === ""){/*OR cz if you use AND then if one of them
+        is filled and the other isn't, the button will still work cz AND is strictly both */
+        searchBtn.disabled = true;
+    }else{
+        searchBtn.disabled = false;
+    }
+}
+
+searchCriteria.addEventListener("change", updateBtnState);/*Cz getting the values above only happens when the
+page first reloads so you want to track any kind of changes to the criteria or the input */
+searchInput.addEventListener("input", updateBtnState);
+
+searchForm.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const criteriaOption = searchCriteria.value;
+    const searchValue = searchInput.value;
+
+    fetch('dairyTableSearch.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            criteriaOption: criteriaOption,
+            searchValue: searchValue
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        tableBody.innerHTML = data;
+    });
+});
+
+updateBtnState();/* This sets the button to the correct state on page load cz when the form is submtted,
+                    it'll reload and the button will be enabled again. The disabling can only happend if there
+                    is change in input or criteria but we want to set the initial state of the btn as disabled
+                    even if the user hasn't interacted with the inputs*/
+
+/*TABLE SECTION*/
 const triggerEdits = document.querySelectorAll(".triggerEdit");
 const triggerDeletes = document.querySelectorAll(".triggerDelete");
 

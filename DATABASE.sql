@@ -64,7 +64,7 @@ CREATE TABLE animals (-- record of all existing animals
     tag_name VARCHAR(50) UNIQUE,-- This is optional just incase the farm uses tags
     lifecycle_status_id INT NOT NULL DEFAULT 1,
     gender ENUM('male','female') NOT NULL,
-    health_status_id INT,
+    health_status_id INT NOT NULL,
     created_at DATE NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
     FOREIGN KEY (breed_id) REFERENCES breeds(id),
@@ -229,7 +229,7 @@ CREATE TABLE female_cows(
     milkProduction DECIMAL(10, 2),
     isPregnant BOOLEAN DEFAULT FALSE,
     lifecycle_status_id INT NOT NULL DEFAULT 1,
-    health_status_id INT,
+    health_status_id INT NOT NULL,
     created_at DATE NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (animal_reference_id) REFERENCES animals(id) ON DELETE CASCADE,
     FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
