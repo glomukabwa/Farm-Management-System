@@ -1,12 +1,14 @@
 Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
+
         Add search functionality:
-                Name->You need to work on the null names
+                Name                                            ✔
                 Breed                                           ✔
                 Health Status                                   ✔
                 Milk Production                                 ✔
                 Pregnancy status                                ✔
                 Life Status                                     ✔
+                
         Make the bottom controls functional
 
 Add guidance on how to enter Animal in enterAnimal.php

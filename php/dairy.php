@@ -268,7 +268,12 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <span id="deleteBtn"><img id="dustbin" src="../icons/delete.png" alt="trashcan"></span>
 
                     <div class="oneinput">
-                        <input type="text" id="Name" name="Name" placeholder=" " required>
+                        <input type="text" id="Name" name="Name" placeholder=" " >
+                        <!--I'm not making it required so that a user can remove the name of a cow and leave it as 
+                            undefined for whatever reason they have. I'm allowing this cz the tagName in the DB is
+                            NULLABLE so I want to allow the users to have the option of having undefined animals
+                            until they choose to name them
+                        -->
                         <label for="Name">Name</label>
                     </div>
 

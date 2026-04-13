@@ -11,10 +11,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $result = null;
 
     if($criteriaValue == 'name'){
-        $nameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name LIKE ?");
-        $nameStmt->bind_param("s", $searchTerm);
-        $nameStmt->execute();
-        $result = $nameStmt->get_result();
+        $undefinedName = ['und', 'unde', 'undef', 'def'];
+        $isUndefined = false;
+        foreach($undefinedName as $word){
+            if(stripos($searchValue, $word) !== false){
+                $isUndefined = true;
+                break;
+            }
+        }
+        if($isUndefined){
+            $nullNameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name IS NULL");
+            $nullNameStmt->execute();
+            $result = $nullNameStmt->get_result();
+        }else{
+            $nameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name LIKE ?");
+            $nameStmt->bind_param("s", $searchTerm);
+            $nameStmt->execute();
+            $result = $nameStmt->get_result();
+        }
 
     }elseif($criteriaValue == 'breed'){
         $unspecifiedBreed = ['no', 'spe', 'not spec'];
