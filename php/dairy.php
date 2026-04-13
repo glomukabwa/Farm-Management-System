@@ -299,7 +299,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     </div>
 
                     <div class="oneinput">
-                        <input type="number" id="milkProd" name="milkProd" placeholder=" " required>
+                        <input type="number" step="0.01" id="milkProd" name="milkProd" placeholder=" " required>
                         <label for="milkProd">Milk Production</label>
                     </div>
 

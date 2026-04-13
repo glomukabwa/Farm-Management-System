@@ -84,18 +84,33 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
     elseif($criteriaValue == 'milkProd'){
         
-        $milkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction LIKE ?");
-        $milkStmt->bind_param("s", $searchTerm);
+        $milkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction = ?");
+        $milkStmt->bind_param("d", $searchValue);
         $milkStmt->execute();
         $result = $milkStmt->get_result();
-        
+    
     }
     elseif($criteriaValue == 'isPreg'){
 
-        $pregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant LIKE ?");
-        $pregStmt->bind_param("s", $searchTerm);
-        $pregStmt->execute();
-        $result = $pregStmt->get_result();
+        $notPreg = ['no', 'no preg', 'not'];
+        $isNotPreg = false;
+
+        foreach($notPreg as $word){
+            if(stripos($searchValue, $word) !== false){
+                $isNotPreg = true;
+                break;
+            }
+        }
+
+        if($isNotPreg){
+            $notPregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant = 0");
+            $notPregStmt->execute();
+            $result = $notPregStmt->get_result();
+        }else{
+            $pregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant = 1");
+            $pregStmt->execute();
+            $result = $pregStmt->get_result();
+        }
         
     }
     elseif($criteriaValue == 'lifeStatus'){

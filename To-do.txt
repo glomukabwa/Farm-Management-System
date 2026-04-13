@@ -4,8 +4,8 @@ Dairy Page:
                 Name->You need to work on the null names
                 Breed                                           ✔
                 Health Status                                   ✔
-                Milk Production->Make the search = not LIKE so that you can search specific numbers
-                Pregnancy status is not working at all
+                Milk Production                                 ✔
+                Pregnancy status                                ✔
                 Life Status                                     ✔
         Make the bottom controls functional
 
