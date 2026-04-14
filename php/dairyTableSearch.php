@@ -3,9 +3,14 @@ require 'auth.php';
 include 'config.php'; 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    ob_start();
 
     $criteriaValue = $_POST['criteriaOption'] ?? '';
     $searchValue = $_POST['searchValue'] ?? '';
+    $limit = $_POST['limit'] ?? 10;
+    $page = $_POST['page'] ?? 1;
+    $offset = ($page - 1) * $limit;
+    $totalRows = 0;
 
     $searchTerm = "%$searchValue%";
     $result = null;
@@ -20,14 +25,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
         if($isUndefined){
-            $nullNameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name IS NULL");
+            $nullNameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name IS NULL LIMIT ?, ?");
+            $nullNameStmt->bind_param("ii", $offset, $limit);
             $nullNameStmt->execute();
             $result = $nullNameStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE tag_name IS NULL");
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }else{
-            $nameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name LIKE ?");
-            $nameStmt->bind_param("s", $searchTerm);
+            $nameStmt = $conn->prepare("SELECT * FROM female_cows WHERE tag_name LIKE ? LIMIT ?, ?");
+            $nameStmt->bind_param("sii", $searchTerm, $offset, $limit);
             $nameStmt->execute();
             $result = $nameStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE tag_name LIKE ?");
+            $countStmt->bind_param("s", $searchTerm);
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }
 
     }elseif($criteriaValue == 'breed'){
@@ -57,9 +74,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
 
         if($isUnspecified){
-            $breedNullStmt = $conn->prepare("SELECT * FROM female_cows WHERE breed_id IS NULL");
+            $breedNullStmt = $conn->prepare("SELECT * FROM female_cows WHERE breed_id IS NULL LIMIT ?, ?");
+            $breedNullStmt->bind_param("ii", $offset, $limit);
             $breedNullStmt->execute();
             $result = $breedNullStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE breed_id IS NULL");
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }else{
             $breedNameStmt = $conn->prepare("SELECT id FROM breeds WHERE name LIKE ?");
             $breedNameStmt->bind_param("s", $searchTerm);
@@ -70,10 +93,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $result = null;
             }else{
                 $breedId = $breedNameRow['id'];
-                $breedStmt = $conn->prepare("SELECT * FROM female_cows WHERE breed_id = ?");
-                $breedStmt->bind_param("i", $breedId);
+                $breedStmt = $conn->prepare("SELECT * FROM female_cows WHERE breed_id = ? LIMIT ?, ?");
+                $breedStmt->bind_param("iii", $breedId, $offset, $limit);
                 $breedStmt->execute();
                 $result = $breedStmt->get_result();
+
+                $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE breed_id = ?");
+                $countStmt->bind_param("i", $breedId);
+                $countStmt->execute();
+                $countRes = $countStmt->get_result();
+                $totalRows = $countRes->fetch_assoc()['total'];
             }
         }
         
@@ -89,19 +118,52 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $result = null;
         }else{
             $healthId = $healthNameRow['id'];
-            $healthStmt = $conn->prepare("SELECT * FROM female_cows WHERE health_status_id = ?");
-            $healthStmt->bind_param("i", $healthId);
+            $healthStmt = $conn->prepare("SELECT * FROM female_cows WHERE health_status_id = ? LIMIT ?, ?");
+            $healthStmt->bind_param("iii", $healthId, $offset, $limit);
             $healthStmt->execute();
             $result = $healthStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE health_status_id = ?");
+            $countStmt->bind_param("i", $healthId);
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }
 
     }
     elseif($criteriaValue == 'milkProd'){
-        
-        $milkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction = ?");
-        $milkStmt->bind_param("d", $searchValue);
-        $milkStmt->execute();
-        $result = $milkStmt->get_result();
+
+        $zeroMilk = ['0', '0.0'];
+        $isZeroMilk = false;
+
+        foreach($zeroMilk as $word){
+            if(stripos($searchValue, $word) !== false){
+                $isZeroMilk = true;
+            }
+        }
+
+        if($isZeroMilk){
+            $zeroMilkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction IS NULL LIMIT ?, ?");
+            $zeroMilkStmt->bind_param("ii", $offset, $limit);
+            $zeroMilkStmt->execute();
+            $result = $zeroMilkStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE milkProduction IS NULL");
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
+        }else{
+            $milkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction = ? LIMIT ?, ?");
+            $milkStmt->bind_param("dii", $searchValue, $offset, $limit);
+            $milkStmt->execute();
+            $result = $milkStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE milkProduction = ?");
+            $countStmt->bind_param("d", $searchValue);
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
+        }
     
     }
     elseif($criteriaValue == 'isPreg'){
@@ -117,13 +179,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
 
         if($isNotPreg){
-            $notPregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant = 0");
+            $notPregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant = 0 LIMIT ?, ?");
+            $notPregStmt->bind_param("ii", $offset, $limit);
             $notPregStmt->execute();
             $result = $notPregStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE isPregnant = 0");
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }else{
-            $pregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant = 1");
+            $pregStmt = $conn->prepare("SELECT * FROM female_cows WHERE isPregnant = 1 LIMIT ?, ?");
+            $pregStmt->bind_param("ii", $offset, $limit);
             $pregStmt->execute();
             $result = $pregStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE isPregnant = 1");
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }
         
     }
@@ -137,10 +211,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $result = null;
         }else{
             $lifeId = $lifeNameRow['id'];
-            $lifeStmt = $conn->prepare("SELECT * FROM female_cows WHERE lifecycle_status_id = ?");
-            $lifeStmt->bind_param("i", $lifeId);
+            $lifeStmt = $conn->prepare("SELECT * FROM female_cows WHERE lifecycle_status_id = ? LIMIT ?, ?");
+            $lifeStmt->bind_param("iii", $lifeId, $offset, $limit);
             $lifeStmt->execute();
             $result = $lifeStmt->get_result();
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE lifecycle_status_id = ?");
+            $countStmt->bind_param("i", $lifeId);
+            $countStmt->execute();
+            $countRes = $countStmt->get_result();
+            $totalRows = $countRes->fetch_assoc()['total'];
         }
 
     }
@@ -230,6 +310,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         </tr>
         <?php
     }
+
+    $rowsHtml = ob_get_clean();
+
+    $totalPages = max(1, ceil($totalRows / $limit));/*I've set the default totalRows as zero so if there are
+    no records, the ceil will return 0. This is bad for the UI cz it'll say zero pages. For safety, I'm forcing
+    a minimum of 1 (yes, max sets the minimum) so that if nothing is found then it still displays Page 1 of 1*/
+
+    echo json_encode([
+        "rows" => $rowsHtml,
+        "totalPages" => $totalPages
+    ]);
   
 }
 ?>

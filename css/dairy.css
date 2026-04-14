@@ -106,11 +106,10 @@ button:hover{
 
 /*TABLE*/
 .cowsTable{
-    height:100vh;
-    padding: 2rem 0;
     display: flex;
     flex-direction: column;
     gap:2rem;
+    min-height:59rem;
 }
 
 /*Top Controls*/
@@ -337,14 +336,16 @@ table button{
 /*Bottom Controls*/
 .controls{
     margin-top:auto;
+    padding-top: 1rem;
     display:flex;
     justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
 .controls select{
     border:solid 0.1rem black;
     width:4.5rem;
-    padding:0 0.4rem;
+    padding:0 0.5rem;
     border-radius:1rem;
 }
 

@@ -156,7 +156,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <button>MORE OPTIONS</button>
                 </div>
             </div>
-
+            
             <table>
                 <thead>
                     <tr>
@@ -173,9 +173,32 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
                 <tbody id="table-body">
                     <?php
-                    $cowsStmt = $conn->prepare("SELECT * FROM female_cows");
+                    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+
+                    if($page < 1){
+                        $page = 1;
+                    }
+
+                    if(!in_array($limit, [10,20,30])){
+                        $limit = 10;
+                    }
+
+                    $offset = ($page - 1) * $limit;
+
+                    $cowsStmt = $conn->prepare("SELECT * FROM female_cows
+                                                ORDER BY id ASC
+                                                LIMIT ?,?");
+                    $cowsStmt->bind_param("ii", $offset, $limit);
                     $cowsStmt->execute();
                     $cowRes = $cowsStmt->get_result();
+
+                    $totalRowsStmt = $conn->prepare("SELECT COUNT(*) AS total FROM female_cows");
+                    $totalRowsStmt->execute();
+                    $totalRowsRes = $totalRowsStmt->get_result();
+                    $totalRowsRow = $totalRowsRes->fetch_assoc();
+                    $totalRowsValue = $totalRowsRow['total'];
+                    $totalPages = ceil($totalRowsValue / $limit);
 
                     /*Getting the health status id */
                     $healthy = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Healthy'");
@@ -351,20 +374,32 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <label for="limit">
                         Show rows per page
                         <select name="limit" id="limit" onchange="this.form.submit()">
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
+                            <option value="10" <?= $limit == 10 ? 'selected' : '' ?>>10</option>
+                            <option value="20" <?= $limit == 20 ? 'selected' : '' ?>>20</option>
+                            <option value="30" <?= $limit == 30 ? 'selected' : '' ?>>30</option>
                         </select>
                         <span class="arrow">⌄</span>
                     </label>
                 </form>
 
                 <div class="arrows">
-                    <a href="#">&lt;</a>
+                    <?php
+                    if($page > 1){
+                        ?>
+                        <a href="?page=<?= $page - 1 ?>&limit=<?= $limit ?>">&lt;</a>
+                        <?php
+                    }
+                    ?>
 
-                    <span>Page of </span>
-
-                    <a href="#">&gt;</a>
+                    <span>Page <?= $page ?> of <?= $totalPages ?></span>
+                    
+                    <?php
+                    if($page < $totalPages){
+                        ?>
+                        <a href="?page=<?= $page + 1 ?>&limit=<?= $limit ?>">&gt;</a>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>

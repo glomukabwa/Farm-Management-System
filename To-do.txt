@@ -9,7 +9,15 @@ Dairy Page:
                 Pregnancy status                                ✔
                 Life Status                                     ✔
                 
-        Make the bottom controls functional
+        Make the bottom controls functional:
+                On search, they are supposed to change too      ✔
+                        Add comments on how you used json in dairyTableSearch
+
+        Work on more options:
+                Add new animal
+                Select all
+                Separate delete button
+                Select check boxes before tag name
 
 Add guidance on how to enter Animal in enterAnimal.php
 

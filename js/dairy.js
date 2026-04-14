@@ -31,12 +31,17 @@ searchForm.addEventListener("submit", function(e){
         },
         body: new URLSearchParams({
             criteriaOption: criteriaOption,
-            searchValue: searchValue
+            searchValue: searchValue,
+            limit: document.getElementById("limit").value,
+            page: 1
         })
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-        tableBody.innerHTML = data;
+        tableBody.innerHTML = data.rows;
+
+        document.querySelector(".arrows span").textContent =
+        `Page 1 of ${data.totalPages}`;
     });
 });
 
