@@ -38,7 +38,7 @@ searchForm.addEventListener("submit", function(e){
     })
     .then(response => response.json())
     .then(data => {
-        tableBody.innerHTML = data.rows;
+        tableBody.innerHTML = data.rows;/*Cz data is an array so u need to target the specific elements u want*/
 
         document.querySelector(".arrows span").textContent =
         `Page 1 of ${data.totalPages}`;

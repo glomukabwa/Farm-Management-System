@@ -1,18 +1,6 @@
 Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
 
-        Add search functionality:
-                Name                                            ✔
-                Breed                                           ✔
-                Health Status                                   ✔
-                Milk Production                                 ✔
-                Pregnancy status                                ✔
-                Life Status                                     ✔
-                
-        Make the bottom controls functional:
-                On search, they are supposed to change too      ✔
-                        Add comments on how you used json in dairyTableSearch
-
         Work on more options:
                 Add new animal
                 Select all
