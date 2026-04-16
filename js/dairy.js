@@ -50,6 +50,26 @@ updateBtnState();/* This sets the button to the correct state on page load cz wh
                     is change in input or criteria but we want to set the initial state of the btn as disabled
                     even if the user hasn't interacted with the inputs*/
 
+/*MORE OPTIONS*/
+const moreOptions = document.getElementById("moreOptions");
+const optionsMenuBar = document.querySelector(".optionsMenuBar");
+
+moreOptions.onclick = function(e){
+    optionsMenuBar.classList.add("showoptionsMenuBar");
+};
+
+document.addEventListener("click", function(e){
+    const menuClicked = optionsMenuBar.contains(e.target);
+    /*e.target contains the location of the click so you are basically saying: check if the menu bar
+    is the location indicated by e.target. If it is, menuClicked will be true*/
+    
+    const optBtnClicked = moreOptions.contains(e.target);
+
+    if(!menuClicked && !optBtnClicked){
+        optionsMenuBar.classList.remove("showoptionsMenuBar");
+    }
+});
+
 /*TABLE SECTION*/
 const triggerEdits = document.querySelectorAll(".triggerEdit");
 const triggerDeletes = document.querySelectorAll(".triggerDelete");

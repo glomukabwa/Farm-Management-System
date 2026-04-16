@@ -153,13 +153,20 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                 </form>
 
                 <div class="left">
-                    <button>MORE OPTIONS</button>
+                    <button id="moreOptions">MORE OPTIONS</button>
+
+                    <ul class="optionsMenuBar">
+                        <li>Add new animal</li>
+                        <li>Select all rows</li>
+                        <li>Delete</li>
+                    </ul>
                 </div>
             </div>
             
             <table>
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Breed</th>
                         <th>Health Status</th>
@@ -265,6 +272,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             }
                         ?>
                             <tr>
+                                <td><input type="checkbox" name="rowSelected" value="<?= $rowId ?>"></td>
                                 <td><?= htmlspecialchars($cowsRow['tag_name'] ?? 'Undefined') ?></td>
                                 <td><?= htmlspecialchars($breedName) ?></td>
                                 <td><?= htmlspecialchars($healthStatusName) ?></td>
