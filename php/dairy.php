@@ -295,9 +295,6 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
             <div class="addAnimalOverlay">
                 <form method="POST">
-                    <?php
-                    $success = false;
-                    ?>
                     
                     <span id="closeAddAnimal" class="closePopup">&times;</span>
 
@@ -345,14 +342,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     </div>
 
                     <div class="submission">
-                        <button type="submit">Enter</button>
-                        <?php 
-                        $message = '';
-                        if($success){
-                            $message = 'Animal added successfully!';
-                        }
-                        ?>
-                        <p id="successMessage"><?= htmlspecialchars($message) ?></p>
+                        <button type="submit" id="enterNewAnimal">Enter</button>
+                        <p id="successMessage"></p>
                     </div>
 
                 </form>

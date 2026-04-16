@@ -2,7 +2,9 @@ Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
 
         Work on more options:
-                Add new animal
+                Add new animal: 
+                        success message is not showing
+                        the form should clear after submission
                 Select all
                 Separate delete button
                 Select check boxes before tag name

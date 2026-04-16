@@ -50,6 +50,8 @@ updateBtnState();/* This sets the button to the correct state on page load cz wh
                     is change in input or criteria but we want to set the initial state of the btn as disabled
                     even if the user hasn't interacted with the inputs*/
 
+
+
 /*MORE OPTIONS*/
 const moreOptions = document.getElementById("moreOptions");
 const optionsMenuBar = document.querySelector(".optionsMenuBar");
@@ -84,6 +86,53 @@ document.addEventListener("click", function(e){
         optionsMenuBar.classList.remove("showoptionsMenuBar");
     }
 });
+
+/*Actually adding a new cow*/
+const newAnimalInputs = addAnimalOverlay.querySelectorAll("input, select");
+const enterNewAnimal = document.getElementById("enterNewAnimal");
+let successState = false;
+
+enterNewAnimal.onclick = function(e){
+    e.preventDefault();/*Prevents the btn from submitting so that the JS can handle the submission.
+    type='submit' would do the default submission before and we haven't specified where the data is 
+    to be sent in php plus we have condistions we are setting here in JS*/
+    const aniQuantity = newAnimalInputs[0].value;
+    const aniBreed = newAnimalInputs[1].value;
+    const aniHealth = newAnimalInputs[2].value;
+    const aniDate = newAnimalInputs[3].value;
+
+    fetch('enterNewFemCow.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            aniQuantity,
+            aniBreed,
+            aniHealth,
+            aniDate
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        successState = data;
+
+        if(successState.textContent){
+            const successMessage = document.getElementById("successMessage");
+            successMessage = "Animal added successfully!";
+
+            if(successMessage){
+                if(successMessage.textContent){/*Returns true if textContent is set*/
+                    setTimeout(() => {
+                    successMessage.style.opacity = '0';
+                    }, 2000);
+                }
+            }
+        }
+    });
+
+}
+
 
 /*TABLE SECTION*/
 const triggerEdits = document.querySelectorAll(".triggerEdit");
