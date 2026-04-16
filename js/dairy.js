@@ -58,11 +58,26 @@ moreOptions.onclick = function(e){
     optionsMenuBar.classList.add("showoptionsMenuBar");
 };
 
+const menuBarItems = document.querySelectorAll(".optionsMenuBar li");
+const addNewCow = menuBarItems[0];
+const selectAll = menuBarItems[1];
+const dltSelectedRow = menuBarItems[2];
+const addAnimalOverlay = document.querySelector(".addAnimalOverlay");
+const closeAddAnimal = document.getElementById("closeAddAnimal");
+
+addNewCow.onclick = function(){
+    addAnimalOverlay.classList.add("show");
+}
+
+closeAddAnimal.onclick = function(){
+    addAnimalOverlay.classList.remove("show");
+}
+
 document.addEventListener("click", function(e){
     const menuClicked = optionsMenuBar.contains(e.target);
     /*e.target contains the location of the click so you are basically saying: check if the menu bar
     is the location indicated by e.target. If it is, menuClicked will be true*/
-    
+
     const optBtnClicked = moreOptions.contains(e.target);
 
     if(!menuClicked && !optBtnClicked){
@@ -79,7 +94,7 @@ if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
     const editOverlay = document.querySelector(".editOverlay");
     const editOverlayInputs = editOverlay.querySelectorAll("input, select");
     editOverlayInputs.forEach(input => input.disabled = true);
-    const closeOverlay = document.getElementById("closePopup");
+    const closeOverlay = document.getElementById("closeEditPopup");
     const popupDeleteBtn = document.getElementById("deleteBtn");
     const deleteRowOverlay = document.querySelector(".deleteRowOverlay");
     const cancelDeleteRow = document.getElementById("cancelDeleteRow");

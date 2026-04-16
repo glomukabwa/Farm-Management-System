@@ -254,6 +254,61 @@ input[type="checkbox"]{
     accent-color: var(--basecolor) !important;
 }
 
+/*Add new cow*/
+.addAnimalOverlay{
+    position: fixed;
+    inset:0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.addAnimalOverlay form{
+    background-color: var(--support2);
+    height:fit-content;
+    width:45rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:2rem;
+    border-radius: 2rem;
+    position: relative;
+    padding: 5rem 0;
+}
+
+.addAnimalOverlay form input{
+    background-color: var(--lightestgrey);
+    border: solid 0.1rem var(--basecolor);
+    width: 33rem;
+}
+
+.addAnimalOverlay form .oneinput label{
+    background-color: var(--lightestgrey);
+}
+
+.addAnimalOverlay form .select-wrapper{
+    width:33rem;
+    border: solid 0.1rem var(--basecolor);
+    background-color: var(--lightestgrey);
+}
+
+.addAnimalOverlay form #date{
+    padding:1rem 2rem;
+    border-radius: 2rem;
+}
+
+.addAnimalOverlay #message{
+    font-size: 1.1rem;
+    padding-left: 2rem;
+}
+
+.addAnimalOverlay form button{
+    padding:1rem 10rem;
+    margin-top: 2rem;
+}
+
 /*Edit Button*/
 .editOverlay, .deleteRowOverlay{
     position: fixed;
@@ -282,7 +337,7 @@ input[type="checkbox"]{
     padding-top:4rem;
 }
 
-#closePopup{
+.closePopup{
     position:absolute;
     top:1.5rem;
     right:3rem;
@@ -309,7 +364,7 @@ input[type="checkbox"]{
     width:2.5rem;
 }
 
-#closePopup:hover, #deleteBtn:hover{
+.closePopup:hover, #deleteBtn:hover{
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
 }

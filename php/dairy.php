@@ -156,7 +156,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <button id="moreOptions">MORE OPTIONS</button>
 
                     <ul class="optionsMenuBar">
-                        <li>Add new animal</li>
+                        <li>Add new cow</li>
                         <li>Select all rows</li>
                         <li>Delete</li>
                     </ul>
@@ -293,9 +293,74 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                 </tbody>
             </table>
 
+            <div class="addAnimalOverlay">
+                <form method="POST">
+                    <?php
+                    $success = false;
+                    ?>
+                    
+                    <span id="closeAddAnimal" class="closePopup">&times;</span>
+
+                    <h2>Add New Cow</h2>
+
+                    <div class="oneinput">
+                        <input type="number" id="quantity" name="quantity" placeholder=" " required>
+                        <label for="quantity">Quantity</label>
+                    </div>
+
+                    <div>
+                        <div class="select-wrapper">
+                            <select name="breed" id="breed">
+                                <option value="">Breed</option>
+                                <?php 
+                                $breeds = "SELECT * FROM breeds";
+                                $breedResult = $conn->query($breeds);
+                                while($breedRow = $breedResult->fetch_assoc()){
+                                    echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <label for="" id="message">* <span id="text">Optional</span></label>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <select name="healthStatus" id="healthStatus" required>
+                            <option value="">Health Status</option>
+                            <?php 
+                            $healthStatuses = "SELECT * FROM animal_statuses";
+                            $healthResult = $conn->query($healthStatuses);
+                            while($healthRow = $healthResult->fetch_assoc()){
+                                echo '<option value="'.$healthRow['id'].'">'.$healthRow['status_name'].'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="date">
+                        <div>
+                            <input type="date" id="date" name="date">
+                        </div>
+                        <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+                    </div>
+
+                    <div class="submission">
+                        <button type="submit">Enter</button>
+                        <?php 
+                        $message = '';
+                        if($success){
+                            $message = 'Animal added successfully!';
+                        }
+                        ?>
+                        <p id="successMessage"><?= htmlspecialchars($message) ?></p>
+                    </div>
+
+                </form>
+            </div>
+
             <div class="editOverlay">
                 <form method="POST">
-                    <span id="closePopup">&times;</span>
+                    <span id="closeEditPopup" class="closePopup">&times;</span>
                     <span id="deleteBtn"><img id="dustbin" src="../icons/delete.png" alt="trashcan"></span>
 
                     <div class="oneinput">
