@@ -50,6 +50,162 @@ updateBtnState();/* This sets the button to the correct state on page load cz wh
                     is change in input or criteria but we want to set the initial state of the btn as disabled
                     even if the user hasn't interacted with the inputs*/
 
+/*EDITTING AND DELETION*/
+tableBody.addEventListener("click", function(e){
+    /*Before I had attached event listeners directly on the buttons however I searched for sth and tried
+      to click on either the edit or delete button, they were unresponsive. Chat told me that it was bcz
+      in the search,it replaced the old elements with new elements and though those new elements had the
+      same class names and ids, they did not have vent listeners cz those were destroyed after a search.
+      The recommended solution was to attach an event listener to the table body instead bcz it was never 
+      replaced, just the contents inside it*/
+
+    const triggerEdit = e.target.closest(".triggerEdit");
+    /*e.target contains the location of the click, .closest climbs up the DOM tree. Eg if the button had
+    an image inside it: 
+        <button class="triggerEdit">Click me
+            <img src="btnImg.png">
+        </button>
+    If someone clicked on the image, the e.target would be the image, .closest(".triggerEdit") would
+    first check, is the target ".triggerEdit" ? No? Then move up to its parent. It would then find that
+    the parent is indeed what we want to be found. The difference between this and .contains(".triggerEdit")
+    is that .contains() goes dowm the DOM tree and not up. So in this case if someone clicked the image, it
+    would look for the image's child element and the image has no child element so it wouldn't find the 
+    button we are looking for. That is why I used .closest() here*/
+
+    const triggerDelete = e.target.closest(".triggerDelete");
+
+    if(triggerEdit){
+        const rowID = triggerEdit.value;
+        handleEdit(rowID);
+    }
+
+    if(triggerDelete){
+        const rowID = triggerDelete.value;
+        handleDelete(rowID);
+    }
+})
+
+function handleEdit(rowId){
+    const editOverlay = document.querySelector(".editOverlay");
+    const editOverlayInputs = editOverlay.querySelectorAll("input, select");
+    editOverlayInputs.forEach(input => input.disabled = true);
+    const actualEdit = document.querySelector(".actualEdit");
+    const closeOverlay = document.getElementById("closeEditPopup");
+    const popupDeleteBtn = document.getElementById("deleteBtn");
+
+    editOverlay.classList.add("show");
+
+    fetch('getRowData.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({/*URLSearchParams does not expect a single value. It expects an object
+                                    or key-value pairs */
+            RowId: rowId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log(data.breed);
+        console.log(data.isPreg);
+        editOverlayInputs[0].value = data.name ?? 'Undefined';
+        editOverlayInputs[1].value = data.breed ?? '';
+        editOverlayInputs[2].value = data.healthStatus;
+        editOverlayInputs[3].value = Number(data.milkProduction ?? 0).toFixed(2);
+        editOverlayInputs[4].value = data.isPreg;
+        editOverlayInputs[5].value = data.lifeStatus;
+
+        editOverlayInputs.forEach(input => input.disabled = false);
+    });
+
+    /*Actual editing */
+    actualEdit.onclick = function(e){
+        e.preventDefault();
+        const tagName = editOverlayInputs[0].value;
+        const breedId = editOverlayInputs[1].value;
+        const health = editOverlayInputs[2].value;
+        const milk = editOverlayInputs[3].value;
+        const preg = editOverlayInputs[4].value;
+        const life = editOverlayInputs[5].value;
+
+        console.log({rowId, tagName, breedId, health, milk, preg, life});
+        fetch('editDairyTable.php', {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/x-www-form-urlencoded'
+            },
+            body : new URLSearchParams({
+                rowId,
+                tagName,
+                breedId,
+                health,
+                milk,
+                preg,
+                life
+            })
+        })
+        .then(() => {
+            editOverlay.classList.remove("show");
+
+            const cowsTableSection = document.getElementById("cowsTableSection");
+
+            cowsTableSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        });
+    }
+
+    /*Removing the editPopup */
+    closeOverlay.onclick = function(){
+        editOverlay.classList.remove("show");
+        editOverlayInputs.forEach(input => input.disabled = true);
+    }
+
+    /*Showing delete popup from edit popup */
+    popupDeleteBtn.onclick = function(){
+        handleDelete(rowId)
+    }
+}
+
+function handleDelete(rowId){
+    const deleteRowOverlay = document.querySelector(".deleteRowOverlay");
+    const actualDelete = document.getElementById("actualDelete");
+    const cancelDeleteRow = document.getElementById("cancelDeleteRow");
+
+    deleteRowOverlay.classList.add("show");
+
+    /*Actual Deletion*/
+    actualDelete.onclick = function(){
+        fetch('deleteRowDairy.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                rowId : rowId
+            })
+        })
+        .then(() => {
+            const cowsTableSection = document.getElementById("cowsTableSection");
+
+            cowsTableSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        });
+    }
+
+    /*Cancel delete */
+    cancelDeleteRow.onclick = function(){
+        deleteRowOverlay.classList.remove("show");
+    }
+}
+
 
 
 /*MORE OPTIONS*/
@@ -93,7 +249,7 @@ const enterNewAnimal = document.getElementById("enterNewAnimal");
 let successState = false;
 
 enterNewAnimal.onclick = function(e){
-    e.preventDefault();/*Prevents the btn from submitting so that the JS can handle the submission.
+    /*e.preventDefault();Prevents the btn from submitting so that the JS can handle the submission.
     type='submit' would do the default submission before and we haven't specified where the data is 
     to be sent in php plus we have condistions we are setting here in JS*/
     const aniQuantity = newAnimalInputs[0].value;
@@ -117,146 +273,18 @@ enterNewAnimal.onclick = function(e){
     .then(data => {
         successState = data;
 
-        if(successState.textContent){
+        /*if(successState.textContent){
             const successMessage = document.getElementById("successMessage");
             successMessage = "Animal added successfully!";
 
             if(successMessage){
-                if(successMessage.textContent){/*Returns true if textContent is set*/
+                if(successMessage.textContent){/*Returns true if textContent is set
                     setTimeout(() => {
                     successMessage.style.opacity = '0';
                     }, 2000);
                 }
             }
-        }
+        }*/
     });
-
-}
-
-
-/*TABLE SECTION*/
-const triggerEdits = document.querySelectorAll(".triggerEdit");
-const triggerDeletes = document.querySelectorAll(".triggerDelete");
-
-if(triggerEdits && triggerDeletes){/*In case the female_cows table is empty */
-
-    const editOverlay = document.querySelector(".editOverlay");
-    const editOverlayInputs = editOverlay.querySelectorAll("input, select");
-    editOverlayInputs.forEach(input => input.disabled = true);
-    const closeOverlay = document.getElementById("closeEditPopup");
-    const popupDeleteBtn = document.getElementById("deleteBtn");
-    const deleteRowOverlay = document.querySelector(".deleteRowOverlay");
-    const cancelDeleteRow = document.getElementById("cancelDeleteRow");
-    const actualEdit = document.querySelector(".actualEdit");
-    const actualDelete = document.getElementById("actualDelete");
-    const dustbin = document.getElementById("dustbin");
-
-    /*Showing edit popup */
-    triggerEdits.forEach(button => button.onclick = function() {
-        const rowId = button.value;
-        editOverlay.classList.add("show");
-        editOverlayInputs.forEach(input => input.disabled = false);
-
-        fetch('getRowData.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({/*URLSearchParams does not expect a single value. It expects an object
-                                        or key-value pairs */
-                RowId: rowId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-
-            console.log(data.breed);
-            console.log(data.isPreg);
-            editOverlayInputs[0].value = data.name ?? 'Undefined';
-            editOverlayInputs[1].value = data.breed ?? '';
-            editOverlayInputs[2].value = data.healthStatus;
-            editOverlayInputs[3].value = Number(data.milkProduction ?? 0).toFixed(2);
-            editOverlayInputs[4].value = data.isPreg;
-            editOverlayInputs[5].value = data.lifeStatus;
-        });
-
-        /*Actual editing */
-        actualEdit.onclick = function(){
-            const tagName = editOverlayInputs[0].value;
-            const breedId = editOverlayInputs[1].value;
-            const health = editOverlayInputs[2].value;
-            const milk = editOverlayInputs[3].value;
-            const preg = editOverlayInputs[4].value;
-            const life = editOverlayInputs[5].value;
-
-            console.log({rowId, tagName, breedId, health, milk, preg, life});
-            fetch('editDairyTable.php', {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/x-www-form-urlencoded'
-                },
-                body : new URLSearchParams({
-                    rowId,
-                    tagName,
-                    breedId,
-                    health,
-                    milk,
-                    preg,
-                    life
-                })
-            })
-        }
-
-        /*Actual Deletion*/
-        dustbin.onclick = function(){
-            fetch('deleteRowDairy.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    rowId : rowId
-                })
-            })
-        }
-
-
-
-    });
-
-    /*Removing the editPopup */
-    closeOverlay.onclick = function(){
-        editOverlay.classList.remove("show");
-        editOverlayInputs.forEach(input => input.disabled = true);
-    }
-
-    /*Showing delete popup from edit popup */
-    popupDeleteBtn.onclick = function(){
-        deleteRowOverlay.classList.add("show");
-    }
-
-    /*Showing delete popup from table */
-    triggerDeletes.forEach(button => button.onclick = function(){
-        deleteRowOverlay.classList.add("show");
-        const rowId = button.value;
-
-        /*Actual Deletion*/
-        actualDelete.onclick = function(){
-            fetch('deleteRowDairy.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    rowId : rowId
-                })
-            })
-        }
-    });
-
-    /*Cancel delete */
-    cancelDeleteRow.onclick = function(){
-        deleteRowOverlay.classList.remove("show");
-    }
 
 }

@@ -127,7 +127,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
             </div>
         </div>
 
-        <div class="cowsTable">
+        <div class="cowsTable" id="cowsTableSection"><!--I'll use the id for the page reload when I want it to 
+            scroll down to this location-->
             <h2>Cows(Female) Records</h2>
 
             <div class="topControls">
@@ -318,7 +319,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 ?>
                             </select>
                         </div>
-                        <label for="" id="message">* <span id="text">Optional</span></label>
+                        <label id="message">* <span id="text">Optional</span></label>
                     </div>
 
                     <div class="select-wrapper">
@@ -338,11 +339,11 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <div>
                             <input type="date" id="date" name="date">
                         </div>
-                        <label for="" id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
+                        <label id="message">* <span id="text">Click the icon on the right to open the date picker</span></label>
                     </div>
 
                     <div class="submission">
-                        <button type="submit" id="enterNewAnimal">Enter</button>
+                        <button id="enterNewAnimal">Enter</button>
                         <p id="successMessage"></p>
                     </div>
 
@@ -416,7 +417,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         </select>
                     </div>
 
-                    <button class="actualEdit">EDIT</button>
+                    <button type="button" class="actualEdit">EDIT</button>
                 </form>
             </div>
 
@@ -426,7 +427,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <p>Are you sure you want to delete this row?</p>
                     <div>
                         <button type="button" id="cancelDeleteRow">CANCEL</button>
-                        <button type="submit" id="actualDelete">DELETE</button>
+                        <button type="button" id="actualDelete">DELETE</button>
                     </div>
                 </form>
             </div>

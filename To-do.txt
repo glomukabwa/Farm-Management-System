@@ -1,10 +1,11 @@
 Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
 
+        -> Reload the page using JS after editting and deleting. Currently sb has to manually reload it
+
         Work on more options:
-                Add new animal: 
-                        success message is not showing
-                        the form should clear after submission
+                Add new cow:
+                        Success message popup
                 Select all
                 Separate delete button
                 Select check boxes before tag name

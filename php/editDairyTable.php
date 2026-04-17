@@ -4,10 +4,20 @@ include 'config.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $rowId = $_POST['rowId'];
-    $name = empty($_POST['tagName']) ? null : $_POST['tagName'];
+
+    $enteredName = $_POST['tagName'];
+    $undefName = ['Undefined', 'Undefine', 'Undefin'];
+    $isUndefinedName = false;
+    foreach($undefName as $word){
+        if(stripos($enteredName, $word) !== false){
+            $isUndefinedName = true;
+        }
+    }
+    $name = empty($_POST['tagName']) || $isUndefinedName == true ? null : $_POST['tagName'];
             /*The tagName in the DB is nullable so I wanna make sure that users can remove names and
               leave them empty if they want to. In the code for displaying the table, I've made sure
               that if a tagName is empty, it will be assigned the value 'Undefined'*/
+              
     $breedId = empty($_POST['breedId']) ? null : $_POST['breedId'];
                 /*$_POST['breedId']) ?? null will only check to see if the breedId
                     has been sent at all, it won't check if what has been sent is 

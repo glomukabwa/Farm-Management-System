@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $result = null;
 
     if($criteriaValue == 'name'){
-        $undefinedName = ['und', 'unde', 'undef', 'def'];
+        $undefinedName = ['un','und', 'unde', 'undef', 'def'];
         $isUndefined = false;
         foreach($undefinedName as $word){
             if(stripos($searchValue, $word) !== false){
@@ -137,37 +137,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
     elseif($criteriaValue == 'milkProd'){
 
-        $zeroMilk = ['0', '0.0'];
-        $isZeroMilk = false;
+        $milkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction = ? LIMIT ?, ?");
+        $milkStmt->bind_param("dii", $searchValue, $offset, $limit);
+        $milkStmt->execute();
+        $result = $milkStmt->get_result();
 
-        foreach($zeroMilk as $word){
-            if(stripos($searchValue, $word) !== false){
-                $isZeroMilk = true;
-            }
-        }
-
-        if($isZeroMilk){
-            $zeroMilkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction IS NULL LIMIT ?, ?");
-            $zeroMilkStmt->bind_param("ii", $offset, $limit);
-            $zeroMilkStmt->execute();
-            $result = $zeroMilkStmt->get_result();
-
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE milkProduction IS NULL");
-            $countStmt->execute();
-            $countRes = $countStmt->get_result();
-            $totalRows = $countRes->fetch_assoc()['total'];
-        }else{
-            $milkStmt = $conn->prepare("SELECT * FROM female_cows WHERE milkProduction = ? LIMIT ?, ?");
-            $milkStmt->bind_param("dii", $searchValue, $offset, $limit);
-            $milkStmt->execute();
-            $result = $milkStmt->get_result();
-
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE milkProduction = ?");
-            $countStmt->bind_param("d", $searchValue);
-            $countStmt->execute();
-            $countRes = $countStmt->get_result();
-            $totalRows = $countRes->fetch_assoc()['total'];
-        }
+        $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows WHERE milkProduction = ?");
+        $countStmt->bind_param("d", $searchValue);
+        $countStmt->execute();
+        $countRes = $countStmt->get_result();
+        $totalRows = $countRes->fetch_assoc()['total'];   
     
     }
     elseif($criteriaValue == 'isPreg'){
@@ -296,6 +275,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
             ?>
             <tr>
+                <td><input type="checkbox" name="rowSelected" value="<?= $rowId ?>"></td>
                 <td><?= htmlspecialchars($row['tag_name'] ?? 'Undefined') ?></td>
                 <td><?= htmlspecialchars($breedName) ?></td>
                 <td><?= htmlspecialchars($healthStatusName) ?></td>

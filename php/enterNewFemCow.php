@@ -4,7 +4,7 @@ include 'config.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $quantity = $_POST['aniQuantity'];
-    $breed = $_POST['aniBreed'];
+    $breed = empty($_POST['aniBreed']) ? null : $_POST['aniBreed'];
     $healthStatus = $_POST['aniHealth'];
     $createdAt = $_POST['aniDate'] ?: date('Y-m-d');
 
