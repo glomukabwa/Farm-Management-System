@@ -4,6 +4,8 @@ const searchCriteria = document.getElementById("searchCriteria");
 const searchInput = document.getElementById("searchValue");
 const searchBtn = document.getElementById("searchSthBtn");
 const tableBody = document.getElementById("table-body");
+const criteriaOption = searchCriteria.value;
+const searchValue = searchInput.value;
 
 function updateBtnState(){
     if(searchCriteria.value === "" || searchInput.value.trim() === ""){/*OR cz if you use AND then if one of them
@@ -20,9 +22,6 @@ searchInput.addEventListener("input", updateBtnState);
 
 searchForm.addEventListener("submit", function(e){
     e.preventDefault();
-
-    const criteriaOption = searchCriteria.value;
-    const searchValue = searchInput.value;
 
     fetch('dairyTableSearch.php', {
         method: 'POST',
@@ -121,7 +120,7 @@ function handleEdit(rowId){
     });
 
     /*Actual editing */
-    actualEdit.onclick = function(e){
+    actualEdit.onclick =  function(e){
         e.preventDefault();
         const tagName = editOverlayInputs[0].value;
         const breedId = editOverlayInputs[1].value;
@@ -147,6 +146,8 @@ function handleEdit(rowId){
             })
         })
         .then(() => {
+            reloadData();
+
             editOverlay.classList.remove("show");
 
             const cowsTableSection = document.getElementById("cowsTableSection");
@@ -171,6 +172,28 @@ function handleEdit(rowId){
     }
 }
 
+function reloadData(){
+    fetch('dairyTableSearch.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            criteriaOption: criteriaOption,
+            searchValue: searchValue,
+            limit: document.getElementById("limit").value,
+            page: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        tableBody.innerHTML = data.rows;/*Cz data is an array so u need to target the specific elements u want*/
+
+        document.querySelector(".arrows span").textContent =
+        `Page 1 of ${data.totalPages}`;
+    });
+}
+
 function handleDelete(rowId){
     const deleteRowOverlay = document.querySelector(".deleteRowOverlay");
     const actualDelete = document.getElementById("actualDelete");
@@ -190,6 +213,10 @@ function handleDelete(rowId){
             })
         })
         .then(() => {
+            reloadData();
+
+            deleteRowOverlay.classList.remove("show");
+
             const cowsTableSection = document.getElementById("cowsTableSection");
 
             cowsTableSection.scrollIntoView({
@@ -248,8 +275,8 @@ const newAnimalInputs = addAnimalOverlay.querySelectorAll("input, select");
 const enterNewAnimal = document.getElementById("enterNewAnimal");
 let successState = false;
 
-enterNewAnimal.onclick = function(e){
-    /*e.preventDefault();Prevents the btn from submitting so that the JS can handle the submission.
+enterNewAnimal.addEventListener("submit", function(e){
+    e.preventDefault();/*Prevents the btn from submitting so that the JS can handle the submission.
     type='submit' would do the default submission before and we haven't specified where the data is 
     to be sent in php plus we have condistions we are setting here in JS*/
     const aniQuantity = newAnimalInputs[0].value;
@@ -271,6 +298,15 @@ enterNewAnimal.onclick = function(e){
     })
     .then(response => response.json())
     .then(data => {
+        reloadData();
+
+        const cowsTableSection = document.getElementById("cowsTableSection");
+
+        cowsTableSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
         successState = data;
 
         /*if(successState.textContent){
@@ -287,4 +323,4 @@ enterNewAnimal.onclick = function(e){
         }*/
     });
 
-}
+});

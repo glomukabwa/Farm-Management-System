@@ -207,6 +207,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
 
     }
+    elseif(empty($criteriaValue) || empty($searchValue)){
+        $emptyStmt = $conn->prepare("SELECT * FROM female_cows LIMIT ?, ?");
+        $emptyStmt->bind_param("ii", $offset, $limit);
+        $emptyStmt->execute();
+        $result = $emptyStmt->get_result();
+
+        $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM female_cows");
+        $countStmt->execute();
+        $countRes = $countStmt->get_result();
+        $totalRows = $countRes->fetch_assoc()['total'];
+        
+    }
 
     /*Getting the health status id */
     $healthy = $conn->query("SELECT id FROM animal_statuses WHERE status_name = 'Healthy'");

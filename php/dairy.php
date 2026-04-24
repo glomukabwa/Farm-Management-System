@@ -295,7 +295,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
             </table>
 
             <div class="addAnimalOverlay">
-                <form method="POST">
+                <form method="POST" id="enterNewAnimal">
                     
                     <span id="closeAddAnimal" class="closePopup">&times;</span>
 
@@ -343,7 +343,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     </div>
 
                     <div class="submission">
-                        <button id="enterNewAnimal">Enter</button>
+                        <button type="submit">Enter</button>
                         <p id="successMessage"></p>
                     </div>
 
