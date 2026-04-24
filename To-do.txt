@@ -4,6 +4,7 @@ Dairy Page:
         Work on more options:
                 Add new cow:
                         Success message popup
+                     -> Clear form after submission
                 Select all
                 Separate delete button
                 Select check boxes before tag name
