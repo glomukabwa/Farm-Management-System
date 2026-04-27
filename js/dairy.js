@@ -307,20 +307,24 @@ enterNewAnimal.addEventListener("submit", function(e){
             block: "start"
         });
 
+        newAnimalInputs.forEach(input => input.value = "");
         successState = data;
 
-        /*if(successState.textContent){
+        if(data){/*If data is equal to true*/
+
             const successMessage = document.getElementById("successMessage");
-            successMessage = "Animal added successfully!";
+
+            successMessage.textContent = "Animal added successfully!";
+            successMessage.style.opacity = "1";
 
             if(successMessage){
-                if(successMessage.textContent){/*Returns true if textContent is set
-                    setTimeout(() => {
-                    successMessage.style.opacity = '0';
-                    }, 2000);
+                if(successMessage.textContent){/*Returns true if textContent is set*/
+                    successTimeout = setTimeout(() => {
+                        successMessage.style.opacity = '0';
+                    }, 1000);
                 }
             }
-        }*/
+        }
     });
 
 });

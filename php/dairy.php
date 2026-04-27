@@ -344,7 +344,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
                     <div class="submission">
                         <button type="submit">Enter</button>
-                        <p id="successMessage"></p>
+                        <span id="successMessage"></span>
                     </div>
 
                 </form>

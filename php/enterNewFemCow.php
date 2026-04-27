@@ -40,8 +40,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             if($animStmt->affected_rows > 0){/*If it doesn't insert eg 1 out of 3, this will set it to false
                                                 It runs for every animal entered*/
                 $success = true;
-            }else{
-                $success = false;
             }
         }
 

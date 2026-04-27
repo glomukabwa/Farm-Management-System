@@ -304,7 +304,14 @@ input[type="checkbox"]{
     padding-left: 2rem;
 }
 
-.addAnimalOverlay form button{
+.addAnimalOverlay form .submission{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
+}
+
+.addAnimalOverlay form .submission button{
     padding:1rem 10rem;
     margin-top: 2rem;
 }
@@ -312,7 +319,6 @@ input[type="checkbox"]{
 #successMessage{
     font-size:1.1rem;
     color: green;
-    opacity: 1;/*I am doing this and the line below so that in JS I can make it disappear*/
     transition: opacity 0.5s ease;
 }
 

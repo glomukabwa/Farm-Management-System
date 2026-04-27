@@ -2,12 +2,10 @@ Dairy Page:
         Add a notice to the user that the name of the animal already exists if it isn't unique
 
         Work on more options:
-                Add new cow:
-                        Success message popup
-                     -> Clear form after submission
+                Add new cow                                ✔ 
                 Select all
                 Separate delete button
-                Select check boxes before tag name
+                Select check boxes before tag name         ✔ 
 
 Add guidance on how to enter Animal in enterAnimal.php
 
