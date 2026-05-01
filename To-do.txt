@@ -3,8 +3,8 @@ Dairy Page:
 
         Work on more options:
                 Add new cow                                ✔ 
-                Select all
-                Separate delete button
+                Select all                                 ✔
+                Separate delete button                     ✔
                 Select check boxes before tag name         ✔ 
 
 Add guidance on how to enter Animal in enterAnimal.php

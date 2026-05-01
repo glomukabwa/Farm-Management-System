@@ -80,7 +80,7 @@ tableBody.addEventListener("click", function(e){
 
     if(triggerDelete){
         const rowID = triggerDelete.value;
-        handleDelete(rowID);
+        handleDelete([rowID]);
     }
 })
 
@@ -194,7 +194,7 @@ function reloadData(){
     });
 }
 
-function handleDelete(rowId){
+function handleDelete(rowIds){
     const deleteRowOverlay = document.querySelector(".deleteRowOverlay");
     const actualDelete = document.getElementById("actualDelete");
     const cancelDeleteRow = document.getElementById("cancelDeleteRow");
@@ -209,7 +209,7 @@ function handleDelete(rowId){
                 'Content-Type' : 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams({
-                rowId : rowId
+                rowIds : JSON.stringify(rowIds)
             })
         })
         .then(() => {
@@ -246,7 +246,7 @@ moreOptions.onclick = function(e){
 const menuBarItems = document.querySelectorAll(".optionsMenuBar li");
 const addNewCow = menuBarItems[0];
 const selectAll = menuBarItems[1];
-const dltSelectedRow = menuBarItems[2];
+const dltSelectedRows = menuBarItems[2];
 const addAnimalOverlay = document.querySelector(".addAnimalOverlay");
 const closeAddAnimal = document.getElementById("closeAddAnimal");
 
@@ -328,3 +328,39 @@ enterNewAnimal.addEventListener("submit", function(e){
     });
 
 });
+
+
+/*Selecting all rows*/
+const rowCheckBoxes = tableBody.querySelectorAll('input[type="checkbox"]');
+const slctIndication = document.getElementById("slctIndication");
+
+selectAll.onclick = function(){
+    rowCheckBoxes.forEach(checkbox  => {
+        checkbox.checked = !checkbox.checked;
+        /*Normally to make a checkbox selected, we say checkbox.checked = true
+          Now, in this case the above code toggles it. If the value of checkbox.checked is true,
+          it becomes false on click and if it is false, it becomes true on click therefore we
+          achieve a toggle*/
+
+        if(checkbox.checked == true){
+            slctIndication.textContent = "✔";
+            slctIndication.style.color = "green";
+        }else{
+            slctIndication.textContent = "";
+        }
+    });
+}
+
+
+/*Deleting multiple rows */
+dltSelectedRows.onclick = function(){
+    const selectedRows = tableBody.querySelectorAll('input[type="checkbox"]:checked');
+    let selectedIds = [];
+
+    selectedRows.forEach(sRow => {
+        selectedIds.push(sRow.value);
+    });
+
+    handleDelete(selectedIds);
+
+}

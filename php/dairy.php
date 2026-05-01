@@ -158,7 +158,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
                     <ul class="optionsMenuBar">
                         <li>Add new cow</li>
-                        <li>Select all rows</li>
+                        <li>Select all rows <span id="slctIndication"></span></li>
                         <li>Delete</li>
                     </ul>
                 </div>
