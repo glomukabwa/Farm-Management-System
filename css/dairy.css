@@ -474,3 +474,10 @@ input[type="checkbox"]{
     display: inline-block;
     margin-left:1rem;
 }
+
+#validNameIndicator{
+    font-size: 1.1rem;
+    padding-left: 2rem;
+    padding-top: 0.2rem;
+    display: none;
+}

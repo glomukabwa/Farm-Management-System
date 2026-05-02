@@ -355,6 +355,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <span id="closeEditPopup" class="closePopup">&times;</span>
                     <span id="deleteBtn"><img id="dustbin" src="../icons/delete.png" alt="trashcan"></span>
 
+                    <div>
                     <div class="oneinput">
                         <input type="text" id="Name" name="Name" placeholder=" " >
                         <!--I'm not making it required so that a user can remove the name of a cow and leave it as 
@@ -363,6 +364,8 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             until they choose to name them
                         -->
                         <label for="Name">Name</label>
+                    </div>
+                    <span id="validNameIndicator"></span>
                     </div>
 
                     <div class="select-wrapper">

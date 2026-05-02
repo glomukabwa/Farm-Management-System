@@ -120,6 +120,12 @@ function handleEdit(rowId){
     });
 
     /*Actual editing */
+
+    editOverlayInputs[0].addEventListener("input", function() {
+        checkDuplicateName(this.value);
+    });
+
+
     actualEdit.onclick =  function(e){
         e.preventDefault();
         const tagName = editOverlayInputs[0].value;
@@ -129,36 +135,44 @@ function handleEdit(rowId){
         const preg = editOverlayInputs[4].value;
         const life = editOverlayInputs[5].value;
 
-        console.log({rowId, tagName, breedId, health, milk, preg, life});
-        fetch('editDairyTable.php', {
-            method : 'POST',
-            headers : {
-                'Content-Type' : 'application/x-www-form-urlencoded'
-            },
-            body : new URLSearchParams({
-                rowId,
-                tagName,
-                breedId,
-                health,
-                milk,
-                preg,
-                life
-            })
+        checkDuplicateName(tagName).then(isValid => {/*isValid contains the return value of the
+            function checkDuplicateName() which in this case is either true or false. If we had 
+            said it should return eg duplicate or valid, that is what is Valid would store */
+            if(isValid){
+                fetch('editDairyTable.php', {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/x-www-form-urlencoded'
+                    },
+                    body : new URLSearchParams({
+                        rowId,
+                        tagName,
+                        breedId,
+                        health,
+                        milk,
+                        preg,
+                        life
+                    })
+                })
+                .then(() => {
+                    reloadData();
+
+                    editOverlay.classList.remove("show");
+
+                    const cowsTableSection = document.getElementById("cowsTableSection");
+
+                    cowsTableSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                });
+            }else{
+                actualEdit.disabled = true;
+            }
         })
-        .then(() => {
-            reloadData();
 
-            editOverlay.classList.remove("show");
-
-            const cowsTableSection = document.getElementById("cowsTableSection");
-
-            cowsTableSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        });
-    }
+    }   
 
     /*Removing the editPopup */
     closeOverlay.onclick = function(){
@@ -231,6 +245,38 @@ function handleDelete(rowIds){
     cancelDeleteRow.onclick = function(){
         deleteRowOverlay.classList.remove("show");
     }
+}
+
+function checkDuplicateName(name){
+    const validNameIndicator = document.getElementById("validNameIndicator");
+
+    return fetch('checkDuplicateName.php', { /*If you put return at the end, it returns before the fetch runs
+        so if I put the default return as false, this function will always return false cz the fetch will be
+        running after the return value has already been submitted so even if it's valid, it will not matter.
+        That is why I have done this instead. Notice how I have two returns in the then clause below*/
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            name : name
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        if(data == 'duplicate'){
+            validNameIndicator.style.display = "flex";
+            validNameIndicator.textContent = "This name is already taken";
+            validNameIndicator.style.color = "red";
+            return false;
+        }else if(data == 'valid'){
+            validNameIndicator.style.display = "none";
+            return true;
+        }
+    });
+
+    return checkOutput;
+    
 }
 
 
