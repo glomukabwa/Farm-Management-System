@@ -84,14 +84,15 @@ button:hover{
 /*GRAPHS*/
 .graphs{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap:4rem;
 }
 
 .productionGraph, .salesGraph{
     border:solid 0.2rem var(--basecolor);
     border-radius: 2rem;
-    height:30rem;
-    width:47rem;
+    height:45rem;
+    width:65rem;
     padding:2rem 2rem;
     display: flex;
     flex-direction: column;

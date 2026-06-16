@@ -6,7 +6,7 @@ const salesData = JSON.parse(salesContent.dataset.values);
 
 /*A JSON file is used for storing and exchanging data. Rn JS need the data from PHP but it doesn't understand it so
   JSON file comes in. It is a text-based representation of objects and arrays that can be understood by both PHP and JS.
-  This means that sth from JS can also be converted to FSON format so that it can be read by PHP
+  This means that sth from JS can also be converted to JSON format so that it can be read by PHP
   Sth I've learnt too is that PHP lives on the server while JS exists on the browser. So I'm guessing this is how they can
   communicate with one another.
 
@@ -24,7 +24,7 @@ new Chart(salesChart, {
                 borderWidth: 2,
                 tension:0.2,
                 borderColor: 'black',
-                backgroundColor: 'black', //Fils the nodes on the chart and the legend with this color
+                backgroundColor: 'black', //Fills the nodes on the chart and the legend with this color
                 pointRadius: 0 //Removes the nodes
             }
         ],

@@ -47,6 +47,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/dairy.css">
     <script src="../js/main.js" defer></script>
+    <script src="../js/Chart.js" defer></script>
     <script src="../js/dairy.js" defer></script>
 </head>
 <body>
@@ -115,9 +116,47 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
             </div>
         </div>
 
+
         <div class="graphs">
             <div class="productionGraph">
                 <h2>Milk Production</h2>
+
+                <?php
+                $weeklyProduction = [
+                    'Monday' => 0,
+                    'Tuesday' => 0,
+                    'Wednesday' => 0,
+                    'Thursday' => 0,
+                    'Friday' => 0,
+                    'Saturday' => 0,
+                    'Sunday' => 0
+                ];
+
+                $milkProdStatement = $conn->query("SELECT 
+                                                        DAYNAME(created_at) AS day,
+                                                        SUM(quantity) as total
+                                                    FROM production_records
+                                                    WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                                                    GROUP BY DAYNAME(created_at)
+                                                    ORDER BY WEEKDAY(created_at)");
+                
+                while($milkProdRow = $milkProdStatement->fetch_assoc()){
+                    $day = $milkProdRow['day'];
+                    $totalQnty = $milkProdRow['total'];
+
+                    $weeklyProduction[$day] = $totalQnty;
+                }
+                ?>
+
+
+                <div class="milkProdChartContent"
+                    data-labels = '<?php echo json_encode(array_keys($weeklyProduction)) ?>'
+                    data-values = '<?php echo json_encode(array_values($weeklyProduction))?>'>
+                </div>
+
+                <div>
+                    <canvas id="milkProdChart"></canvas>
+                </div>
                 <button>Update Production Records</button>
             </div>
 
@@ -126,6 +165,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                 <button>Update Sales Records</button>
             </div>
         </div>
+
 
         <div class="cowsTable" id="cowsTableSection"><!--I'll use the id for the page reload when I want it to 
             scroll down to this location-->

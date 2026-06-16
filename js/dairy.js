@@ -1,3 +1,25 @@
+/*CHART SECTION */
+
+const milkProdChart = document.getElementById("milkProdChart");
+
+const milkProdChartContent = document.querySelector(".milkProdChartContent");
+const milkProdLabels = JSON.parse(milkProdChartContent.dataset.labels);
+const milkProdValues = JSON.parse(milkProdChartContent.dataset.values);
+
+new Chart(milkProdChart, {
+    type: 'bar',
+    data: {
+        labels: milkProdLabels,
+        datasets: [{
+            label: 'Litres',
+            data: milkProdValues,
+            borderWidth: 1
+        }]
+    }
+});
+
+/*TABLE SECTION */
+
 /*SEARCH FUNCTIONALITY*/
 const searchForm = document.getElementById("searchForm");
 const searchCriteria = document.getElementById("searchCriteria");
