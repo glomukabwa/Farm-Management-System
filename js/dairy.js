@@ -18,6 +18,23 @@ new Chart(milkProdChart, {
     }
 });
 
+const milkSalesChart = document.getElementById("milkSalesChart");
+
+const milkSalesChartContent = document.querySelector(".milkSalesChartContent");
+const milkSalesLabels = JSON.parse(milkSalesChartContent.dataset.labels);
+const milkSalesValues = JSON.parse(milkSalesChartContent.dataset.values);
+
+new Chart(milkSalesChart, {
+    type: 'bar',
+    data: {
+        labels: milkSalesLabels,
+        datasets: [{
+            label: 'Sales',
+            data: milkSalesValues
+        }]
+    }
+})
+
 /*TABLE SECTION */
 
 /*SEARCH FUNCTIONALITY*/

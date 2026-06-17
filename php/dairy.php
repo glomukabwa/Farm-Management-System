@@ -146,6 +146,33 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
                     $weeklyProduction[$day] = $totalQnty;
                 }
+
+                $weeklySales = [
+                    'Monday' => 0,
+                    'Tuesday' => 0,
+                    'Wednesday' => 0,
+                    'Thursday' => 0,
+                    'Friday' => 0,
+                    'Saturday' => 0,
+                    'Sunday' => 0
+                ];
+
+                $milkSalesStmt = $conn->query("SELECT
+                                                    DAYNAME(sale_date) as day,
+                                                    SUM(total_cost) as total
+                                                FROM product_sales
+                                                WHERE sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                                                    AND product_id = 1
+                                                GROUP BY DAYNAME(sale_date)
+                                                ORDER BY WEEKDAY(sale_date)");
+                
+                while($milkSalesRow = $milkSalesStmt->fetch_assoc()){
+                    $day = $milkSalesRow['day'];
+                    $total = $milkSalesRow['total'];
+
+                    $weeklySales[$day] = $total;
+                }
+
                 ?>
 
 
@@ -162,6 +189,15 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
             <div class="salesGraph">
                 <h2>Milk Sales</h2>
+
+                <div class="milkSalesChartContent"
+                    data-labels = '<?php echo json_encode(array_keys($weeklySales)) ?>'
+                    data-values = '<?php echo json_encode(array_values($weeklySales))?>'>
+                </div>
+
+                <div>
+                    <canvas id="milkSalesChart"></canvas>
+                </div>
                 <button>Update Sales Records</button>
             </div>
         </div>
