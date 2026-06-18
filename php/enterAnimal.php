@@ -37,14 +37,23 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if($quantity >= 1){/*This is cz the fallback is zero and you don't want to have wrong insertions*/
         
+        /*Safety ID selection */
         $cowIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Cow'");/*This is for safety incase 
                                                                 someone changes the ID of cow in the DB */
         $cowIdRow = $cowIdRes->fetch_assoc();
         $cowId = (int)$cowIdRow['id'];
 
+        $chickenIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Chicken'");
+        $chickenIdRow = $chickenIdRes->fetch_assoc();
+        $chickenId = (int)$chickenIdRow['id'];
+        /**/
+
         $animStmt = $conn->prepare("INSERT INTO animals (animal_type_id, breed_id, gender, health_status_id, created_at) 
                         VALUES (?, ?, ?, ?, ?)");
-        $femaleStmt = $conn->prepare("INSERT INTO female_cows (animal_reference_id, animal_type_id, breed_id, health_status_id, created_at)
+
+        $femaleCowStmt = $conn->prepare("INSERT INTO female_cows (animal_reference_id, animal_type_id, breed_id, health_status_id, created_at)
+                                        VALUES (?, ?, ?, ?, ?)");
+        $henStmt = $conn->prepare("INSERT INTO hens (animal_reference_id, animal_type_id, breed_id, health_status_id, created_at)
                                         VALUES (?, ?, ?, ?, ?)");
         
         for($count = 0; $count < $quantity; $count++) {
@@ -56,8 +65,13 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             $animId = $conn->insert_id;
 
             if($gender == "female" && $animalType == $cowId){
-                $femaleStmt->bind_param("iiiis", $animId, $animalType, $breed, $healthStatus, $createdAt);
-                $femaleStmt->execute();
+                $femaleCowStmt->bind_param("iiiis", $animId, $animalType, $breed, $healthStatus, $createdAt);
+                $femaleCowStmt->execute();
+            }
+
+            if($gender == "female" && $animalType == $chickenId){
+                $henStmt->bind_param("iiiis", $animId, $animalType, $breed, $healthStatus, $createdAt);
+                $henStmt->execute();
             }
 
             if($animStmt->affected_rows > 0){/*If it doesn't insert eg 1 out of 3, this will set it to false
@@ -67,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 $success = false;
             }
         }
-
+        
 
         $animStmt->close();
     }
@@ -108,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                     <a href="http://localhost/Farm%20Website/php/dairy.php"><img src="../icons/milk.png" alt="milk">Dairy</a>
                     <a href="#"><img src="../icons/bull.png" alt="bull">Bulls</a>
                     <a href="#"><img src="../icons/chicken.png" alt="chicken">Broilers</a>
-                    <a href="#"><img src="../icons/eggs.png" alt="eggs">Eggs</a>
+                    <a href="http://localhost/Farm%20Website/php/eggs.php"><img src="../icons/eggs.png" alt="eggs">Eggs</a>
                     <a href="#"><img src="../icons/pig.png" alt="pig">Pigs</a>
                     <a href="#"><img src="../icons/greens.png" alt="greens">Kales</a>
                     <a href="#"><img src="../icons/maize.png" alt="maize">Maize</a>

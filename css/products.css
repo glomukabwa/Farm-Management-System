@@ -91,7 +91,7 @@ button:hover{
 .productionGraph, .salesGraph{
     border:solid 0.2rem var(--basecolor);
     border-radius: 2rem;
-    height:45rem;
+    height:47rem;
     width:65rem;
     padding:2rem 2rem;
     display: flex;
@@ -99,9 +99,23 @@ button:hover{
     gap:1rem;
 }
 
-.productionGraph button, .salesGraph button{
+.productionGraph #updatebtn, .salesGraph #updatebtn{
     margin-left: auto;
     margin-top: auto;
+    background-color: var(--basecolor);
+    color: var(--lightestgrey);
+    display: block;
+    height:4rem;
+    padding:1rem 2rem;
+    border-radius: 2rem; 
+    text-align: center;
+    cursor: pointer;
+    width:fit-content;
+    transition: all 0.3s ease;
+}
+
+.productionGraph #updatebtn:hover, .salesGraph #updatebtn:hover{
+    color: var(--supportcolor);
 }
 
 

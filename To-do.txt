@@ -1,6 +1,18 @@
-Dairy Page:
-        Milk Production Chart
-        Milk Sales Chart
+Products Inventory:
+        Rn if someone wants to enter the quantity of eggs, they can only enter it in the unit of
+        trays meaning if u want to enter 1 egg, u'll have to calculate the percentage of 1/30.
+        It makes sense to u but it makes the user experience terrible. Pple shouldn't have to be
+        good at maths to use ur app. In record production, make it so that someone enters the 
+        quantity of eggs then it calculates how many trays these are for u or sth better
+
+Products Page:
+        For dairy and eggs pages, for the tally I am yet to work on the calves and chicks section
+        so they are just displaying a default zero. I need to add year of birth in animals.
+
+Eggs Page:
+        Tally
+        Graphs
+        Table
 
 Add guidance on how to enter Animal in enterAnimal.php
 

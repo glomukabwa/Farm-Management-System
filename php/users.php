@@ -93,7 +93,7 @@ $totalPages = ceil($totalRows / $limit); /*ceil rounds up result that is in the 
                     <a href="http://localhost/Farm%20Website/php/dairy.php"><img src="../icons/milk.png" alt="milk">Dairy</a>
                     <a href="#"><img src="../icons/bull.png" alt="bull">Bulls</a>
                     <a href="#"><img src="../icons/chicken.png" alt="chicken">Broilers</a>
-                    <a href="#"><img src="../icons/eggs.png" alt="eggs">Eggs</a>
+                    <a href="http://localhost/Farm%20Website/php/eggs.php"><img src="../icons/eggs.png" alt="eggs">Eggs</a>
                     <a href="#"><img src="../icons/pig.png" alt="pig">Pigs</a>
                     <a href="#"><img src="../icons/greens.png" alt="greens">Kales</a>
                     <a href="#"><img src="../icons/maize.png" alt="maize">Maize</a>

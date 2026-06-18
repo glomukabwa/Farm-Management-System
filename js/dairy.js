@@ -29,7 +29,7 @@ new Chart(milkSalesChart, {
     data: {
         labels: milkSalesLabels,
         datasets: [{
-            label: 'Sales',
+            label: 'Ksh',
             data: milkSalesValues
         }]
     }

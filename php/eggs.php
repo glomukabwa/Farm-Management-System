@@ -3,37 +3,37 @@ require 'admin_auth.php';
 include 'config.php';
 
 /*Default tally*/
-$milkInStock = 0.00;
+$eggsInStock = 0;
 $weekTotalSales = 0.00;
-$adultCows = 0;
-$femaleCalves = 0;
+$adultHens = 0;
+$femaleChicks = 0;
 
-/*Getting the milk in stock from the DB */
-$milkIdRes = $conn->query("SELECT id FROM products WHERE name = 'Milk'");
-$milkIdRow = $milkIdRes->fetch_assoc();
-$milkId = (int)$milkIdRow['id'];
-$milkStockRes = $conn->query("SELECT quantity_available FROM product_inventory WHERE product_id = $milkId");
-$milkStockRow = $milkStockRes->fetch_assoc();
-$milkInStock = $milkStockRow['quantity_available'];
+/*Getting the eggs in stock from the DB */
+$eggsIdRes = $conn->query("SELECT id FROM products WHERE name = 'Eggs'");
+$eggsIdRow = $eggsIdRes->fetch_assoc();
+$eggsId = (int)$eggsIdRow['id'];
+$eggsStockRes = $conn->query("SELECT quantity_available FROM product_inventory WHERE product_id = $eggsId");
+$eggsStockRow = $eggsStockRes->fetch_assoc();
+$eggsInStock = $eggsStockRow['quantity_available'];
 
 /*Getting the total sales(weekly) from the DB */
 $weekTotalSalesStmt = $conn->query("SELECT COALESCE(SUM(total_cost), 0.00) as weeklyTotal
                                 FROM product_sales
                                 WHERE 
-                                    product_id = $milkId AND
+                                    product_id = $eggsId AND
                                     sale_date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
                                 ");/*DATE_SUB(x, INTERVAL y DAY) */
                                 /*Above COALESCE returns the first non-null value so for example:
-                                    COALESCE(null, null, 2, 7, null) will return 5 cz it's the first non-null
+                                    COALESCE(null, null, 2, 7, null) will return 2 cz it's the first non-null
                                     value in the set of numbers
                                 */
 $weekTotalSalesRow = $weekTotalSalesStmt->fetch_assoc();
 $weekTotalSales = $weekTotalSalesRow['weeklyTotal'];
 
 /*Getting the total sales(weekly) from the DB */
-$adultCowsStmt = $conn->query("SELECT COUNT(*) as count FROM female_cows");
-$adultCowsRow = $adultCowsStmt->fetch_assoc();
-$adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce operator(??) is important*/
+$adultHensStmt = $conn->query("SELECT COUNT(*) as count FROM hens");
+$adultHensRow = $adultHensStmt->fetch_assoc();
+$adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce operator(??) is important*/
 
 ?>
 
@@ -42,13 +42,13 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dairy</title>
+    <title>Eggs</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/products.css">
     <script src="../js/main.js" defer></script>
-    <script src="../js/Chart.js" defer></script>
-    <script src="../js/dairy.js" defer></script>
+    <script src="../js/Chart.js"defer></script>
+    <script src="../js/eggs.js" defer></script>
 </head>
 <body>
     <section class="sidebar">
@@ -92,9 +92,9 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
     <section class="main-content">
         <div class="tally">
             <div>
-                <h2>Milk In Stock</h2>
-                <p><?= $milkInStock ?></p>
-                <p>Litres</p>
+                <h2>Eggs In Stock</h2>
+                <p><?= $eggsInStock ?></p>
+                <p>Trays</p>
             </div>
 
             <div>
@@ -104,22 +104,22 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
             </div>
 
             <div>
-                <h2>Cow Population</h2>
+                <h2>Hen Population</h2>
                 <p></p>
-                <p><?= $adultCows ?></p>
+                <p><?= $adultHens ?></p>
             </div>
 
             <div>
-                <h2>Female Calves</h2>
+                <h2>Female Chicks</h2>
                 <p></p>
-                <p><?= $femaleCalves ?></p>
+                <p><?= $femaleChicks ?></p>
             </div>
         </div>
 
 
         <div class="graphs">
             <div class="productionGraph">
-                <h2>Milk Production</h2>
+                <h2>Egg Production</h2>
 
                 <?php
                 $weeklyProduction = [
@@ -132,7 +132,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     'Sunday' => 0
                 ];
 
-                $milkProdStatement = $conn->prepare("SELECT 
+                $eggsProdStatement = $conn->prepare("SELECT 
                                                         DAYNAME(created_at) AS day,
                                                         SUM(quantity) as total
                                                     FROM production_records
@@ -140,13 +140,13 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                                         AND product_id = ?
                                                     GROUP BY DAYNAME(created_at)
                                                     ORDER BY WEEKDAY(created_at)");
-                $milkProdStatement->bind_param("i", $milkId);
-                $milkProdStatement->execute();
-                $milkProdStatementRes = $milkProdStatement->get_result();
+                $eggsProdStatement->bind_param("i", $eggsId);
+                $eggsProdStatement->execute();
+                $eggsProdStatementRes = $eggsProdStatement->get_result();
                 
-                while($milkProdRow = $milkProdStatementRes->fetch_assoc()){
-                    $day = $milkProdRow['day'];
-                    $totalQnty = $milkProdRow['total'];
+                while($eggsProdRow = $eggsProdStatementRes->fetch_assoc()){
+                    $day = $eggsProdRow['day'];
+                    $totalQnty = $eggsProdRow['total'];
 
                     $weeklyProduction[$day] = $totalQnty;
                 }
@@ -161,7 +161,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     'Sunday' => 0
                 ];
 
-                $milkSalesStmt = $conn->prepare("SELECT
+                $eggSalesStmt = $conn->prepare("SELECT
                                                     DAYNAME(sale_date) as day,
                                                     SUM(total_cost) as total
                                                 FROM product_sales
@@ -169,43 +169,42 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                                     AND product_id = ?
                                                 GROUP BY DAYNAME(sale_date)
                                                 ORDER BY WEEKDAY(sale_date)");
-                $milkSalesStmt->bind_param("i", $milkId);
-                $milkSalesStmt->execute();
-                $milkSalesStmtRes = $milkSalesStmt->get_result();
+                $eggSalesStmt->bind_param("i", $eggsId);
+                $eggSalesStmt->execute();
+                $eggSalesStmtRes = $eggSalesStmt->get_result();
                 
-                while($milkSalesRow = $milkSalesStmtRes->fetch_assoc()){
-                    $day = $milkSalesRow['day'];
-                    $total = $milkSalesRow['total'];
+                while($eggSalesRow = $eggSalesStmtRes->fetch_assoc()){
+                    $day = $eggSalesRow['day'];
+                    $total = $eggSalesRow['total'];
 
                     $weeklySales[$day] = $total;
                 }
 
                 ?>
 
-
-                <div class="milkProdChartContent"
+                <div class="eggsProdChartContent"
                     data-labels = '<?php echo json_encode(array_keys($weeklyProduction)) ?>'
                     data-values = '<?php echo json_encode(array_values($weeklyProduction))?>'>
                 </div>
 
                 <div>
-                    <canvas id="milkProdChart"></canvas>
+                    <canvas id="eggsProdChart"></canvas>
                 </div>
                 <a id="updatebtn" href="http://localhost/Farm%20Website/php/recordProduction.php">Update Production Records</a>
             </div>
 
             <div class="salesGraph">
-                <h2>Milk Sales</h2>
+                <h2>Egg Sales</h2>
 
-                <div class="milkSalesChartContent"
-                    data-labels = '<?php echo json_encode(array_keys($weeklySales)) ?>'
-                    data-values = '<?php echo json_encode(array_values($weeklySales))?>'>
+                <div class="eggsSalesChartContent"
+                    data-labels= '<?php echo json_encode(array_keys($weeklySales))?>'
+                    data-values='<?php echo json_encode(array_values($weeklySales))?>'>
                 </div>
 
                 <div>
-                    <canvas id="milkSalesChart"></canvas>
+                    <canvas id="eggsSalesChart"></canvas>
                 </div>
-                <a id="updatebtn" href="http://localhost/Farm%20Website/php/enterSale.php">Update Sales Records</a>
+                <a id="updatebtn"  href="http://localhost/Farm%20Website/php/enterSale.php">Update Sales Records</a>
             </div>
         </div>
 
