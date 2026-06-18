@@ -1,5 +1,5 @@
 <?php
-require 'admin_auth.php';
+require 'auth.php';
 include 'config.php';
 
 /*Default tally*/
@@ -211,7 +211,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
         <div class="cowsTable" id="cowsTableSection"><!--I'll use the id for the page reload when I want it to 
             scroll down to this location-->
-            <h2>Cows(Female) Records</h2>
+            <h2>Hen Records</h2>
 
             <div class="topControls">
                 <form class="right" method="POST" id="searchForm">
@@ -253,8 +253,6 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <th>Name</th>
                         <th>Breed</th>
                         <th>Health Status</th>
-                        <th>Milk Production(Ltrs)</th>
-                        <th>Pregnancy Status</th>
                         <th>Life Status</th>
                         <th>Edit</th>
                         <th>Delete</th>
@@ -276,14 +274,14 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
                     $offset = ($page - 1) * $limit;
 
-                    $cowsStmt = $conn->prepare("SELECT * FROM female_cows
+                    $hensStmt = $conn->prepare("SELECT * FROM hens
                                                 ORDER BY id ASC
                                                 LIMIT ?,?");
-                    $cowsStmt->bind_param("ii", $offset, $limit);
-                    $cowsStmt->execute();
-                    $cowRes = $cowsStmt->get_result();
+                    $hensStmt->bind_param("ii", $offset, $limit);
+                    $hensStmt->execute();
+                    $henRes = $hensStmt->get_result();
 
-                    $totalRowsStmt = $conn->prepare("SELECT COUNT(*) AS total FROM female_cows");
+                    $totalRowsStmt = $conn->prepare("SELECT COUNT(*) AS total FROM hens");
                     $totalRowsStmt->execute();
                     $totalRowsRes = $totalRowsStmt->get_result();
                     $totalRowsRow = $totalRowsRes->fetch_assoc();
@@ -312,14 +310,14 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     $lifeStatusName = "undefined";
                     $lifeStatusColor = "undetermined";
 
-                    if($cowRes->num_rows > 0){
-                        while($cowsRow = $cowRes->fetch_assoc()){
+                    if($henRes->num_rows > 0){
+                        while($hensRow = $henRes->fetch_assoc()){
                             /*Storing the id of the respective field for future use*/
-                            $rowId = $cowsRow['id'];
+                            $rowId = $hensRow['id'];
 
                             $breedName = '';
-                            $breedId = (int)$cowsRow['breed_id'];
-                            if($cowsRow['breed_id'] != null){
+                            $breedId = (int)$hensRow['breed_id'];
+                            if($hensRow['breed_id'] != null){
                                 $breedStmt = $conn->prepare("SELECT name FROM breeds WHERE id = ?");
                                 $breedStmt->bind_param("i", $breedId);
                                 $breedStmt->execute();
@@ -331,36 +329,34 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             }
 
                             /*Determining color depending of health status id */
-                            if((int)$cowsRow['health_status_id'] == (int)$healthyRes['id']){
+                            if((int)$hensRow['health_status_id'] == (int)$healthyRes['id']){
                                 $healthStatusName = "Healthy";
                                 $healthStatusColor = "green";
-                            }elseif((int)$cowsRow['health_status_id'] == (int)$sickRes['id']){
+                            }elseif((int)$hensRow['health_status_id'] == (int)$sickRes['id']){
                                 $healthStatusName = "Sick";
                                 $healthStatusColor = "red";
-                            }elseif((int)$cowsRow['health_status_id'] == (int)$quaraRes['id']){
+                            }elseif((int)$hensRow['health_status_id'] == (int)$quaraRes['id']){
                                 $healthStatusName = "Quarantined";
                                 $healthStatusColor = "yellow";
                             }
 
                             /*Determining color depending of lifecycle status id */
-                            if((int)$cowsRow['lifecycle_status_id'] == (int)$aliveRes['id']){
+                            if((int)$hensRow['lifecycle_status_id'] == (int)$aliveRes['id']){
                                 $lifeStatusName = "Alive in the farm";
                                 $lifeStatusColor = "green";
-                            }elseif((int)$cowsRow['lifecycle_status_id'] == (int)$soldRes['id']){
+                            }elseif((int)$hensRow['lifecycle_status_id'] == (int)$soldRes['id']){
                                 $lifeStatusName = "Sold";
                                 $lifeStatusColor = "yellow";
-                            }elseif((int)$cowsRow['lifecycle_status_id'] == (int)$deadRes['id']){
+                            }elseif((int)$hensRow['lifecycle_status_id'] == (int)$deadRes['id']){
                                 $lifeStatusName = "Dead";
                                 $lifeStatusColor = "red";
                             }
                         ?>
                             <tr>
                                 <td><input type="checkbox" name="rowSelected" value="<?= $rowId ?>"></td>
-                                <td><?= htmlspecialchars($cowsRow['tag_name'] ?? 'Undefined') ?></td>
+                                <td><?= htmlspecialchars($hensRow['tag_name'] ?? 'Undefined') ?></td>
                                 <td><?= htmlspecialchars($breedName) ?></td>
                                 <td><?= htmlspecialchars($healthStatusName) ?></td>
-                                <td><?= htmlspecialchars(number_format($cowsRow['milkProduction'] ?? 0, 2)) ?></td>
-                                <td><?= htmlspecialchars($cowsRow['isPregnant'] == 1 ? 'Pregnant' : 'Not Pregnant') ?></td>
                                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
                                 <td><button type="button" class="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
                                 <td><button type="button" class="triggerDelete" value="<?= $rowId ?>">Delete</button></td>

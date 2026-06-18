@@ -244,7 +244,6 @@ CREATE TABLE hens(
     animal_type_id INT NOT NULL,
     breed_id INT,
     tag_name VARCHAR(50) UNIQUE,
-    isPregnant BOOLEAN DEFAULT FALSE,
     lifecycle_status_id INT NOT NULL DEFAULT 1,
     health_status_id INT NOT NULL,
     created_at DATE NOT NULL DEFAULT CURRENT_DATE,
