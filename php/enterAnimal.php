@@ -53,8 +53,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
         $femaleCowStmt = $conn->prepare("INSERT INTO female_cows (animal_reference_id, animal_type_id, breed_id, health_status_id, created_at)
                                         VALUES (?, ?, ?, ?, ?)");
-        $henStmt = $conn->prepare("INSERT INTO hens (animal_reference_id, animal_type_id, breed_id, health_status_id, created_at)
-                                        VALUES (?, ?, ?, ?, ?)");
         
         for($count = 0; $count < $quantity; $count++) {
             /*The rule is to prepare once(the prepared stmt above) then execute multiple times so the
@@ -67,11 +65,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             if($gender == "female" && $animalType == $cowId){
                 $femaleCowStmt->bind_param("iiiis", $animId, $animalType, $breed, $healthStatus, $createdAt);
                 $femaleCowStmt->execute();
-            }
-
-            if($gender == "female" && $animalType == $chickenId){
-                $henStmt->bind_param("iiiis", $animId, $animalType, $breed, $healthStatus, $createdAt);
-                $henStmt->execute();
             }
 
             if($animStmt->affected_rows > 0){/*If it doesn't insert eg 1 out of 3, this will set it to false

@@ -41,8 +41,6 @@ const searchCriteria = document.getElementById("searchCriteria");
 const searchInput = document.getElementById("searchValue");
 const searchBtn = document.getElementById("searchSthBtn");
 const tableBody = document.getElementById("table-body");
-const criteriaOption = searchCriteria.value;
-const searchValue = searchInput.value;
 
 function updateBtnState(){
     if(searchCriteria.value === "" || searchInput.value.trim() === ""){/*OR cz if you use AND then if one of them
@@ -59,6 +57,12 @@ searchInput.addEventListener("input", updateBtnState);
 
 searchForm.addEventListener("submit", function(e){
     e.preventDefault();
+
+    const criteriaOption = searchCriteria.value;
+    const searchValue = searchInput.value;
+
+    console.log(criteriaOption);
+    console.log(searchValue);
 
     fetch('hensTableSearch.php', {
         method: 'POST',

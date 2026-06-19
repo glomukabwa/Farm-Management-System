@@ -9,10 +9,28 @@ Products Page:
         For dairy and eggs pages, for the tally I am yet to work on the calves and chicks section
         so they are just displaying a default zero. I need to add year of birth in animals.
 
+Dairy Page: 
+        You need to delete all columns apart from id, animal_ref_id, milkProduction and isPregnant
+        in female_cows. Why? Table animals already contains all the other data. Rn to edit things,
+        you have to edit both tables which is unnecessary and could introduce errors. I noticed
+        that I can't just go to the DB and edit the tag_name in female_cows cz then I'll have to 
+        edit it also in animals. You see? I've left room for inconsistencies. Chat says that the
+        point of a relational database is to allow u to save once and use multiple times so for
+        tables like female_cows, what I'll do is I'll only be storing data that is specific to
+        female cows there like pregancy status and milk production. I'll use JOINS to access the
+        data. This means that u also need to edit enterAnimal.php, don't forget.
+
 Eggs Page:
-        Tally
-        Graphs
-        Table
+        Tally   ✔ 
+        Graphs  ✔
+        Table:
+                Search functionality ✔
+                        Test it more thoroughly though. Rn I think it's working but plz test it after u've added the edit functionality
+                        cz fields like name, breed and health status have similar values rn so everything is being returned and there is
+                        no change. But life status and date created are definitely fully working.
+                Edit functionality
+                Delete functionality
+                More Options
 
 Add guidance on how to enter Animal in enterAnimal.php
 

@@ -237,19 +237,3 @@ CREATE TABLE female_cows(
     FOREIGN KEY (lifecycle_status_id) REFERENCES animal_lifecycle_statuses(id),
     FOREIGN KEY (health_status_id) REFERENCES animal_statuses(id)
 );
-
-CREATE TABLE hens(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    animal_reference_id INT NOT NULL UNIQUE,
-    animal_type_id INT NOT NULL,
-    breed_id INT,
-    tag_name VARCHAR(50) UNIQUE,
-    lifecycle_status_id INT NOT NULL DEFAULT 1,
-    health_status_id INT NOT NULL,
-    created_at DATE NOT NULL DEFAULT CURRENT_DATE,
-    FOREIGN KEY (animal_reference_id) REFERENCES animals(id) ON DELETE CASCADE,
-    FOREIGN KEY (animal_type_id) REFERENCES animal_types(id),
-    FOREIGN KEY (breed_id) REFERENCES breeds(id),
-    FOREIGN KEY (lifecycle_status_id) REFERENCES animal_lifecycle_statuses(id),
-    FOREIGN KEY (health_status_id) REFERENCES animal_statuses(id)
-);

@@ -19,6 +19,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $searchTerm = "%$searchValue%";
     $result = null;
 
+    /*Getting the chicken ID*/
+    $chickenIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Chicken'");
+    $chickenIdRow = $chickenIdRes->fetch_assoc();
+    $chickenId = (int)$chickenIdRow['id'];
+
     if($criteriaValue == 'name'){
         $undefinedName = ['un','und', 'unde', 'undef', 'def'];
         $isUndefined = false;
@@ -29,23 +34,34 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
         if($isUndefined){
-            $nullNameStmt = $conn->prepare("SELECT * FROM hens WHERE tag_name IS NULL LIMIT ?, ?");
-            $nullNameStmt->bind_param("ii", $offset, $limit);
+            $nullNameStmt = $conn->prepare("SELECT * FROM animals 
+                                                WHERE tag_name IS NULL 
+                                                    AND animal_type_id = ? AND gender = 'female'
+                                                LIMIT ?, ?");
+            $nullNameStmt->bind_param("iii",$chickenId , $offset, $limit);
             $nullNameStmt->execute();
             $result = $nullNameStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens WHERE tag_name IS NULL");
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals 
+                                            WHERE tag_name IS NULL
+                                                AND animal_type_id = ? AND gender = 'female'");
+            $countStmt->bind_param("i", $chickenId);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
         }else{
-            $nameStmt = $conn->prepare("SELECT * FROM hens WHERE tag_name LIKE ? LIMIT ?, ?");
-            $nameStmt->bind_param("sii", $searchTerm, $offset, $limit);
+            $nameStmt = $conn->prepare("SELECT * FROM animals 
+                                            WHERE tag_name LIKE ? 
+                                                AND animal_type_id = ? AND gender = 'female'
+                                            LIMIT ?, ?");
+            $nameStmt->bind_param("siii", $searchTerm, $chickenId, $offset, $limit);
             $nameStmt->execute();
             $result = $nameStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens WHERE tag_name LIKE ?");
-            $countStmt->bind_param("s", $searchTerm);
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals 
+                                            WHERE tag_name LIKE ?
+                                                AND animal_type_id = ? AND gender = 'female'");
+            $countStmt->bind_param("si", $searchTerm, $chickenId);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
@@ -78,12 +94,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
 
         if($isUnspecified){
-            $breedNullStmt = $conn->prepare("SELECT * FROM hens WHERE breed_id IS NULL LIMIT ?, ?");
-            $breedNullStmt->bind_param("ii", $offset, $limit);
+            $breedNullStmt = $conn->prepare("SELECT * FROM animals 
+                                                WHERE breed_id IS NULL 
+                                                    AND animal_type_id = ? AND gender = 'female'
+                                                LIMIT ?, ?");
+            $breedNullStmt->bind_param("iii", $chickenId, $offset, $limit);
             $breedNullStmt->execute();
             $result = $breedNullStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens WHERE breed_id IS NULL");
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals 
+                                            WHERE breed_id IS NULL
+                                                AND animal_type_id = ? AND gender = 'female'");
+            $countStmt->bind_param("i", $chickenId);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
@@ -97,13 +119,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $result = null;
             }else{
                 $breedId = $breedNameRow['id'];
-                $breedStmt = $conn->prepare("SELECT * FROM hens WHERE breed_id = ? LIMIT ?, ?");
-                $breedStmt->bind_param("iii", $breedId, $offset, $limit);
+                $breedStmt = $conn->prepare("SELECT * FROM animals 
+                                                WHERE breed_id = ? 
+                                                    AND animal_type_id = ? AND gender = 'female'
+                                                LIMIT ?, ?");
+                $breedStmt->bind_param("iiii", $breedId, $chickenId, $offset, $limit);
                 $breedStmt->execute();
                 $result = $breedStmt->get_result();
 
-                $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens WHERE breed_id = ?");
-                $countStmt->bind_param("i", $breedId);
+                $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals 
+                                                WHERE breed_id = ?
+                                                    AND animal_type_id = ? AND gender = 'female'");
+                $countStmt->bind_param("ii", $breedId, $chickenId);
                 $countStmt->execute();
                 $countRes = $countStmt->get_result();
                 $totalRows = $countRes->fetch_assoc()['total'];
@@ -122,13 +149,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $result = null;
         }else{
             $healthId = $healthNameRow['id'];
-            $healthStmt = $conn->prepare("SELECT * FROM hens WHERE health_status_id = ? LIMIT ?, ?");
-            $healthStmt->bind_param("iii", $healthId, $offset, $limit);
+            $healthStmt = $conn->prepare("SELECT * FROM animals WHERE health_status_id = ? 
+                                            AND animal_type_id = ? AND gender = 'female'
+                                            LIMIT ?, ?");
+            $healthStmt->bind_param("iiii", $healthId, $chickenId, $offset, $limit);
             $healthStmt->execute();
             $result = $healthStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens WHERE health_status_id = ?");
-            $countStmt->bind_param("i", $healthId);
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals WHERE health_status_id = ?
+                                            AND animal_type_id = ? AND gender = 'female'");
+            $countStmt->bind_param("ii", $healthId, $chickenId);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
@@ -145,26 +175,42 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $result = null;
         }else{
             $lifeId = $lifeNameRow['id'];
-            $lifeStmt = $conn->prepare("SELECT * FROM hens WHERE lifecycle_status_id = ? LIMIT ?, ?");
-            $lifeStmt->bind_param("iii", $lifeId, $offset, $limit);
+            $lifeStmt = $conn->prepare("SELECT * FROM animals WHERE lifecycle_status_id = ? 
+                                            AND animal_type_id = ? AND gender = 'female'
+                                        LIMIT ?, ?");
+            $lifeStmt->bind_param("iiii", $lifeId, $chickenId, $offset, $limit);
             $lifeStmt->execute();
             $result = $lifeStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens WHERE lifecycle_status_id = ?");
-            $countStmt->bind_param("i", $lifeId);
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals WHERE lifecycle_status_id = ?
+                                            AND animal_type_id = ? AND gender = 'female'");
+            $countStmt->bind_param("ii", $lifeId, $chickenId);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
         }
 
     }
+    elseif($criteriaValue == 'dateCreated'){
+        $dateStmt = $conn->prepare("SELECT * FROM animals
+                        WHERE created_at LIKE ? 
+                        AND animal_type_id = ? AND gender = 'female'
+                        LIMIT ?,?");
+        $dateStmt->bind_param("siii", $searchTerm, $chickenId, $offset, $limit);
+        $dateStmt->execute();
+        $result = $dateStmt->get_result();
+    }
     elseif(empty($criteriaValue) || empty($searchValue)){
-        $emptyStmt = $conn->prepare("SELECT * FROM hens LIMIT ?, ?");
-        $emptyStmt->bind_param("ii", $offset, $limit);
+        $emptyStmt = $conn->prepare("SELECT * FROM animals 
+                                        WHERE animal_type_id = ? AND gender = 'female'
+                                        LIMIT ?, ?");
+        $emptyStmt->bind_param("iii", $chickenId, $offset, $limit);
         $emptyStmt->execute();
         $result = $emptyStmt->get_result();
 
-        $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM hens");
+        $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals
+                                        WHERE animal_type_id = ? AND gender = 'female'");
+        $countStmt->bind_param("i", $chickenId);
         $countStmt->execute();
         $countRes = $countStmt->get_result();
         $totalRows = $countRes->fetch_assoc()['total'];
@@ -243,6 +289,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <td><?= htmlspecialchars($breedName) ?></td>
                 <td><?= htmlspecialchars($healthStatusName) ?></td>
                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
+                <?php $newDate = new DateTime($row['created_at'])?>
+                <td><?= htmlspecialchars($newDate->format('d-m-Y')) ?></td>
                 <td><button type="button" class="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
                 <td><button type="button" class="triggerDelete" value="<?= $rowId ?>">Delete</button></td>
             </tr>

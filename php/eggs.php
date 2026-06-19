@@ -30,10 +30,29 @@ $weekTotalSalesStmt = $conn->query("SELECT COALESCE(SUM(total_cost), 0.00) as we
 $weekTotalSalesRow = $weekTotalSalesStmt->fetch_assoc();
 $weekTotalSales = $weekTotalSalesRow['weeklyTotal'];
 
-/*Getting the total sales(weekly) from the DB */
-$adultHensStmt = $conn->query("SELECT COUNT(*) as count FROM hens");
-$adultHensRow = $adultHensStmt->fetch_assoc();
+/*Getting the number of hens*/
+
+/*Getting the chicken ID first*/
+$chickenIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Chicken'");
+$chickenIdRow = $chickenIdRes->fetch_assoc();
+$chickenId = (int)$chickenIdRow['id'];
+
+/*Getting the ID for 'Alive in the farm */
+$aliveStatusStmt = $conn->query("SELECT id FROM animal_lifecycle_statuses 
+                                    WHERE name = 'Alive in the farm'");
+$aliveStatusRow = $aliveStatusStmt->fetch_assoc();
+$aliveStatusId = (int)$aliveStatusRow['id'];
+
+$adultHensStmt = $conn->prepare("SELECT COUNT(*) as count FROM animals 
+                                    WHERE animal_type_id = ? 
+                                        AND gender = 'female'
+                                            AND lifecycle_status_id = ?");
+$adultHensStmt->bind_param("ii", $chickenId, $aliveStatusId);
+$adultHensStmt->execute();
+$adultHensRes = $adultHensStmt->get_result();
+$adultHensRow = $adultHensRes->fetch_assoc();
 $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce operator(??) is important*/
+/**/
 
 ?>
 
@@ -215,15 +234,14 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
             <div class="topControls">
                 <form class="right" method="POST" id="searchForm">
-                    <div class="select-wrapper" id="searchCirteria">
+                    <div class="select-wrapper">
                         <select name="searchCriteria" id="searchCriteria">
                             <option value="">-- Search By --</option>
                             <option value="name">Name</option>
                             <option value="breed">Breed</option>
                             <option value="healthStatus">Health Status</option>
-                            <option value="milkProd">Milk Production</option>
-                            <option value="isPreg">Pregnancy Status</option>
                             <option value="lifeStatus">Life Status</option>
+                            <option value="dateCreated">Date Created</option>
                         </select>
                     </div>
 
@@ -239,7 +257,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     <button id="moreOptions">MORE OPTIONS</button>
 
                     <ul class="optionsMenuBar">
-                        <li>Add new cow</li>
+                        <li>Add new Hen</li>
                         <li>Select all rows <span id="slctIndication"></span></li>
                         <li>Delete</li>
                     </ul>
@@ -254,6 +272,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <th>Breed</th>
                         <th>Health Status</th>
                         <th>Life Status</th>
+                        <th>Date Created</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -274,14 +293,15 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
 
                     $offset = ($page - 1) * $limit;
 
-                    $hensStmt = $conn->prepare("SELECT * FROM hens
+                    $hensStmt = $conn->prepare("SELECT * FROM animals WHERE animal_type_id = ? AND gender = 'female'
                                                 ORDER BY id ASC
                                                 LIMIT ?,?");
-                    $hensStmt->bind_param("ii", $offset, $limit);
+                    $hensStmt->bind_param("iii", $chickenId, $offset, $limit);
                     $hensStmt->execute();
                     $henRes = $hensStmt->get_result();
 
-                    $totalRowsStmt = $conn->prepare("SELECT COUNT(*) AS total FROM hens");
+                    $totalRowsStmt = $conn->prepare("SELECT COUNT(*) AS total FROM animals WHERE animal_type_id = ? AND gender = 'female'");
+                    $totalRowsStmt->bind_param("i", $chickenId);
                     $totalRowsStmt->execute();
                     $totalRowsRes = $totalRowsStmt->get_result();
                     $totalRowsRow = $totalRowsRes->fetch_assoc();
@@ -358,6 +378,8 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 <td><?= htmlspecialchars($breedName) ?></td>
                                 <td><?= htmlspecialchars($healthStatusName) ?></td>
                                 <td><?= htmlspecialchars($lifeStatusName) ?></td>
+                                <?php $newDate = new DateTime($hensRow['created_at']) ?>
+                                <td><?= htmlspecialchars($newDate->format('d-m-Y')) ?></td>
                                 <td><button type="button" class="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
                                 <td><button type="button" class="triggerDelete" value="<?= $rowId ?>">Delete</button></td>
                             </tr>
