@@ -228,14 +228,14 @@ function handleEdit(rowId){
 }
 
 function reloadData(){
-    fetch('dairyTableSearch.php', {
+    fetch('hensTableSearch.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
-            criteriaOption: criteriaOption,
-            searchValue: searchValue,
+            criteriaOption: searchCriteria.value,
+            searchValue: searchInput.option,
             limit: document.getElementById("limit").value,
             page: 1
         })
@@ -258,7 +258,7 @@ function handleDelete(rowIds){
 
     /*Actual Deletion*/
     actualDelete.onclick = function(){
-        fetch('deleteRowDairy.php', {
+        fetch('deleteRowHens.php', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/x-www-form-urlencoded'
@@ -272,7 +272,7 @@ function handleDelete(rowIds){
 
             deleteRowOverlay.classList.remove("show");
 
-            const cowsTableSection = document.getElementById("cowsTableSection");
+            const cowsTableSection = document.getElementById("hensTableSection");
 
             cowsTableSection.scrollIntoView({
                 behavior: "smooth",
@@ -371,7 +371,7 @@ enterNewAnimal.addEventListener("submit", function(e){
     const aniHealth = newAnimalInputs[2].value;
     const aniDate = newAnimalInputs[3].value;
 
-    fetch('enterNewFemCow.php', {
+    fetch('enterNewHen.php', {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded'
@@ -387,7 +387,7 @@ enterNewAnimal.addEventListener("submit", function(e){
     .then(data => {
         reloadData();
 
-        const cowsTableSection = document.getElementById("cowsTableSection");
+        const cowsTableSection = document.getElementById("hensTableSection");
 
         cowsTableSection.scrollIntoView({
             behavior: "smooth",

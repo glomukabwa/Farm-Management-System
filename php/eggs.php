@@ -228,7 +228,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
         </div>
 
 
-        <div class="cowsTable" id="cowsTableSection"><!--I'll use the id for the page reload when I want it to 
+        <div class="Table" id="hensTableSection"><!--I'll use the id for the page reload when I want it to 
             scroll down to this location-->
             <h2>Hen Records</h2>
 
@@ -399,7 +399,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                     
                     <span id="closeAddAnimal" class="closePopup">&times;</span>
 
-                    <h2>Add New Cow</h2>
+                    <h2>Add New Hen</h2>
 
                     <div class="oneinput">
                         <input type="number" id="quantity" name="quantity" placeholder=" " required>

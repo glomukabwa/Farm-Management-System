@@ -210,7 +210,7 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
         </div>
 
 
-        <div class="cowsTable" id="cowsTableSection"><!--I'll use the id for the page reload when I want it to 
+        <div class="Table" id="cowsTableSection"><!--I'll use the id for the page reload when I want it to 
             scroll down to this location-->
             <h2>Cows(Female) Records</h2>
 

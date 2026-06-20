@@ -24,13 +24,13 @@ Eggs Page:
         Tally   ✔ 
         Graphs  ✔
         Table:
-                Search functionality ✔
+                Search functionality    ✔
                         Test it more thoroughly though. Rn I think it's working but plz test it after u've added the edit functionality
                         cz fields like name, breed and health status have similar values rn so everything is being returned and there is
                         no change. But life status and date created are definitely fully working.
                 Edit functionality
-                Delete functionality
-                More Options
+                Delete functionality    ✔
+                More Options            ✔
 
 Add guidance on how to enter Animal in enterAnimal.php
 
