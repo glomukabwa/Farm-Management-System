@@ -30,6 +30,9 @@ Eggs Page:
                         no change. But life status and date created are definitely fully working.
                 Edit functionality
                 Delete functionality    ✔
+                        When someone deletes, the reload fuction works perfectly but I've noticed
+                        that in the tally, the hen population stays the same until I reload the page.
+                        You need to make the hen population update without reloading the whole page
                 More Options            ✔
 
 Add guidance on how to enter Animal in enterAnimal.php
