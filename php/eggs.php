@@ -411,8 +411,11 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             <select name="breed" id="breed">
                                 <option value="">Breed</option>
                                 <?php 
-                                $breeds = "SELECT * FROM breeds";
-                                $breedResult = $conn->query($breeds);
+                                $breeds = "SELECT * FROM breeds WHERE animal_type_id = ?";
+                                $breedStatement = $conn->prepare($breeds);
+                                $breedStatement->bind_param("i", $chickenId);
+                                $breedStatement->execute();
+                                $breedResult = $breedStatement->get_result();
                                 while($breedRow = $breedResult->fetch_assoc()){
                                     echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
                                 }
@@ -451,7 +454,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
             </div>
 
             <div class="editOverlay">
-                <form method="POST">
+                <form method="POST" id="eggsEditForm">
                     <span id="closeEditPopup" class="closePopup">&times;</span>
                     <span id="deleteBtn"><img id="dustbin" src="../icons/delete.png" alt="trashcan"></span>
 
@@ -472,8 +475,11 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <select name="breed" id="breed">
                             <option value="">Breed</option>
                             <?php 
-                            $breeds = "SELECT * FROM breeds";
-                            $breedResult = $conn->query($breeds);
+                            $breeds = "SELECT * FROM breeds WHERE animal_type_id = ?";
+                            $breedStatement = $conn->prepare($breeds);
+                            $breedStatement->bind_param("i", $chickenId);
+                            $breedStatement->execute();
+                            $breedResult = $breedStatement->get_result();
                             while($breedRow = $breedResult->fetch_assoc()){
                                 echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
                             }
@@ -491,19 +497,6 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
                                 echo '<option value="'.$healthRow['id'].'">'.$healthRow['status_name'].'</option>';
                             }
                             ?>
-                        </select>
-                    </div>
-
-                    <div class="oneinput">
-                        <input type="number" step="0.01" id="milkProd" name="milkProd" placeholder=" " required>
-                        <label for="milkProd">Milk Production</label>
-                    </div>
-
-                    <div class="select-wrapper">
-                        <select name="pregStatus" id="pregStatus" required>
-                            <option value="">Pregnancy Status</option>
-                            <option value="0">Not Pregnant</option>
-                            <option value="1">Pregnant</option>
                         </select>
                     </div>
 

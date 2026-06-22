@@ -135,7 +135,7 @@ function handleEdit(rowId){
 
     editOverlay.classList.add("show");
 
-    fetch('getRowData.php', {
+    fetch('getRowDataDairy.php', {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded'
@@ -148,8 +148,6 @@ function handleEdit(rowId){
     .then(response => response.json())
     .then(data => {
 
-        console.log(data.breed);
-        console.log(data.isPreg);
         editOverlayInputs[0].value = data.name ?? 'Undefined';
         editOverlayInputs[1].value = data.breed ?? '';
         editOverlayInputs[2].value = data.healthStatus;
@@ -448,6 +446,8 @@ dltSelectedRows.onclick = function(){
         selectedIds.push(sRow.value);
     });
 
-    handleDelete(selectedIds);
+    if(selectedIds.length > 0){
+        handleDelete(selectedIds);
+    }
 
 }

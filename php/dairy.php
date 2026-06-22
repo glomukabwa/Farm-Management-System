@@ -35,6 +35,11 @@ $adultCowsStmt = $conn->query("SELECT COUNT(*) as count FROM female_cows");
 $adultCowsRow = $adultCowsStmt->fetch_assoc();
 $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce operator(??) is important*/
 
+/*Getting the chicken ID first*/
+$cowIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Cow'");
+$cowIdRow = $cowIdRes->fetch_assoc();
+$cowId = (int)$cowIdRow['id'];
+echo $cowId;
 ?>
 
 <!DOCTYPE html>
@@ -394,8 +399,11 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                             <select name="breed" id="breed">
                                 <option value="">Breed</option>
                                 <?php 
-                                $breeds = "SELECT * FROM breeds";
-                                $breedResult = $conn->query($breeds);
+                                $breeds = "SELECT * FROM breeds WHERE animal_type_id = ?";
+                                $breedStatement = $conn->prepare($breeds);
+                                $breedStatement->bind_param("i", $cowId);
+                                $breedStatement->execute();
+                                $breedResult = $breedStatement->get_result();
                                 while($breedRow = $breedResult->fetch_assoc()){
                                     echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
                                 }
@@ -455,8 +463,11 @@ $adultCows = $adultCowsRow['count'] ?? 0;/*Now u see why the null coalesce opera
                         <select name="breed" id="breed">
                             <option value="">Breed</option>
                             <?php 
-                            $breeds = "SELECT * FROM breeds";
-                            $breedResult = $conn->query($breeds);
+                            $breeds = "SELECT * FROM breeds WHERE animal_type_id = ?";
+                            $breedStatement = $conn->prepare($breeds);
+                            $breedStatement->bind_param("i", $cowId);
+                            $breedStatement->execute();
+                            $breedResult = $breedStatement->get_result();
                             while($breedRow = $breedResult->fetch_assoc()){
                                 echo '<option value="'.$breedRow['id'].'">'.$breedRow['name'].'</option>';
                             }

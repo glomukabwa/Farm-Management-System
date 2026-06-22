@@ -135,7 +135,7 @@ function handleEdit(rowId){
 
     editOverlay.classList.add("show");
 
-    fetch('getRowData.php', {
+    fetch('getRowDataEggs.php', {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded'
@@ -153,9 +153,7 @@ function handleEdit(rowId){
         editOverlayInputs[0].value = data.name ?? 'Undefined';
         editOverlayInputs[1].value = data.breed ?? '';
         editOverlayInputs[2].value = data.healthStatus;
-        editOverlayInputs[3].value = Number(data.milkProduction ?? 0).toFixed(2);
-        editOverlayInputs[4].value = data.isPreg;
-        editOverlayInputs[5].value = data.lifeStatus;
+        editOverlayInputs[3].value = data.lifeStatus;
 
         editOverlayInputs.forEach(input => input.disabled = false);
     });
@@ -172,15 +170,13 @@ function handleEdit(rowId){
         const tagName = editOverlayInputs[0].value;
         const breedId = editOverlayInputs[1].value;
         const health = editOverlayInputs[2].value;
-        const milk = editOverlayInputs[3].value;
-        const preg = editOverlayInputs[4].value;
-        const life = editOverlayInputs[5].value;
+        const life = editOverlayInputs[3].value;
 
         checkDuplicateName(tagName).then(isValid => {/*isValid contains the return value of the
             function checkDuplicateName() which in this case is either true or false. If we had 
             said it should return eg duplicate or valid, that is what is Valid would store */
             if(isValid){
-                fetch('editDairyTable.php', {
+                fetch('editEggsTable.php', {
                     method : 'POST',
                     headers : {
                         'Content-Type' : 'application/x-www-form-urlencoded'
@@ -190,8 +186,6 @@ function handleEdit(rowId){
                         tagName,
                         breedId,
                         health,
-                        milk,
-                        preg,
                         life
                     })
                 })
@@ -315,8 +309,6 @@ function checkDuplicateName(name){
             return true;
         }
     });
-
-    return checkOutput;
     
 }
 
@@ -448,6 +440,8 @@ dltSelectedRows.onclick = function(){
         selectedIds.push(sRow.value);
     });
 
-    handleDelete(selectedIds);
+    if(selectedIds.length > 0){
+        handleDelete(selectedIds);
+    }
 
 }
