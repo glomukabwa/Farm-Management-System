@@ -25,19 +25,11 @@ Eggs Page:
         Graphs  ✔
         Table:
                 Search functionality    ✔
-                        Test it more thoroughly though. Rn I think it's working but plz test it after u've added the edit functionality
-                        cz fields like name, breed and health status have similar values rn so everything is being returned and there is
-                        no change. But life status and date created are definitely fully working.
+                        There's sth wrong with the search functionality of Breed. If u wanna search 
+                        eg the breed Kienyeji and u search k, it will say no results but if u Search
+                        ki, it'll brin results
                 Edit functionality      
-                        It has an issue. If someone triggers the checkDuplicate function and it returns true,
-                        you can't edit anymore. You have to set it back to false for every new edit. Also,
-                        if someone wants to edit the sth else other than name, eg if u try to edit health status
-                        only and u click edit after editting, the checkDuplicate function will prevent you from
-                        actually editting since it'll be triggered cz the name definitely exists in the DB. I think
-                        we can solve this buy storing oldValue and newValue every time u wanna edit. That way, u can 
-                        keep track of what has been editted and UPDATE just that in the DB not everything. 
-                        If you come up with a functional edit functionality make sure u update the dairy page too
-                        
+                        I've fixed the edit functionality. Plz update the dairy page
                 Delete functionality    ✔
                         When someone deletes, the reload fuction works perfectly but I've noticed
                         that in the tally, the hen population stays the same until I reload the page.

@@ -237,3 +237,20 @@ CREATE TABLE female_cows(
     FOREIGN KEY (lifecycle_status_id) REFERENCES animal_lifecycle_statuses(id),
     FOREIGN KEY (health_status_id) REFERENCES animal_statuses(id)
 );
+
+-- INSERTING THE DIFFERENT BREEDS OF ANIMALS
+-- Chicken 
+INSERT INTO breeds (animal_type_id, name) VALUES
+(1, 'Kienyeji'),
+(1, 'Kenbro'),
+(1, 'KARI Improved'),
+(1, 'Sasso'),
+(1, 'Rainbow Rooster'),
+(1, 'White Leghorn'),
+(1, 'Rhode Island Red'),
+(1, 'ISA Brown'),
+(1, 'Lohmann Brown'),
+(1, 'Cobb 500'),
+(1, 'Ross 308');
+
+-- Cows

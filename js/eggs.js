@@ -147,35 +147,42 @@ function handleEdit(rowId){
     })
     .then(response => response.json())
     .then(data => {
+        oldName = data.name ?? 'Undefined';
+        oldBreed = data.breed ?? '';
+        oldHealth = data.healthStatus;
+        oldLife = data.lifeStatus;
 
-        console.log(data.breed);
-        console.log(data.isPreg);
-        editOverlayInputs[0].value = data.name ?? 'Undefined';
-        editOverlayInputs[1].value = data.breed ?? '';
-        editOverlayInputs[2].value = data.healthStatus;
-        editOverlayInputs[3].value = data.lifeStatus;
+        editOverlayInputs[0].value = oldName;
+        editOverlayInputs[1].value = oldBreed;
+        editOverlayInputs[2].value = oldHealth;
+        editOverlayInputs[3].value = oldLife;
 
         editOverlayInputs.forEach(input => input.disabled = false);
     });
 
     /*Actual editing */
 
-    editOverlayInputs[0].addEventListener("input", function() {
+    /*editOverlayInputs[0].addEventListener("input", function() {
         checkDuplicateName(this.value);
-    });
+    });*/
 
 
     actualEdit.onclick =  function(e){
         e.preventDefault();
-        const tagName = editOverlayInputs[0].value;
-        const breedId = editOverlayInputs[1].value;
-        const health = editOverlayInputs[2].value;
-        const life = editOverlayInputs[3].value;
 
-        checkDuplicateName(tagName).then(isValid => {/*isValid contains the return value of the
+        const validNameIndicator = document.getElementById("validNameIndicator");
+        validNameIndicator.style.display = "none"; /*Cz before when it was set, it would stay
+                                                    there even on the next edit unless reloaded*/
+
+        tagName = editOverlayInputs[0].value
+        breedId = editOverlayInputs[1].value
+        health = editOverlayInputs[2].value
+        life = editOverlayInputs[3].value
+
+        /*checkDuplicateName(tagName).then(isValid => {/*isValid contains the return value of the
             function checkDuplicateName() which in this case is either true or false. If we had 
-            said it should return eg duplicate or valid, that is what is Valid would store */
-            if(isValid){
+            said it should return eg duplicate or valid, that is what is Valid would store 
+            if(isValid){*/
                 fetch('editEggsTable.php', {
                     method : 'POST',
                     headers : {
@@ -186,26 +193,39 @@ function handleEdit(rowId){
                         tagName,
                         breedId,
                         health,
-                        life
+                        life,
+                        oldName,
+                        oldBreed,
+                        oldHealth,
+                        oldLife
                     })
                 })
-                .then(() => {
-                    reloadData();
+                .then(response => response.text())
+                .then(data => {
+                    if(data == 'Valid'){
+                        reloadData();
 
-                    editOverlay.classList.remove("show");
+                        editOverlay.classList.remove("show");
 
-                    const cowsTableSection = document.getElementById("cowsTableSection");
+                        const cowsTableSection = document.getElementById("cowsTableSection");
 
-                    cowsTableSection.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
+                        cowsTableSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                    }else if(data == 'Duplicate'){
+                        validNameIndicator.style.display = "flex";
+                        validNameIndicator.textContent = "This name is already taken";
+                        validNameIndicator.style.color = "red";
+                        
+                    }
+                    
 
                 });
-            }else{
+            /*}else{
                 actualEdit.disabled = true;
             }
-        })
+        /*})*/
 
     }   
 
@@ -282,13 +302,13 @@ function handleDelete(rowIds){
     }
 }
 
-function checkDuplicateName(name){
+/*function checkDuplicateName(name){
     const validNameIndicator = document.getElementById("validNameIndicator");
 
     return fetch('checkDuplicateName.php', { /*If you put return at the end, it returns before the fetch runs
         so if I put the default return as false, this function will always return false cz the fetch will be
         running after the return value has already been submitted so even if it's valid, it will not matter.
-        That is why I have done this instead. Notice how I have two returns in the then clause below*/
+        That is why I have done this instead. Notice how I have two returns in the then clause below
         method: 'POST',
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded'
@@ -310,7 +330,7 @@ function checkDuplicateName(name){
         }
     });
     
-}
+}*/
 
 
 
