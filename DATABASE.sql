@@ -254,3 +254,10 @@ INSERT INTO breeds (animal_type_id, name) VALUES
 (1, 'Ross 308');
 
 -- Cows
+INSERT INTO breeds (animal_type_id, name) VALUES
+(2, 'Ayrshire'),
+(2, 'Boran'),
+(2, 'Brahman'),
+(2, 'Friesian'),
+(2, 'Jersey'),
+(2, 'Sahiwal');

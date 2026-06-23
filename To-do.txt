@@ -25,9 +25,11 @@ Eggs Page:
         Graphs  ✔
         Table:
                 Search functionality    ✔
-                        There's sth wrong with the search functionality of Breed. If u wanna search 
-                        eg the breed Kienyeji and u search k, it will say no results but if u Search
-                        ki, it'll brin results
+                        I've fixed the search functionality of breed. The problem was looping the ids.
+                        You need to do the same for health and lifestyle. They are working well now
+                        but there's room for future errors.
+                        Also, when you update dairy.php check to see if the search functionality of 
+                        milk production and isPregnant needs to be fine tuned
                 Edit functionality      
                         I've fixed the edit functionality. Plz update the dairy page
                 Delete functionality    ✔

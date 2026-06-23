@@ -114,23 +114,71 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $breedNameStmt->bind_param("s", $searchTerm);
             $breedNameStmt->execute();
             $breedNameRes = $breedNameStmt->get_result();
-            $breedNameRow = $breedNameRes->fetch_assoc();
-            if($breedNameRow == null){
+            /*$breedNameRow = $breedNameRes->fetch_assoc(); fetch_assoc() only takes the first id in
+               the result and not all of them so that's why the breed serach wasn't working well. If
+               u serach 'k' and there are a number of breeds that start with K eg Kienyeji, Kenbro 
+               etc. If you intended to see all the Kienyeji chicken but then SQL returned a list of
+               ids with the names that have k but Kienyeji is not the first so eg: 1 = > Kenbro
+                                                                                   2 = > Kienyeji
+               fetch_assoc will pick the first id only so eg 1. And then in the if statement below
+               when u look for a row with the id 1 and let's say it is not there in the table, it'll
+               say 'no records found' and that will frustrate u cz u will be seeing Kienyeji somewhere
+               in the list but when u see all of them, u won't be able to see them. That is why we need
+               to loop the fetch_assoc() instead and add the ids in an array as u will see below*/
+
+            $breedIDS = [];
+            while($breedNameRow = $breedNameRes->fetch_assoc()){
+                $breedIDS[] = $breedNameRow['id'];
+            }
+
+            if(empty($breedIDS)){
                 $result = null;
             }else{
-                $breedId = $breedNameRow['id'];
+
+                $placeholders = implode(',',array_fill(0, count($breedIDS), '?'));
+                /*In the code above:
+                    array_fill() is used for creating arrays with a specified number of values
+                    and with predifined values. The syntax is:
+                        array_fill(starting index, no_of_array_elements, predifined_value)
+                    So for the above, 0 is the index of the first value, count($breedIDS) 
+                    tells us how many breedIds have been found and then '?' is the value
+                    that will be allocated to every index so if the number of breedIds found
+                    are 3, the final array will look like this: ['?', '?', '?']
+                    Now as for the implode part, you know that in a prepared statement if you want
+                    to have filler values u usually white the like this: "?,?,?" . We have to
+                    convert the array that we've gotten into a string so implode() converts the
+                    whole array into one string and separate the array values with a comma as we
+                    have indicated. $placeholders will therefore look like this: "?,?,?"
+                    Now as for the prepared statement, notive that we use IN() to check values
+                    in an array*/
+                
                 $breedStmt = $conn->prepare("SELECT * FROM animals 
-                                                WHERE breed_id = ? 
+                                                WHERE breed_id IN ($placeholders)
                                                     AND animal_type_id = ? AND gender = 'female'
                                                 LIMIT ?, ?");
-                $breedStmt->bind_param("iiii", $breedId, $chickenId, $offset, $limit);
+                
+                $dataTypes = str_repeat("i", count($breedIDS))."iii";
+                /*We don't know how many ids there will be. One search could result in 1 while
+                  another results in 3 so we count() the breedIDs found and add them to the other
+                  3 definite integers cz we are sure about $chickenId, $offset and $limit*/
+
+                $parameterArray = array_merge($breedIDS, [$chickenId, $offset, $limit]);
+                /*This puts all the parameters into one array. See below how we will use it */
+                $breedStmt->bind_param($dataTypes, ...$parameterArray);
+                /*Since bind_param cannot directly access arrays, the three dots before
+                  $parameterArray unpack the array enabling bind_param to use its values */
+
                 $breedStmt->execute();
                 $result = $breedStmt->get_result();
 
+
                 $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals 
-                                                WHERE breed_id = ?
+                                                WHERE breed_id IN ($placeholders)
                                                     AND animal_type_id = ? AND gender = 'female'");
-                $countStmt->bind_param("ii", $breedId, $chickenId);
+
+                $countTypes = str_repeat("i", count($breedIDS))."i";
+                $countParamArray = array_merge($breedIDS, [$chickenId]);
+                $countStmt->bind_param($countTypes, ...$countParamArray);
                 $countStmt->execute();
                 $countRes = $countStmt->get_result();
                 $totalRows = $countRes->fetch_assoc()['total'];
