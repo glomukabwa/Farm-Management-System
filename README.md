@@ -19,7 +19,7 @@ This is a **web application** that will be used to manage farm activities which 
 - Database: MySQL
 
 ## Demo Pictures
-- Current Overview Page:<br><br>
+- Current Dashboard:<br><br>
 <img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/8fecc5bf-c4d9-48d1-adc8-55ca5fe731ed" />
 <img width="959" height="147" alt="image" src="https://github.com/user-attachments/assets/8c1f1be9-2604-4c59-9ba9-07b5841a7bd8" />
 
