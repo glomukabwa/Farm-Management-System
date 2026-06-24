@@ -21,18 +21,28 @@ Dairy Page:
         data. This means that u also need to edit enterAnimal.php, don't forget.
 
 Eggs Page:
-        Tally   ✔ 
+        *Do not make changes in dairy or any other products pages until u have completely perfected
+        eggs.php. I've noticed it just brings unnecessary work so instead after u are done with 
+        eggs.php, go straight to profile. U might discover improvements in future. Reflecting what
+        u've done in eggs will be the last thing you do.
+
+        Tally   
+                You need to figure out the chicks situation
         Graphs  ✔
         Table:
-                Search functionality    ✔
-                        I've fixed the search functionality of breed. The problem was looping the ids.
-                        You need to do the same for health and lifestyle. They are working well now
-                        but there's room for future errors.
+                Search functionality    
+                        Ok so I have reflected the looping changes I had made in breed in lifestatus
+                        and health status but I wanna put a record of sth here to avoid making changes
+                        in future. U'll notice that in life status if you search 'd', it'll bring all
+                        the dead animals and the sold animals. That is not an error. It checks
+                        everything with 'd' and they both have a letter 'd' so they count. I think sth
+                        that will make the user less confused is highlighting the letter or word
+                        they have searched in the search return. I've seen it in advanced apps and I'm
+                        starting to understand the importance.
                         Also, when you update dairy.php check to see if the search functionality of 
                         milk production and isPregnant needs to be fine tuned
-                Edit functionality      
-                        I've fixed the edit functionality. Plz update the dairy page
-                Delete functionality    ✔
+                Edit functionality      ✔ 
+                Delete functionality    
                         When someone deletes, the reload fuction works perfectly but I've noticed
                         that in the tally, the hen population stays the same until I reload the page.
                         You need to make the hen population update without reloading the whole page

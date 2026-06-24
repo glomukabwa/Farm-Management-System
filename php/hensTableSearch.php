@@ -192,21 +192,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $healthNameStmt->bind_param("s", $searchTerm);
         $healthNameStmt->execute();
         $healthNameRes = $healthNameStmt->get_result();
-        $healthNameRow = $healthNameRes->fetch_assoc();
-        if($healthNameRow == null){
+        $healthNameArray = [];
+
+        while($healthNameRow = $healthNameRes->fetch_assoc()){
+            $healthNameArray[] = $healthNameRow['id'];
+        }
+
+        if(empty($healthNameArray)){
             $result = null;
         }else{
-            $healthId = $healthNameRow['id'];
-            $healthStmt = $conn->prepare("SELECT * FROM animals WHERE health_status_id = ? 
+
+            $placeholders = implode(',', array_fill(0, count($healthNameArray), '?'));
+            $healthStmt = $conn->prepare("SELECT * FROM animals WHERE health_status_id IN ($placeholders) 
                                             AND animal_type_id = ? AND gender = 'female'
                                             LIMIT ?, ?");
-            $healthStmt->bind_param("iiii", $healthId, $chickenId, $offset, $limit);
+            
+            $dataTypes = str_repeat("i", count($healthNameArray))."iii";
+            $parameterArray = array_merge($healthNameArray, [$chickenId, $offset, $limit]);
+
+            $healthStmt->bind_param($dataTypes, ...$parameterArray);
             $healthStmt->execute();
             $result = $healthStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals WHERE health_status_id = ?
+
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals WHERE health_status_id IN($placeholders)
                                             AND animal_type_id = ? AND gender = 'female'");
-            $countStmt->bind_param("ii", $healthId, $chickenId);
+            
+            $countDataTypes = str_repeat("i", count($healthNameArray))."i";
+            $countParamArray = array_merge($healthNameArray, [$chickenId]);
+            $countStmt->bind_param($countDataTypes, ...$countParamArray);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
@@ -218,21 +232,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $lifeNameStmt->bind_param("s", $searchTerm);
         $lifeNameStmt->execute();
         $lifeNameRes = $lifeNameStmt->get_result();
-        $lifeNameRow = $lifeNameRes->fetch_assoc();
-        if($lifeNameRow == null){
+
+        $lifeStatusIds = [];
+
+        while($lifeNameRow = $lifeNameRes->fetch_assoc()){
+            $lifeStatusIds[] = $lifeNameRow['id'];
+        }
+
+        if(empty($lifeStatusIds)){
             $result = null;
         }else{
-            $lifeId = $lifeNameRow['id'];
-            $lifeStmt = $conn->prepare("SELECT * FROM animals WHERE lifecycle_status_id = ? 
+            $placeholders = implode(',',array_fill(0, count($lifeStatusIds), '?'));
+            $lifeStmt = $conn->prepare("SELECT * FROM animals WHERE lifecycle_status_id IN($placeholders) 
                                             AND animal_type_id = ? AND gender = 'female'
                                         LIMIT ?, ?");
-            $lifeStmt->bind_param("iiii", $lifeId, $chickenId, $offset, $limit);
+            
+            $arrayDataTypes = str_repeat("i", count($lifeStatusIds))."iii";
+            $paramArray = array_merge($lifeStatusIds, [$chickenId, $offset, $limit]);
+
+            $lifeStmt->bind_param($arrayDataTypes, ...$paramArray);
             $lifeStmt->execute();
             $result = $lifeStmt->get_result();
 
-            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals WHERE lifecycle_status_id = ?
+            $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM animals WHERE lifecycle_status_id IN($placeholders)
                                             AND animal_type_id = ? AND gender = 'female'");
-            $countStmt->bind_param("ii", $lifeId, $chickenId);
+            
+            $countDataTypes = str_repeat("i", count($lifeStatusIds))."i";
+            $countParamArray = array_merge($lifeStatusIds, [$chickenId]);
+
+            $countStmt->bind_param($countDataTypes, ...$countParamArray);
             $countStmt->execute();
             $countRes = $countStmt->get_result();
             $totalRows = $countRes->fetch_assoc()['total'];
