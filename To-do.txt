@@ -62,6 +62,13 @@ Calendar:
         9.Change the colors of the calendar to the website colors
         10.Include addition of things to events table from pages like recordFeeding etc
 
+You need to change the chart in overview to a bar chart
+
+You need to add an alerts page
+
+You need to have a section or page for feeds and feeding records -> I think this could fall under
+farm records in the feeds section except apart from tables there should be charts
+
 Use sweetAlert2 to give messages to the users in every page. Link: https://sweetalert2.github.io/#examples
                                                     Github: https://github.com/sweetalert2/sweetalert2/releases
 
