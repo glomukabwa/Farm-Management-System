@@ -18,5 +18,7 @@ This is a **web application** that will be used to manage farm activities which 
 - Backend: PHP<br>
 - Database: MySQL
 
-
+## Demo Pictures
+- The student landing page:<br><br>
+<img width="1920" height="1080" alt="image" src="" /><br>
 
