@@ -133,7 +133,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         </div>
     </section>
 
-    <section class="main-content">
+    <section class="main-content" style="display: flex; gap:10rem;">
         <form method="POST">
             <h1>Enter Animal</h1>
 
@@ -165,6 +165,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 <label for="quantity">Quantity</label>
             </div>
 
+            <div class="select-wrapper">
+                <select name="gender" id="gender" required>
+                    <option value="">Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+            </div>
+
             <div>
                 <div class="select-wrapper">
                     <select name="breed" id="breed">
@@ -179,14 +187,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                     </select>
                 </div>
                 <label for="" id="message">* <span id="text">Optional</span></label>
-            </div>
-
-            <div class="select-wrapper">
-                <select name="gender" id="gender" required>
-                    <option value="">Gender</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                </select>
             </div>
 
             <div class="select-wrapper">
@@ -221,6 +221,27 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             </div>
             
         </form>
+
+        
+        <div class="enteringGuidance">
+            <div class="topic"><h2>Note:</h2></div>
+            <div>
+            <ul>
+                <li>To enter an animal:
+                    <ol>
+                        <li>First group them based on <span class="grouping">gender</span></li>
+                        <li>Then further subdivide the two newfound groups based on 
+                            <span class="grouping">breed.</span>
+                        </li>
+                    </ol> 
+                </li>
+                <li>If you do not intend to specify the breed at this stage, please note that you
+                    will have to specify them in their respective product pages, in the table 
+                    section, which is more tedious.
+                </li>
+            </ul>
+            </div>
+        </div>
     </section>
 
     <div id="logoutModal" class="logoutmodal">

@@ -241,3 +241,53 @@ button{
     cursor: pointer;
     margin-top: 2rem;*/
 }
+
+.enteringGuidance{
+    width: 35rem;
+    height: fit-content;
+    background: var(--support2);
+    border-radius: 2rem;
+    margin-top:7rem;
+    
+}
+
+.enteringGuidance .topic{
+    border-bottom: solid 0.1rem var(--basecolor);
+    padding: 4rem 4rem;
+    padding-bottom: 0;
+}
+
+.enteringGuidance h2{
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: red;
+    font-style: italic;
+}
+
+.enteringGuidance ul{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+    list-style-type:disc;
+    margin-left:1rem;
+    padding: 4rem 4rem;
+    padding-top: 2rem;
+    text-align: justify;
+    line-height: 2rem;
+}
+
+.enteringGuidance ul ol{
+    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+    margin-top: 0.5rem;
+    list-style:circle;
+}
+
+.enteringGuidance .grouping{
+    background-color: rgba(0,0,0,0.1);
+    padding:0.2rem 0.6rem;
+    border-radius: 0.4rem;
+    font-style: italic;  
+}
