@@ -42,11 +42,10 @@ Eggs Page:
                         Also, when you update dairy.php check to see if the search functionality of 
                         milk production and isPregnant needs to be fine tuned
                 Edit functionality      ✔ 
-                Delete functionality    
-                        When someone deletes, the reload fuction works perfectly but I've noticed
-                        that in the tally, the hen population stays the same until I reload the page.
-                        You need to make the hen population update without reloading the whole page
+                Delete functionality    ✔
                 More Options            ✔
+
+                Add color to pending and approved depending on the value.
 
 Add guidance on how to enter Animal in enterAnimal.php
 
@@ -71,5 +70,3 @@ Use sweetAlert2 to give messages to the users in every page. Link: https://sweet
                                                     Github: https://github.com/sweetalert2/sweetalert2/releases
 
 Make sure you start sessions in every page(require auth.php or admin_auth.php)
-
-For the tables, add color to pending and approved depending on the value.

@@ -1,3 +1,25 @@
+/*TALLY SECTION */
+function reloadTally(){
+
+    const adultTally = document.getElementById('henPopulationTally');
+
+    fetch('henTallyReload.php', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+        adultTally.textContent = data;
+        console.log(data);
+    });
+
+}
+
+window.onload = function() {
+    reloadTally();
+}
+
+/*CHART SECTION */
+
 const eggsProdChart = document.getElementById("eggsProdChart");
 
 const eggsProdChartContent = document.querySelector(".eggsProdChartContent");
@@ -135,6 +157,12 @@ function handleEdit(rowId){
 
     editOverlay.classList.add("show");
 
+    editOverlay.addEventListener("keydown", function(e){
+        if(e.key === "Enter"){
+            e.preventDefault();
+        }
+    });
+
     fetch('getRowDataEggs.php', {
         method: 'POST',
         headers: {
@@ -204,6 +232,7 @@ function handleEdit(rowId){
                 .then(data => {
                     if(data == 'Valid'){
                         reloadData();
+                        reloadTally();
 
                         editOverlay.classList.remove("show");
 
@@ -283,6 +312,7 @@ function handleDelete(rowIds){
         })
         .then(() => {
             reloadData();
+            reloadTally();
 
             deleteRowOverlay.classList.remove("show");
 
@@ -398,6 +428,7 @@ enterNewAnimal.addEventListener("submit", function(e){
     .then(response => response.json())
     .then(data => {
         reloadData();
+        reloadTally();
 
         const cowsTableSection = document.getElementById("hensTableSection");
 

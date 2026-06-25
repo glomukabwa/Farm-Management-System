@@ -5,7 +5,6 @@ include 'config.php';
 /*Default tally*/
 $eggsInStock = 0;
 $weekTotalSales = 0.00;
-$adultHens = 0;
 $femaleChicks = 0;
 
 /*Getting the eggs in stock from the DB */
@@ -30,29 +29,10 @@ $weekTotalSalesStmt = $conn->query("SELECT COALESCE(SUM(total_cost), 0.00) as we
 $weekTotalSalesRow = $weekTotalSalesStmt->fetch_assoc();
 $weekTotalSales = $weekTotalSalesRow['weeklyTotal'];
 
-/*Getting the number of hens*/
-
 /*Getting the chicken ID first*/
 $chickenIdRes = $conn->query("SELECT id FROM animal_types WHERE name = 'Chicken'");
 $chickenIdRow = $chickenIdRes->fetch_assoc();
 $chickenId = (int)$chickenIdRow['id'];
-
-/*Getting the ID for 'Alive in the farm */
-$aliveStatusStmt = $conn->query("SELECT id FROM animal_lifecycle_statuses 
-                                    WHERE name = 'Alive in the farm'");
-$aliveStatusRow = $aliveStatusStmt->fetch_assoc();
-$aliveStatusId = (int)$aliveStatusRow['id'];
-
-$adultHensStmt = $conn->prepare("SELECT COUNT(*) as count FROM animals 
-                                    WHERE animal_type_id = ? 
-                                        AND gender = 'female'
-                                            AND lifecycle_status_id = ?");
-$adultHensStmt->bind_param("ii", $chickenId, $aliveStatusId);
-$adultHensStmt->execute();
-$adultHensRes = $adultHensStmt->get_result();
-$adultHensRow = $adultHensRes->fetch_assoc();
-$adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce operator(??) is important*/
-/**/
 
 ?>
 
@@ -125,7 +105,7 @@ $adultHens = $adultHensRow['count'] ?? 0;/*Now u see why the null coalesce opera
             <div>
                 <h2>Hen Population</h2>
                 <p></p>
-                <p><?= $adultHens ?></p>
+                <p id="henPopulationTally"></p>
             </div>
 
             <div>
