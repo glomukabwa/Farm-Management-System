@@ -18,5 +18,15 @@ This is a **web application** that will be used to manage farm activities which 
 - Backend: PHP<br>
 - Database: MySQL
 
+## Demo Pictures
+- Current Dashboard:<br><br>
+<img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/7b8be098-d48d-4792-b4bb-8261bc4e270a" />
+<img width="959" height="146" alt="image" src="https://github.com/user-attachments/assets/c70ad5b3-011c-4794-a263-a55b870b885f" />
+
+
+
+
+
+
 
 
