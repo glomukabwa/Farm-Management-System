@@ -133,7 +133,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         </div>
     </section>
 
-    <section class="main-content" style="display: flex; gap:10rem;">
+    <section class="main-content" style="display: flex; gap:15rem;">
         <form method="POST">
             <h1>Enter Animal</h1>
 
@@ -230,8 +230,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
                 <li>To enter an animal:
                     <ol>
                         <li>First group them based on <span class="grouping">gender</span></li>
-                        <li>Then further subdivide the two newfound groups based on 
+                        <li>Then, subdivide the two newfound groups based on 
                             <span class="grouping">breed.</span>
+                        </li>
+                        <li>Lastly, divide the resulting groups based on 
+                            <span class="grouping">health status.</span>
                         </li>
                     </ol> 
                 </li>

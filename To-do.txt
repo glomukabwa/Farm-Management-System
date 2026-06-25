@@ -47,9 +47,6 @@ Eggs Page:
 
                 Add color to pending and approved depending on the value.
 
-enterAnimal.php:
-        Make the change that when one selects the animal, it shows just the breeds of that animal
-
 Calendar:
         1.Add an alert section
         2.Add submittion functionality to eventPopup                                            ✔  
