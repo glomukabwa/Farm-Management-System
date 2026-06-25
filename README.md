@@ -21,6 +21,8 @@ This is a **web application** that will be used to manage farm activities which 
 ## Demo Pictures
 - Current Dashboard:<br><br>
 <img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/74932a6c-8ef9-42ac-8c07-48e9af0357d4" />
+<img width="959" height="148" alt="image" src="https://github.com/user-attachments/assets/2b5efaf2-56f6-4c7b-9f91-5150d36b4754" />
+
 
 
 
