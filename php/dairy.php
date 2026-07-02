@@ -282,9 +282,53 @@ echo $cowId;
 
                     $offset = ($page - 1) * $limit;
 
-                    $cowsStmt = $conn->prepare("SELECT * FROM female_cows
+                    $cowsStmt = $conn->prepare("SELECT 
+                                                    fc.id,
+                                                    fc.animal_reference_id,
+                                                    fc.milkProduction,
+                                                    fc.isPregnant,
+                                                    a.tag_name,
+                                                    a.breed_id,
+                                                    a.lifecycle_status_id,
+                                                    a.health_status_id,
+                                                    a.created_at
+                                                FROM female_cows fc
+                                                JOIN animals a
+                                                ON fc.animal_reference_id = a.id
                                                 ORDER BY id ASC
                                                 LIMIT ?,?");
+                    /*The easier JOIN is:
+                        SELECT * FROM female_cows
+                        JOIN animals 
+                        ON female_cows.id = animals.id
+                        ORDER BY female_cows.id ASC
+                        LIMIT ?, ?
+                    But the problem with the above join is that below when I want to access the id:
+                    $rowId = $cowsRow['id'], I get an error cz the resulting table has two ids. One
+                    from the female_cows table and one from the animals table. The $rowId value will
+                    therefore be the first id which appears in the resulting table which in this case 
+                    would have been the female_cows id cz it's the first table in the select statement.
+                    This can work but then it might result in a bug later. To avoid future errors you 
+                    can do what I've done above which is selecting the reference_id only and not the
+                    animals id cz they are the same. That is why I have specifically typed the
+                    columns I want cz I'm not selecting all(*). This way I have only one id in the
+                    resulting table. The other option is not selecting the animal_reference_id but
+                    selecting the animals id but giving the id columns other names:
+                        SELECT
+                            fc.id AS femaleCowID,
+                            fc.milkProduction,
+                            fc.isPregnant,
+                            a.id AS animalID,
+                            a.tag_name,
+                            a.breed_id,
+                            a.health_status_id,
+                        FROM female_cows fc
+                        JOIN animals a
+                        ON fc.animal_reference_id = a.id
+                        ORDER BY fc.id ASC
+                        LIMIT ?, ?;
+                    And then to access the $rowId you do: $rowId = $cowsRow['femaleCowID'];
+                    */
                     $cowsStmt->bind_param("ii", $offset, $limit);
                     $cowsStmt->execute();
                     $cowRes = $cowsStmt->get_result();
