@@ -199,6 +199,8 @@ button{
 }
 
 #successMessage{
+    position:absolute;
+    margin-left: 36rem;
     font-size:1.1rem;
     color: green;
     opacity: 1;/*I am doing this and the line below so that in JS I can make it disappear*/
@@ -248,7 +250,6 @@ button{
     background: var(--support2);
     border-radius: 2rem;
     margin-top:7rem;
-    
 }
 
 .enteringGuidance .topic{
