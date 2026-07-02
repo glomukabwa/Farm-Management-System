@@ -31,14 +31,6 @@ Eggs Page:
         Graphs  ✔
         Table:
                 Search functionality    
-                        Ok so I have reflected the looping changes I had made in breed in lifestatus
-                        and health status but I wanna put a record of sth here to avoid making changes
-                        in future. U'll notice that in life status if you search 'd', it'll bring all
-                        the dead animals and the sold animals. That is not an error. It checks
-                        everything with 'd' and they both have a letter 'd' so they count. I think sth
-                        that will make the user less confused is highlighting the letter or word
-                        they have searched in the search return. I've seen it in advanced apps and I'm
-                        starting to understand the importance.
                         Also, when you update dairy.php check to see if the search functionality of 
                         milk production and isPregnant needs to be fine tuned
                 Edit functionality      ✔ 

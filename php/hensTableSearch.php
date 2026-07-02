@@ -2,6 +2,38 @@
 require 'auth.php';
 include 'config.php'; 
 
+function highlight($text, $searchText){
+    return preg_replace('/' . preg_quote($searchText, '/') . '/i',
+                        '<span class="highlight">$0</span>',
+                        htmlspecialchars($text));
+
+    /*Ok so this is what the above code means:
+        preg_replace() is used to find and replace chunks of data in large chunks of data. 
+        However, one limitation is that you have to enter the pattern (what you are seraching)
+        as a regular expression so here is the syntax: 
+        preg_replace(regular expression of search value you want found,
+                         the value to replace the serachValue when you find it,
+                         the block of data you are conducting ur search in) 
+        '/' . preg_quote($searchText, '/') . 'i' : creates a regular expression.
+        preg_quote() will escape any special characters inside $searchText. We only specify
+        '/' inside the brackets and not any other special character because '/' is also used as a 
+        delimiter. A delimiter is a boundary. Notice that before and after the concatenations
+        surrounding preg_quote() we have put slashes. If the $searchTerm is sth like 'or.', the 
+        resulting expression will be: /or\./i . The delimiters create a boundary around the 
+        searchTerm. Plz note that you can use other special characters in place of '/' so 
+        eg '#' . preg_quote($searchText, '#') . '#i' OR 
+        '@' . preg_quote($searchText, '@') . '@i' 
+        however, '/' is the most common, plus I think the clearest, so just use that.
+        Now back to preg_quote(), it knows to escape other special characters but 
+        the way I've understood it is that it get's mixed up when it comes to delimiters. You 
+        have to specify that a certain special character is a delimiter. So eg if you have a
+        $searchTerm like 'a/b', the resulting regular expression will be '/a/b/i'. This will be
+        confusing and incorrect cz it'll look like 2 regular expressions: /a/ and /b/.
+        Specifying that '/' is the the delimiter makes the result: '/a\/b/i' which is correct.
+        Now as for the final i after the delimiter, it means make it case insensitive.
+                         */
+}
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     ob_start();/*Starts output buffering.
                 Output buffering is the temporary storage of data in memory before it is sent to its final 
@@ -361,12 +393,52 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             ?>
             <tr>
                 <td><input type="checkbox" name="rowSelected" value="<?= $rowId ?>"></td>
-                <td><?= htmlspecialchars($row['tag_name'] ?? 'Undefined') ?></td>
-                <td><?= htmlspecialchars($breedName) ?></td>
-                <td><?= htmlspecialchars($healthStatusName) ?></td>
-                <td><?= htmlspecialchars($lifeStatusName) ?></td>
+                <td>
+                    <?php
+                    if($criteriaValue == 'name'){
+                        echo highlight($row['tag_name'] ?? 'Undefined', $searchValue);
+                    }else{
+                        echo htmlspecialchars($row['tag_name'] ?? 'Undefined');
+                    }
+                    ?>
+                 </td>
+                <td>
+                    <?php
+                    if($criteriaValue == 'breed'){
+                        echo highlight($breedName, $searchValue);
+                    }else{
+                        echo htmlspecialchars($breedName);
+                    } 
+                    ?>
+                </td>
+                <td>
+                    <?php
+                    if($criteriaValue == 'healthStatus'){
+                        echo highlight($healthStatusName, $searchValue);
+                    }else {
+                        echo htmlspecialchars($healthStatusName);
+                    }
+                    ?>
+                </td>
+                <td>
+                    <?php 
+                    if($criteriaValue == 'lifeStatus'){
+                        echo highlight($lifeStatusName, $searchValue);
+                    }else{
+                        echo htmlspecialchars($lifeStatusName);
+                    }
+                    ?>
+                </td>
                 <?php $newDate = new DateTime($row['created_at'])?>
-                <td><?= htmlspecialchars($newDate->format('d-m-Y')) ?></td>
+                <td>
+                    <?php
+                    if($criteriaValue == 'dateCreated'){
+                        echo highlight($newDate->format('d-m-Y'), $searchValue);
+                    }else{
+                        echo htmlspecialchars($newDate->format('d-m-Y'));
+                    }
+                    ?>
+                </td>
                 <td><button type="button" class="triggerEdit" value="<?= $rowId ?>">Edit</button></td>
                 <td><button type="button" class="triggerDelete" value="<?= $rowId ?>">Delete</button></td>
             </tr>
